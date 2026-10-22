@@ -7,7 +7,8 @@
 
     <title>Futebol no Japão</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../../src/output.css" rel="stylesheet">
+    <link href="../../src/custom.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,12 +95,12 @@
             </a>
 
             <nav class="hidden items-center gap-6 text-sm font-semibold lg:flex">
-                <a href="/index.html" class="transition hover:text-red-300">INÍCIO</a>
-                <a href="./futebol.html" class="border-b-2 border-red-400 pb-1 text-red-300">FUTEBOL</a>
-                <a href="./culinaria.html" class="transition hover:text-red-300">CULINÁRIA</a>
-                <a href="./surf.html" class="transition hover:text-red-300">SURF</a>
-                <a href="./patrimonios.html" class="transition hover:text-red-300">PATRIMÔNIOS</a>
-                <a href="./lendas.html" class="transition hover:text-red-300">LENDAS</a>
+                <a href="/index.php" class="transition hover:text-red-300">INÍCIO</a>
+                <a href="./futebol.php" class="border-b-2 border-red-400 pb-1 text-red-300">FUTEBOL</a>
+                <a href="./culinaria.php" class="transition hover:text-red-300">CULINÁRIA</a>
+                <a href="./surf.php" class="transition hover:text-red-300">SURF</a>
+                <a href="./patrimonios.php" class="transition hover:text-red-300">PATRIMÔNIOS</a>
+                <a href="./lendas.php" class="transition hover:text-red-300">LENDAS</a>
             </nav>
 
             <a href="#historia" aria-label="Ir para a história do futebol" class="text-2xl transition hover:text-red-300">

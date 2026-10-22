@@ -39,7 +39,7 @@
 
             <div id="menu" class="absolute left-0 top-[58px] z-50 hidden w-full flex-col gap-5 bg-[#071018] px-6 py-6 text-sm md:static md:flex md:w-auto md:flex-row md:items-center md:gap-7 md:bg-transparent md:p-0">
                 <a href="#inicio" class="hover:text-red-400">INÍCIO</a>
-                <a href="./assets/pages/futebol.html" class="hover:text-red-400">FUTEBOL</a>
+                <a href="./assets/pages/futebol.php" class="hover:text-red-400">FUTEBOL</a>
                 <a href="#culinaria" class="hover:text-red-400">CULINÁRIA</a>
                 <a href="#surf" class="hover:text-red-400">SURF</a>
                 <a href="#patrimonios" class="hover:text-red-400">PATRIMÔNIOS</a>
@@ -125,7 +125,7 @@
                 <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
 
                     <!-- FUTEBOL -->
-                    <a id="futebol" href="./assets/pages/futebol.html"
+                    <a id="futebol" href="./assets/pages/futebol.php"
                        class="categoria overflow-hidden rounded-lg border border-[#e1d9ce] bg-white shadow-sm">
                         <img
                             src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=600&q=85"
