@@ -1,0 +1,558 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Futebol no Japão</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .hero {
+            background-image:
+                linear-gradient(
+                    90deg,
+                    rgba(7, 29, 65, 0.95) 0%,
+                    rgba(7, 29, 65, 0.75) 50%,
+                    rgba(7, 29, 65, 0.35) 100%
+                ),
+                url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=2000&q=90');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 65px;
+            height: 4px;
+            background-color: #c62840;
+            margin-top: 16px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 15px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background-color: #c62840;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 8px;
+            top: 6px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: #c62840;
+            border: 3px solid #f4efe6;
+        }
+
+        .women-timeline .timeline-dot {
+            border-color: #0e2347;
+        }
+    </style>
+</head>
+
+<body class="bg-[#f8f5f0] text-[#17243b]">
+
+    <!-- CABEÇALHO -->
+    <header class="sticky top-0 z-50 bg-[#071d41] text-white shadow-lg">
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+
+            <a href="/index.html" class="flex items-center gap-3">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white">
+                    <span class="h-5 w-5 rounded-full bg-[#c62840]"></span>
+                </span>
+
+                <span class="text-xl font-extrabold tracking-[0.18em]">
+                    JAPÃO
+                </span>
+            </a>
+
+            <nav class="hidden items-center gap-6 text-sm font-semibold lg:flex">
+                <a href="/index.html" class="transition hover:text-red-300">INÍCIO</a>
+                <a href="./futebol.html" class="border-b-2 border-red-400 pb-1 text-red-300">FUTEBOL</a>
+                <a href="./culinaria.html" class="transition hover:text-red-300">CULINÁRIA</a>
+                <a href="./surf.html" class="transition hover:text-red-300">SURF</a>
+                <a href="./patrimonios.html" class="transition hover:text-red-300">PATRIMÔNIOS</a>
+                <a href="./lendas.html" class="transition hover:text-red-300">LENDAS</a>
+            </nav>
+
+            <a href="#historia" aria-label="Ir para a história do futebol" class="text-2xl transition hover:text-red-300">
+                <i class="bi bi-search"></i>
+            </a>
+        </div>
+    </header>
+
+
+    <!-- HERO -->
+    <section
+    class="hero relative flex min-h-[580px] items-center bg-cover bg-center bg-no-repeat md:min-h-[650px]"
+    style="background-image: linear-gradient(90deg, rgba(7,29,65,0.75), rgba(7,29,65,0.15)), url('./src/img/Celebração\ da\ Seleção\ Japonesa\ no\ Estádio\ \(1\).png');"
+>
+    <div class="mx-auto w-full max-w-7xl px-6 py-24">
+        <div class="max-w-3xl text-white">
+
+            <p class="mb-5 text-sm font-bold uppercase tracking-[0.35em] text-red-300">
+                Esporte · Cultura · União
+            </p>
+
+            <h1 class="mb-6 text-5xl font-bold leading-tight md:text-7xl">
+                Futebol no Japão
+            </h1>
+
+            <p class="max-w-2xl text-lg leading-relaxed text-gray-200 md:text-xl">
+                Muito além das quatro linhas, o futebol japonês representa
+                dedicação, disciplina e união. Conheça a trajetória das
+                seleções masculina e feminina nos maiores campeonatos do mundo.
+            </p>
+
+            <p class="mt-8 text-4xl text-red-300">サッカー</p>
+
+            <a
+                href="#historia"
+                class="mt-8 inline-flex items-center gap-3 rounded-full bg-[#c62840] px-7 py-3 font-bold text-white transition hover:bg-red-700"
+            >
+                Explorar história
+                <i class="bi bi-arrow-down"></i>
+            </a>
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- HISTÓRIA -->
+    <section id="historia" class="bg-[#f4efe6] px-6 py-20">
+        <div class="mx-auto grid max-w-7xl items-center gap-12 md:grid-cols-2">
+
+            <div>
+                <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-[#c62840]">
+                    A trajetória do esporte
+                </p>
+
+                <h2 class="section-title mb-8 text-4xl font-bold md:text-5xl">
+                    História do futebol japonês
+                </h2>
+
+                <p class="mb-5 leading-8 text-gray-700">
+                    O futebol começou a ganhar espaço no Japão durante o final
+                    do século XIX e se desenvolveu ao longo do século XX. Com o
+                    passar dos anos, o país investiu na formação de atletas,
+                    na organização dos clubes e na estrutura das competições.
+                </p>
+
+                <p class="mb-5 leading-8 text-gray-700">
+                    A criação da liga profissional japonesa, a J.League, em 1993,
+                    ajudou a aumentar a popularidade do esporte e a melhorar o
+                    nível competitivo dos jogadores.
+                </p>
+
+                <p class="leading-8 text-gray-700">
+                    Atualmente, o Japão é uma das principais forças do futebol
+                    asiático, com seleções competitivas e atletas que também
+                    atuam em grandes clubes internacionais.
+                </p>
+            </div>
+
+            <div class="relative">
+                <img
+                    src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=85"
+                    alt="Campo de futebol em um estádio"
+                    class="h-[350px] w-full rounded-2xl object-cover shadow-xl md:h-[450px]"
+                >
+
+                <div class="absolute -bottom-5 -left-5 hidden rounded-xl bg-[#c62840] p-6 text-white shadow-xl md:block">
+                    <p class="text-3xl font-bold">1993</p>
+                    <p class="mt-1 text-sm">Início da J.League</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- COPA MASCULINA -->
+    <section id="copa-masculina" class="bg-[#0e2347] px-6 py-20 text-white">
+        <div class="mx-auto max-w-7xl">
+
+            <div class="mb-14 max-w-3xl">
+                <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-red-300">
+                    Seleção masculina
+                </p>
+
+                <h2 class="mb-6 text-4xl font-bold md:text-5xl">
+                    O Japão nas Copas do Mundo
+                </h2>
+
+                <p class="leading-8 text-gray-300">
+                    A seleção masculina japonesa participou pela primeira vez
+                    de uma Copa do Mundo em 1998. Desde então, construiu uma
+                    trajetória marcada por evolução, organização e resultados
+                    importantes diante de seleções tradicionais.
+                </p>
+            </div>
+
+            <div class="grid items-start gap-12 md:grid-cols-2">
+
+                <div class="relative pl-10">
+
+                    <div class="timeline-line"></div>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-red-300">1998</p>
+                        <h3 class="mb-2 text-xl font-bold">A primeira participação</h3>
+                        <p class="leading-7 text-gray-300">
+                            Na Copa da França, o Japão estreou no torneio
+                            mundial masculino, iniciando uma presença frequente
+                            nas edições seguintes.
+                        </p>
+                    </article>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-red-300">2002</p>
+                        <h3 class="mb-2 text-xl font-bold">Oitavas de final em casa</h3>
+                        <p class="leading-7 text-gray-300">
+                            Como um dos países-sede, o Japão chegou às oitavas
+                            de final pela primeira vez, aumentando o interesse
+                            nacional pelo esporte.
+                        </p>
+                    </article>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-red-300">2010 e 2018</p>
+                        <h3 class="mb-2 text-xl font-bold">Campanhas competitivas</h3>
+                        <p class="leading-7 text-gray-300">
+                            A seleção voltou às oitavas em 2010 e 2018,
+                            mostrando sua capacidade de competir em alto nível.
+                        </p>
+                    </article>
+
+                    <article class="relative">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-red-300">2022</p>
+                        <h3 class="mb-2 text-xl font-bold">Vitórias históricas</h3>
+                        <p class="leading-7 text-gray-300">
+                            No Catar, o Japão venceu Alemanha e Espanha na fase
+                            de grupos e chegou novamente às oitavas de final.
+                        </p>
+                    </article>
+
+                </div>
+
+                <div>
+                    <img
+                        src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1200&q=85"
+                        alt="Jogadores disputando uma partida de futebol"
+                        class="h-[300px] w-full rounded-2xl object-cover shadow-xl md:h-[420px]"
+                    >
+
+                    <div class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-6">
+                        <i class="bi bi-trophy mb-4 block text-3xl text-red-300"></i>
+
+                        <h3 class="mb-3 text-2xl font-bold">
+                            Uma seleção em crescimento
+                        </h3>
+
+                        <p class="leading-7 text-gray-300">
+                            A seleção japonesa é conhecida pela organização
+                            tática, pela velocidade de jogo e pela disciplina
+                            coletiva. Esses fatores ajudam o país a enfrentar
+                            adversários de diferentes estilos.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- COPA FEMININA -->
+    <section id="copa-feminina" class="bg-[#f4efe6] px-6 py-20">
+        <div class="mx-auto max-w-7xl">
+
+            <div class="mb-14 max-w-3xl">
+                <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-[#c62840]">
+                    Seleção feminina · Nadeshiko Japan
+                </p>
+
+                <h2 class="section-title mb-8 text-4xl font-bold md:text-5xl">
+                    O Japão na Copa do Mundo Feminina
+                </h2>
+
+                <p class="leading-8 text-gray-700">
+                    A seleção feminina japonesa conquistou reconhecimento
+                    internacional com seu estilo de jogo coletivo e técnico.
+                    O maior momento de sua história aconteceu em 2011, quando
+                    o Japão conquistou o título mundial pela primeira vez.
+                </p>
+            </div>
+
+            <div class="grid items-center gap-12 md:grid-cols-2">
+
+                <div>
+                    <img
+                        src="./src/img/copa.png"
+                        alt="Partida de futebol"
+                        class="h-[320px] w-full rounded-2xl object-cover shadow-xl md:h-[440px]"
+                    >
+
+                    <div class="mt-6 rounded-2xl bg-white p-6 shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-red-100 text-2xl text-[#c62840]">
+                                <i class="bi bi-trophy-fill"></i>
+                            </div>
+
+                            <div>
+                                <p class="text-sm font-bold uppercase tracking-wider text-[#c62840]">
+                                    Conquista histórica
+                                </p>
+                                <h3 class="text-2xl font-bold">Campeãs em 2011</h3>
+                            </div>
+                        </div>
+
+                        <p class="mt-4 leading-7 text-gray-700">
+                            Na Alemanha, o Japão venceu os Estados Unidos na
+                            decisão por pênaltis e conquistou seu primeiro
+                            título da Copa do Mundo Feminina.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="women-timeline relative pl-10">
+
+                    <div class="timeline-line"></div>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-[#c62840]">1991</p>
+                        <h3 class="mb-2 text-xl font-bold">Primeira Copa</h3>
+                        <p class="leading-7 text-gray-700">
+                            O Japão participou da primeira edição da Copa do
+                            Mundo Feminina, realizada na China.
+                        </p>
+                    </article>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-[#c62840]">2011</p>
+                        <h3 class="mb-2 text-xl font-bold">O título mundial</h3>
+                        <p class="leading-7 text-gray-700">
+                            A seleção conquistou o campeonato após superar
+                            os Estados Unidos na disputa de pênaltis.
+                        </p>
+                    </article>
+
+                    <article class="relative mb-10">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-[#c62840]">2015</p>
+                        <h3 class="mb-2 text-xl font-bold">Vice-campeonato</h3>
+                        <p class="leading-7 text-gray-700">
+                            O Japão chegou novamente à final, mas terminou
+                            a competição como vice-campeão diante dos Estados Unidos.
+                        </p>
+                    </article>
+
+                    <article class="relative">
+                        <div class="timeline-dot"></div>
+                        <p class="mb-2 text-2xl font-bold text-[#c62840]">2023</p>
+                        <h3 class="mb-2 text-xl font-bold">Uma campanha marcante</h3>
+                        <p class="leading-7 text-gray-700">
+                            A equipe chegou às quartas de final e chamou
+                            atenção pelo futebol organizado e ofensivo.
+                        </p>
+                    </article>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- HÁBITOS E CULTURA -->
+    <section id="cultura" class="bg-[#f8f5f0] px-6 py-20">
+        <div class="mx-auto max-w-7xl">
+
+            <div class="mb-14 text-center">
+                <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-[#c62840]">
+                    Muito além do jogo
+                </p>
+
+                <h2 class="mb-5 text-4xl font-bold md:text-5xl">
+                    Futebol e cultura japonesa
+                </h2>
+
+                <p class="mx-auto max-w-2xl leading-8 text-gray-600">
+                    O futebol no Japão também é uma forma de demonstrar respeito,
+                    disciplina e união entre jogadores e torcedores.
+                </p>
+            </div>
+
+            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+                <article class="rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-[#c62840]">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+
+                    <h3 class="mb-3 text-xl font-bold">Trabalho em equipe</h3>
+
+                    <p class="leading-7 text-gray-600">
+                        A cooperação e a organização coletiva são valorizadas
+                        dentro e fora de campo.
+                    </p>
+                </article>
+
+                <article class="rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-[#c62840]">
+                        <i class="bi bi-heart-fill"></i>
+                    </div>
+
+                    <h3 class="mb-3 text-xl font-bold">Respeito</h3>
+
+                    <p class="leading-7 text-gray-600">
+                        O respeito aos adversários, aos árbitros e aos torcedores
+                        faz parte da cultura esportiva.
+                    </p>
+                </article>
+
+                <article class="rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-[#c62840]">
+                        <i class="bi bi-stars"></i>
+                    </div>
+
+                    <h3 class="mb-3 text-xl font-bold">Disciplina</h3>
+
+                    <p class="leading-7 text-gray-600">
+                        Treinamento, dedicação e preparação são importantes
+                        para o desenvolvimento dos atletas.
+                    </p>
+                </article>
+
+                <article class="rounded-2xl bg-white p-7 shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                    <div class="mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-red-100 text-2xl text-[#c62840]">
+                        <i class="bi bi-flag-fill"></i>
+                    </div>
+
+                    <h3 class="mb-3 text-xl font-bold">Paixão nacional</h3>
+
+                    <p class="leading-7 text-gray-600">
+                        As seleções reúnem torcedores e representam o país
+                        nas competições internacionais.
+                    </p>
+                </article>
+
+            </div>
+
+            <div class="mt-12 overflow-hidden rounded-2xl bg-[#0e2347] md:flex">
+
+                <img
+                    src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=85"
+                    alt="Estádio preparado para uma partida"
+                    class="h-64 w-full object-cover md:h-auto md:w-1/2"
+                >
+
+                <div class="flex flex-col justify-center p-8 text-white md:w-1/2 md:p-12">
+                    <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-red-300">
+                        Espírito esportivo
+                    </p>
+
+                    <h3 class="mb-5 text-3xl font-bold md:text-4xl">
+                        Uma paixão que conecta pessoas
+                    </h3>
+
+                    <p class="leading-8 text-gray-300">
+                        Seja no futebol masculino ou feminino, o Japão continua
+                        ampliando sua presença no cenário internacional e
+                        inspirando novas gerações de atletas.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- RODAPÉ -->
+    <footer class="bg-[#071d41] px-6 py-12 text-white">
+
+        <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
+
+            <div>
+                <a href="./index.html" class="mb-4 inline-flex items-center gap-3">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-full bg-white">
+                        <span class="h-4 w-4 rounded-full bg-[#c62840]"></span>
+                    </span>
+
+                    <span class="font-extrabold tracking-[0.18em]">JAPÃO</span>
+                </a>
+
+                <p class="max-w-sm leading-7 text-gray-300">
+                    Um espaço para descobrir a cultura, a história e as
+                    tradições japonesas.
+                </p>
+            </div>
+
+            <div>
+                <h3 class="mb-4 text-xl font-bold">Navegação</h3>
+
+                <ul class="space-y-3 text-gray-300">
+                    <li><a href="./index.html" class="transition hover:text-red-300">Início</a></li>
+                    <li><a href="#historia" class="transition hover:text-red-300">História</a></li>
+                    <li><a href="#copa-masculina" class="transition hover:text-red-300">Copa masculina</a></li>
+                    <li><a href="#copa-feminina" class="transition hover:text-red-300">Copa feminina</a></li>
+                    <li><a href="#cultura" class="transition hover:text-red-300">Cultura</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="mb-4 text-xl font-bold">Japão</h3>
+
+                <p class="mb-4 leading-7 text-gray-300">
+                    日本 — Descubra a cultura japonesa através do esporte,
+                    da tradição e da história.
+                </p>
+
+                <p class="text-2xl text-red-300">日の丸</p>
+            </div>
+
+        </div>
+
+        <div class="mx-auto mt-10 max-w-7xl border-t border-white/20 pt-6 text-center text-sm text-gray-400">
+            © 2026 Japão — Cultura e História
+        </div>
+
+    </footer>
+
+</body>
+</html>
+```
