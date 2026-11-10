@@ -27,3 +27,11 @@ body {
             transform: translateY(-6px);
             box-shadow: 0 12px 25px rgba(0, 0, 0, .14);
         }
+
+@import url('https://googleapis.com');
+@import "tailwindcss";
+
+@theme {
+  /* Substitui a fonte sans padrão do Tailwind pela Poppins */
+  --font-sans: 'Poppins', sans-serif;
+}

@@ -28,28 +28,28 @@ return [
     'cards_explorar' => [
         [
             'titulo' => 'Futebol',
-            'imagem' => '../img/',
-            'link'   => '../pages/futebol.php',
+            'imagem' => './assets/img/home/futebol.png',
+            'link'   => './assets/pages/futebol.php',
         ],
         [
             'titulo' => 'Culinária e Empreendedorismo',
-            'imagem' => '../img/',
-            'link'   => '../pages/culinaria.php',
+            'imagem' => './assets/img/home/culinaria.png',
+            'link'   => './assets/pages/culinaria.php',
         ],
         [
             'titulo' => 'Surf',
-            'imagem' => '../img/',
-            'link'   => '../pages/surf.php',
+            'imagem' => './assets/img/home/surf.png',
+            'link'   => './assets/pages/surf.php',
         ],
         [
             'titulo' => 'Patrimônios Culturais',
-            'imagem' => '../img/',
-            'link'   => '../pages/patrimonios.php',
+            'imagem' => './assets/img/home/patrimonios.png',
+            'link'   => './assets/pages/patrimonios.php',
         ],
         [
             'titulo' => 'Lendas e Mitos',
-            'imagem' => '../img/',
-            'link'   => '../pages/lendas.php',
+            'imagem' => './assets/img/home/lendas.png',
+            'link'   => './assets/pages/lendas.php',
         ],
     ],
 
@@ -60,10 +60,10 @@ return [
      * ========================================================== */
     'patrimonios' => [
         [
-            'id'          => 'ca    stelo-himeji',
+            'id'          => 'castelo-himeji',
             'nome'        => 'Castelo de Himeji',
             'resumo'      => 'Um dos castelos mais famosos do Japão, mantendo a força e tradição.',
-            'imagem'      => 'img/patrimonios/castelo-himeji.jpg',
+            'imagem'      => '../img/patrimonios/castelo.png',
             'localizacao' => 'Himeji, província de Hyogo',
             'periodo'     => 'Torre principal concluída no início do século XVII',
             'historia'    => [
@@ -76,7 +76,7 @@ return [
             'id'          => 'monte-fuji',
             'nome'        => 'Monte Fuji',
             'resumo'      => 'Montanha sagrada e um dos símbolos mais importantes do país.',
-            'imagem'      => 'img/patrimonios/monte-fuji.jpg',
+            'imagem'      => '../img/patrimonios/monte.png',
             'localizacao' => 'Entre as províncias de Shizuoka e Yamanashi',
             'periodo'     => 'Patrimônio Mundial desde 2013',
             'historia'    => [
@@ -89,7 +89,7 @@ return [
             'id'          => 'santuario-itsukushima',
             'nome'        => 'Santuário Itsukushima',
             'resumo'      => 'Famoso pelo seu portal sobre o mar.',
-            'imagem'      => 'img/patrimonios/santuario-itsukushima.jpg',
+            'imagem'      => '../img/patrimonios/santuario.png',
             'localizacao' => 'Ilha de Miyajima, província de Hiroshima',
             'periodo'     => 'Origens no século VI, reconstruído no século XII',
             'historia'    => [
@@ -102,7 +102,7 @@ return [
             'id'          => 'templo-kinkaku-ji',
             'nome'        => 'Templo Kinkaku-ji',
             'resumo'      => 'Conhecido como templo do Pavilhão Dourado.',
-            'imagem'      => 'img/patrimonios/kinkaku-ji.jpg',
+            'imagem'      => '../img/patrimonios/templo.png',
             'localizacao' => 'Kyoto',
             'periodo'     => 'Construído em 1397',
             'historia'    => [
@@ -115,7 +115,7 @@ return [
             'id'          => 'santuario-fushimi-inari',
             'nome'        => 'Santuário Fushimi Inari',
             'resumo'      => 'Famoso por suas milhares de portas de torás vermelhas.',
-            'imagem'      => 'img/patrimonios/fushimi-inari.jpg',
+            'imagem'      => '../img/patrimonios/santuario2.png',
             'localizacao' => 'Kyoto',
             'periodo'     => 'Fundado no ano 711',
             'historia'    => [
@@ -136,7 +136,7 @@ return [
             'id'           => 'kuchisake-onna',
             'nome'         => 'Kuchisake-onna',
             'subtitulo'    => 'A mulher da boca cortada',
-            'imagem'       => 'img/lendas/kuchisake-onna.jpg',
+            'imagem'       => '../img/lendas/lenda1.png',
             'nome_japones' => '口裂け女 (Kuchisake-onna)',
             'significado'  => 'Mulher da boca cortada',
             'historia'     => [
@@ -154,7 +154,7 @@ return [
             'id'           => 'aka-manto',
             'nome'         => 'Aka Manto',
             'subtitulo'    => 'O homem do manto vermelho',
-            'imagem'       => 'img/lendas/aka-manto.jpg',
+            'imagem'       => '../img/lendas/lenda2.png',
             'nome_japones' => '赤マント (Aka Manto)',
             'significado'  => 'Manto vermelho',
             'historia'     => [
@@ -168,7 +168,7 @@ return [
             'id'           => 'teke-teke',
             'nome'         => 'Teke Teke',
             'subtitulo'    => 'O espírito que se arrasta',
-            'imagem'       => 'img/lendas/teke-teke.jpg',
+            'imagem'       => '../img/lendas/lenda3.png',
             'nome_japones' => 'テケテケ (Teke Teke)',
             'significado'  => 'Onomatopeia do som de arrastar',
             'historia'     => [
@@ -182,7 +182,7 @@ return [
             'id'           => 'amaterasu',
             'nome'         => 'Amaterasu',
             'subtitulo'    => 'A deusa do Sol',
-            'imagem'       => 'img/lendas/amaterasu.jpg',
+            'imagem'       => '../img/lendas/lenda4.png',
             'nome_japones' => '天照大神 (Amaterasu Ōmikami)',
             'significado'  => 'A grande divindade que brilha no céu',
             'historia'     => [
@@ -196,7 +196,7 @@ return [
             'id'           => 'tsukuyomi',
             'nome'         => 'Tsukuyomi',
             'subtitulo'    => 'O deus da Lua',
-            'imagem'       => 'img/lendas/tsukuyomi.jpg',
+            'imagem'       => '../img/lendas/lenda5.png',
             'nome_japones' => '月読命 (Tsukuyomi-no-Mikoto)',
             'significado'  => 'Aquele que conta as luas',
             'historia'     => [
@@ -210,7 +210,7 @@ return [
             'id'           => 'susanoo',
             'nome'         => 'Susanoo',
             'subtitulo'    => 'O deus das tempestades',
-            'imagem'       => 'img/lendas/susanoo.jpg',
+            'imagem'       => '../img/lendas/lenda6.png',
             'nome_japones' => '須佐之男 (Susanoo-no-Mikoto)',
             'significado'  => 'O deus impetuoso',
             'historia'     => [
