@@ -45,8 +45,6 @@
                 <a href="../pages/surf.php" class="relative transition hover:text-red-400 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-[#c72b30] after:transition-all hover:after:w-full">SURF</a>
                 <a href="../pages/patrimonios.php" class="relative transition hover:text-red-400 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-[#c72b30] after:transition-all hover:after:w-full">PATRIMÔNIOS</a>
                 <a href="../pages/lendas.php" class="relative transition hover:text-red-400 after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-[#c72b30] after:transition-all hover:after:w-full">LENDAS</a>
-                <a href="../pages/explorar.php" class="transition hover:text-red-400" aria-label="Explorar">
-                    <i class="bi bi-search text-lg"></i>
                 </a>
             </div>
         </nav>

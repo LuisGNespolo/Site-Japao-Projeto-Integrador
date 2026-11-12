@@ -1,131 +1,460 @@
+
 <?php
-// Carrega as lendas. Futuramente, troque por uma consulta ao banco
-// que devolva um array com a mesma estrutura.
-$dados = require_once '../templates/dados.php';
+$dados = require '../templates/dados.php';
 $lendas = $dados['lendas'];
 
 include_once '../templates/header.php';
 
-// Atalho para escapar texto com segurança
 function e(string $texto): string
 {
     return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
 }
 ?>
-<main>
 
-  <!-- HERO -->
-  <section
-    class="relative flex min-h-[340px] items-center bg-cover bg-center text-white md:min-h-[460px]"
-    style="background-image: url('../img/lendas/banner.png');"
-  >
-    <div class="absolute inset-0 bg-gradient-to-r from-[#071018]/85 via-[#071018]/45 to-black/10"></div>
+<main class="bg-[#11100f]">
 
-    <div class="relative mx-auto w-full max-w-7xl px-6 py-16 md:px-10">
-      <div class="mb-4 h-1 w-10 rounded-full bg-[#c72b30]"></div>
-      <h1 class="font-serif text-3xl font-semibold italic tracking-wide md:text-5xl">
-        Entre deuses, monstros e lendas
-      </h1>
-      <p class="mt-3 max-w-xs text-sm leading-relaxed text-gray-200 md:max-w-md md:text-lg">
-        Histórias que atravessam gerações e fazem parte do imaginário japonês.
-      </p>
-    </div>
-  </section>
+    <!-- BANNER -->
+    <section class="relative isolate flex min-h-[480px] items-center overflow-hidden bg-[#100d0c] md:min-h-[560px]">
 
-  <!-- CARDS (repetidos com foreach) -->
-  <section class="bg-white py-14 md:py-20">
-    <ul class="mx-auto grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-6 sm:grid-cols-2 md:px-10 lg:grid-cols-3">
+        <div
+            class="absolute inset-0 -z-20 bg-cover bg-center"
+            style="background-image: url('../img/lendas/banner.png');"
+        ></div>
 
-      <?php foreach ($lendas as $lenda): ?>
-        <li>
-          <button
-            type="button"
-            data-abrir-modal="modal-<?= e($lenda['id']) ?>"
-            class="group block w-full overflow-hidden rounded-lg bg-[#f8f5ef] text-center shadow-sm ring-1 ring-black/5 transition duration-300 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c72b30]"
-          >
-            <div class="overflow-hidden">
-              <img
-                src="<?= e($lenda['imagem']) ?>"
-                alt="<?= e($lenda['nome']) ?>"
-                class="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105"
-              />
+        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#100d0c] via-[#100d0c]/85 to-[#100d0c]/20"></div>
+
+        <div class="mx-auto w-full max-w-7xl px-6 py-20 md:px-10">
+
+            <div class="max-w-2xl">
+
+                <span class="mb-6 inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#d64a4e]">
+                    <span class="h-px w-10 bg-[#c72b30]"></span>
+                    Folclore japonês
+                </span>
+
+                <h1 class="font-serif text-4xl font-bold italic leading-tight text-[#f8f5ef] md:text-6xl lg:text-7xl">
+                    Entre deuses,<br>
+                    monstros e <span class="text-[#c72b30]">lendas.</span>
+                </h1>
+
+                <p class="mt-6 max-w-lg text-sm leading-8 text-gray-300 md:text-base">
+                    Conheça histórias ancestrais, criaturas sobrenaturais e
+                    divindades que atravessaram gerações e moldaram o
+                    imaginário japonês.
+                </p>
+
+                <a
+                    href="#lendas"
+                    class="mt-9 inline-flex items-center gap-3 border border-[#c72b30] bg-[#c72b30] px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition duration-300 hover:bg-transparent hover:text-[#e45a5e]"
+                >
+                    Explorar lendas
+                    <span>↓</span>
+                </a>
+
             </div>
-            <span class="block px-3 py-4">
-              <span class="block font-serif text-base font-semibold text-[#171717] transition group-hover:text-[#c72b30]"><?= e($lenda['nome']) ?></span>
-              <span class="mt-1 block font-serif text-xs text-[#45413d]">— <?= e($lenda['subtitulo']) ?></span>
-            </span>
-          </button>
-        </li>
-      <?php endforeach; ?>
 
-    </ul>
-  </section>
-
-  <!-- MODAIS (um por lenda) -->
-  <?php foreach ($lendas as $lenda): ?>
-    <dialog
-      id="modal-<?= e($lenda['id']) ?>"
-      class="m-auto w-[92%] max-w-2xl overflow-hidden rounded-lg border-t-4 border-[#c72b30] bg-[#f8f5ef] p-0 text-center shadow-2xl backdrop:bg-[#071018]/70"
-    >
-      <div class="relative max-h-[85vh] overflow-y-auto px-6 pb-10 pt-8 md:px-10">
-
-        <button
-          type="button"
-          data-fechar-modal
-          aria-label="Fechar"
-          class="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full text-xl text-gray-700 transition hover:bg-[#c72b30]/10 hover:text-[#c72b30]"
-        >&times;</button>
-
-        <img
-          src="<?= e($lenda['imagem']) ?>"
-          alt="<?= e($lenda['nome']) ?>"
-          class="mx-auto w-44 rounded-lg shadow-md ring-1 ring-black/5 md:w-56"
-        />
-
-        <h2 class="mt-6 font-serif text-sm font-bold uppercase leading-relaxed tracking-[0.1em] text-[#c72b30]">
-          Nome em japonês: <?= e($lenda['nome_japones']) ?>.<br />
-          Significado: <?= e($lenda['significado']) ?>.
-        </h2>
-
-        <div class="mx-auto mt-6 max-w-xl space-y-3 font-serif text-sm leading-7 text-[#45413d]">
-          <?php foreach ($lenda['historia'] as $paragrafo): ?>
-            <p><?= e($paragrafo) ?></p>
-          <?php endforeach; ?>
-
-          <?php if (!empty($lenda['como_age'])): ?>
-            <p class="pt-3 font-bold uppercase tracking-[0.1em] text-[#171717]">Como ela age:</p>
-            <?php foreach ($lenda['como_age'] as $paragrafo): ?>
-              <p><?= e($paragrafo) ?></p>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <?php if (!empty($lenda['curiosidade'])): ?>
-            <p><span class="font-bold text-[#171717]">Curiosidade:</span> <?= e($lenda['curiosidade']) ?></p>
-          <?php endif; ?>
         </div>
 
-      </div>
-    </dialog>
-  <?php endforeach; ?>
+        <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-[#c72b30] via-[#8b2024] to-transparent"></div>
+
+    </section>
+
+
+    <!-- INTRODUÇÃO -->
+    <section class="border-b border-white/5 bg-[#171513] py-16 md:py-20">
+
+        <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 md:px-10">
+
+            <div>
+
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-[#c72b30]">
+                    Tradição e mistério
+                </span>
+
+                <h2 class="mt-4 font-serif text-3xl font-bold leading-tight text-[#f8f5ef] md:text-4xl">
+                    Um universo de histórias e criaturas extraordinárias
+                </h2>
+
+                <div class="mt-5 h-px w-16 bg-[#c72b30]"></div>
+
+                <p class="mt-6 text-sm leading-8 text-gray-400 md:text-base">
+                    O folclore japonês é formado por histórias transmitidas
+                    de geração em geração. Nele encontramos deuses,
+                    espíritos, monstros e criaturas misteriosas que fazem
+                    parte da cultura e das tradições do Japão.
+                </p>
+
+                <p class="mt-4 text-sm leading-8 text-gray-400 md:text-base">
+                    Cada lenda possui características próprias, trazendo
+                    ensinamentos, mistérios e representações da relação
+                    entre os seres humanos e o mundo sobrenatural.
+                </p>
+
+            </div>
+
+            <div class="relative">
+
+                <div class="absolute -inset-3 rounded-lg border border-[#c72b30]/30"></div>
+
+                <img
+                    src="../img/lendas/lendas.png"
+                    alt="Universo das lendas japonesas"
+                    class="relative aspect-[5/4] w-full rounded-lg object-cover shadow-2xl"
+                    loading="lazy"
+                >
+
+                <div class="absolute bottom-0 left-0 right-0 rounded-b-lg bg-gradient-to-t from-black/80 to-transparent p-6">
+                    <p class="font-serif text-lg italic text-white">
+                        Histórias que nunca deixam de ser contadas.
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CARDS -->
+    <section id="lendas" class="bg-[#11100f] py-20 md:py-28">
+
+        <div class="mx-auto max-w-7xl px-6 md:px-10">
+
+            <div class="mb-14 text-center">
+
+                <span class="text-xs font-bold uppercase tracking-[0.35em] text-[#c72b30]">
+                    Mitologia e folclore
+                </span>
+
+                <h2 class="mt-4 font-serif text-3xl font-bold text-[#f8f5ef] md:text-5xl">
+                    Conheça as lendas
+                </h2>
+
+                <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-gray-400">
+                    Cada história guarda mistérios, ensinamentos e criaturas
+                    que fazem parte da rica tradição japonesa.
+                </p>
+
+                <div class="mx-auto mt-7 h-px w-20 bg-[#c72b30]"></div>
+
+            </div>
+
+
+            <ul class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+
+                <?php foreach ($lendas as $lenda): ?>
+
+                    <li>
+
+                        <button
+                            type="button"
+                            data-abrir-modal="modal-<?= e($lenda['id']) ?>"
+                            aria-haspopup="dialog"
+                            class="group block w-full overflow-hidden rounded-lg border border-white/10 bg-[#1c1a18] text-left transition duration-500 hover:-translate-y-2 hover:border-[#c72b30]/70 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c72b30]"
+                        >
+
+                            <div class="relative overflow-hidden">
+
+                                <img
+                                    src="<?= e($lenda['imagem']) ?>"
+                                    alt="<?= e($lenda['nome']) ?>"
+                                    loading="lazy"
+                                    class="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-110"
+                                >
+
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+
+                                <span class="absolute left-5 top-5 border border-white/30 bg-black/40 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
+                                    Lenda japonesa
+                                </span>
+
+                                <div class="absolute inset-x-0 bottom-0 p-6">
+
+                                    <div class="mb-3 h-px w-10 bg-[#c72b30] transition-all duration-500 group-hover:w-20"></div>
+
+                                    <h3 class="font-serif text-2xl font-bold text-white">
+                                        <?= e($lenda['nome']) ?>
+                                    </h3>
+
+                                    <p class="mt-2 font-serif text-sm italic text-gray-300">
+                                        <?= e($lenda['subtitulo']) ?>
+                                    </p>
+
+                                    <div class="mt-5 flex items-center justify-between border-t border-white/20 pt-4">
+
+                                        <span class="text-[10px] uppercase tracking-[0.2em] text-gray-300">
+                                            Descobrir história
+                                        </span>
+
+                                        <span class="flex h-8 w-8 items-center justify-center rounded-full border border-[#c72b30] text-[#e15a5e] transition group-hover:bg-[#c72b30] group-hover:text-white">
+                                            →
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </button>
+
+                    </li>
+
+                <?php endforeach; ?>
+
+            </ul>
+
+        </div>
+
+    </section>
+
+
+    <!-- MODAIS -->
+    <?php foreach ($lendas as $lenda): ?>
+
+        <dialog
+            id="modal-<?= e($lenda['id']) ?>"
+            aria-labelledby="titulo-<?= e($lenda['id']) ?>"
+            class="m-auto max-h-[90vh] w-[94%] max-w-3xl overflow-hidden rounded-xl border border-[#b18a60]/40 bg-[#171513] p-0 text-left text-[#f8f5ef] shadow-2xl backdrop:bg-black/80 backdrop:backdrop-blur-sm"
+        >
+
+            <div class="relative max-h-[90vh] overflow-y-auto">
+
+                <button
+                    type="button"
+                    data-fechar-modal
+                    aria-label="Fechar"
+                    class="sticky right-4 top-4 z-20 float-right mr-4 mt-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-2xl text-white transition hover:border-[#c72b30] hover:bg-[#c72b30]"
+                >
+                    &times;
+                </button>
+
+
+                <!-- CABEÇALHO DO MODAL -->
+                <div class="relative min-h-[260px] overflow-hidden">
+
+                    <img
+                        src="<?= e($lenda['imagem']) ?>"
+                        alt="<?= e($lenda['nome']) ?>"
+                        class="absolute inset-0 h-full w-full object-cover opacity-40"
+                    >
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#171513] via-[#171513]/60 to-black/20"></div>
+
+                    <div class="relative flex min-h-[260px] flex-col justify-end px-7 pb-8 pt-16 md:px-12">
+
+                        <span class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#d64a4e]">
+                            Folclore japonês
+                        </span>
+
+                        <h2
+                            id="titulo-<?= e($lenda['id']) ?>"
+                            class="font-serif text-3xl font-bold md:text-5xl"
+                        >
+                            <?= e($lenda['nome']) ?>
+                        </h2>
+
+                        <p class="mt-3 font-serif text-sm italic text-gray-300">
+                            <?= e($lenda['subtitulo']) ?>
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CONTEÚDO DO MODAL -->
+                <div class="px-7 pb-10 md:px-12">
+
+                    <!-- SIGNIFICADO -->
+                    <div class="grid gap-5 border-y border-white/10 py-7 sm:grid-cols-2">
+
+                        <div>
+
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">
+                                Nome japonês
+                            </span>
+
+                            <p class="mt-2 font-serif text-lg text-[#f8f5ef]">
+                                <?= e($lenda['nome_japones']) ?>
+                            </p>
+
+                        </div>
+
+                        <div>
+
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">
+                                Significado
+                            </span>
+
+                            <p class="mt-2 font-serif text-lg text-[#f8f5ef]">
+                                <?= e($lenda['significado']) ?>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- HISTÓRIA -->
+                    <div class="py-8">
+
+                        <div class="mb-6 flex items-center gap-3">
+
+                            <span class="h-px w-8 bg-[#c72b30]"></span>
+
+                            <h3 class="font-serif text-xl font-bold">
+                                A história
+                            </h3>
+
+                        </div>
+
+                        <div class="space-y-5 text-sm leading-8 text-gray-300 md:text-base">
+
+                            <?php foreach ($lenda['historia'] as $paragrafo): ?>
+
+                                <p><?= e($paragrafo) ?></p>
+
+                            <?php endforeach; ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- COMO AGE -->
+                    <?php if (!empty($lenda['como_age'])): ?>
+
+                        <div class="mb-8 border-l-2 border-[#c72b30] bg-white/[0.03] p-6">
+
+                            <h3 class="mb-4 font-serif text-lg font-bold text-[#d64a4e]">
+                                Como ela age
+                            </h3>
+
+                            <div class="space-y-4 text-sm leading-7 text-gray-300">
+
+                                <?php foreach ($lenda['como_age'] as $paragrafo): ?>
+
+                                    <p><?= e($paragrafo) ?></p>
+
+                                <?php endforeach; ?>
+
+                            </div>
+
+                        </div>
+
+                    <?php endif; ?>
+
+
+                    <!-- CURIOSIDADE -->
+                    <?php if (!empty($lenda['curiosidade'])): ?>
+
+                        <div class="rounded-lg border border-[#b18a60]/30 bg-[#b18a60]/5 p-6">
+
+                            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d6ad7c]">
+                                Você sabia?
+                            </span>
+
+                            <p class="mt-3 font-serif text-sm leading-7 text-gray-300">
+                                <?= e($lenda['curiosidade']) ?>
+                            </p>
+
+                        </div>
+
+                    <?php endif; ?>
+
+
+                    <!-- RODAPÉ DO MODAL -->
+                    <div class="mt-10 border-t border-white/10 pt-6 text-center">
+
+                        <span class="font-serif text-xs italic tracking-widest text-gray-500">
+                            — Mistérios do folclore japonês —
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </dialog>
+
+    <?php endforeach; ?>
+
+
+    <!-- RODAPÉ DECORATIVO -->
+    <section class="border-t border-white/5 bg-[#171513] px-6 py-12 text-center">
+
+        <span class="text-xs uppercase tracking-[0.3em] text-[#c72b30]">
+            Cultura japonesa
+        </span>
+
+        <p class="mx-auto mt-3 max-w-xl font-serif text-lg italic leading-8 text-gray-400">
+            O passado permanece vivo nas histórias que continuam sendo contadas.
+        </p>
+
+        <div class="mx-auto mt-6 h-px w-16 bg-[#c72b30]"></div>
+
+    </section>
 
 </main>
 
+
+<!-- JAVASCRIPT -->
 <script>
-  // Abre o modal do card clicado
-  document.querySelectorAll('[data-abrir-modal]').forEach((botao) => {
-    botao.addEventListener('click', () => {
-      document.getElementById(botao.dataset.abrirModal).showModal();
-    });
-  });
+document.addEventListener('DOMContentLoaded', () => {
 
-  document.querySelectorAll('dialog').forEach((modal) => {
-    // Botão de fechar (X)
-    modal.querySelector('[data-fechar-modal]').addEventListener('click', () => modal.close());
+    // Abrir modal
+    document.querySelectorAll('[data-abrir-modal]').forEach((botao) => {
 
-    // Clique fora do conteúdo (no fundo escuro) também fecha
-    modal.addEventListener('click', (evento) => {
-      if (evento.target === modal) modal.close();
+        botao.addEventListener('click', () => {
+
+            const modal = document.getElementById(botao.dataset.abrirModal);
+
+            if (modal) {
+                modal.showModal();
+                document.body.classList.add('overflow-hidden');
+            }
+
+        });
+
     });
-  });
+
+
+    // Configuração dos modais
+    document.querySelectorAll('dialog').forEach((modal) => {
+
+        const botaoFechar = modal.querySelector('[data-fechar-modal]');
+
+        // Fechar pelo botão X
+        if (botaoFechar) {
+            botaoFechar.addEventListener('click', () => {
+                modal.close();
+            });
+        }
+
+        // Fechar clicando fora
+        modal.addEventListener('click', (evento) => {
+
+            if (evento.target === modal) {
+                modal.close();
+            }
+
+        });
+
+        // Restaurar rolagem
+        modal.addEventListener('close', () => {
+
+            if (!document.querySelector('dialog[open]')) {
+                document.body.classList.remove('overflow-hidden');
+            }
+
+        });
+
+    });
+
+});
 </script>
+
 <?php include_once '../templates/footer.php'; ?>
