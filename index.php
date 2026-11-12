@@ -470,7 +470,7 @@ if (!function_exists('e')) {
 <!-- RODAPÉ -->
 <footer class="border-t-4 border-[#c72b30] bg-[#071018] px-6 pb-6 pt-14 text-white md:px-12">
 
-    <div class="mx-auto grid max-w-7xl gap-12 md:grid-cols-3">
+    <div class="mx-auto grid max-w-7xl gap-12 md:grid-cols-">
 
         <!-- LOGO -->
         <div>
@@ -541,6 +541,11 @@ if (!function_exists('e')) {
         </div>
 
     </div>
+
+    
+        <div class="mt-8 text- text-sm text-gray-400">
+            <a href="./assets/login.php" class="text-white hover:text-[#e45a5e]">Login</a>
+        </div>
 
 
     <!-- DIREITOS -->
