@@ -1,4 +1,62 @@
+<?php
 
+session_start();
+
+require_once "../database/conexao.php";
+
+
+$erro = "";
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+
+    $email = trim($_POST["email"] ?? "");
+    $senha = $_POST["senha"] ?? "";
+
+    if ($email === "" || $senha === "") {
+
+        $erro = "Preencha o e-mail e a senha.";
+
+    } else {
+
+        $sql = "
+            SELECT id, nome, email, senha
+            FROM usuarios
+            WHERE email = :email
+            LIMIT 1
+        ";
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->execute([
+            ":email" => $email
+        ]);
+
+        $usuario = $stmt->fetch();
+
+        if (!$usuario) {
+
+            $erro = "E-mail ou senha incorretos.";
+
+        } elseif (!password_verify($senha, $usuario["senha"])) {
+
+            $erro = "E-mail ou senha incorretos.";
+
+        } else {
+
+            session_regenerate_id(true);
+
+            $_SESSION["usuario_id"] = $usuario["id"];
+            $_SESSION["nome"] = $usuario["nome"];
+            $_SESSION["email"] = $usuario["email"];
+            $_SESSION["logado"] = true;
+
+            header("Location: admin/index.php");
+            exit;
+        }
+    }
+}
+
+?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -11,11 +69,11 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0">
 
-    <title>Login - SESC SENAC</title>
+    <title>Login - Japão Integrador</title>
 
     <link
         rel="stylesheet"
-        href="css/output.css">
+        href="../src/output.css">
 
 </head>
 
@@ -23,11 +81,9 @@
 
 
 <header class="bg-blue-900 py-5 shadow-md">
-
     <h1 class="text-center text-2xl font-bold text-white">
-        SESC SENAC
+        Japão Integrador
     </h1>
-
 </header>
 
 
