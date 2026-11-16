@@ -2,15 +2,25 @@
 <?php
 session_start();
 
-if (!isset($_SESSION["logado"]) || $_SESSION["logado"] !== true) {
+if (
+    !isset($_SESSION["admin_id"]) ||
+    !isset($_SESSION["logado"]) ||
+    $_SESSION["logado"] !== true
+) {
     header("Location: ../login.php");
     exit;
 }
 
-require_once "../../database/conexao.php";
+require_once __DIR__ . "/../../database/conexao.php";
 
+$nomeAdmin = $_SESSION["admin_nome"] ?? "Administrador";
 $mensagem = "";
-$tipoMensagem = "success";
+$tipoMensagem = "sucesso";
+
+function e($valor)
+{
+    return htmlspecialchars((string) $valor, ENT_QUOTES, "UTF-8");
+}
 
 function escapar($valor) {
     return htmlspecialchars((string)($valor ?? ""), ENT_QUOTES, "UTF-8");
@@ -254,19 +264,39 @@ $totalInativos = $conn->query("SELECT COUNT(*) AS total FROM cards WHERE ativo =
 <body class="min-h-screen">
 
     <!-- CABEÇALHO -->
-    <header class="bg-[#172334]  px-6 py-5">
-        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
-            <div>
-                <p class="text-xs tracking-[.25em] text-[#a82415] uppercase">Painel administrativo</p>
-                <h1 class="text-2xl font-semibold mt-1">Japão</h1>
+    <header class="bg-[#071018] text-white">
+
+        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
+
+            <a href="index.php" class="flex items-center gap-3">
+
+                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                    <span class="h-5 w-5 rounded-full bg-[#c9272c]"></span>
+                </span>
+
+                <span class="titulo text-xl tracking-[0.2em]">
+                    JAPÃO
+                </span>
+
+            </a>
+
+            <div class="flex items-center gap-5">
+
+                <span class="hidden text-xs text-white/60 sm:block">
+                    <?= e($nomeAdmin) ?>
+                </span>
+
+                <a href="../admin/index.php" class="text-xs text-white/70 transition hover:text-white">
+                    <i class="bi bi-box-arrow-right mr-1"></i>
+                    Voltar
+                </a>
+
             </div>
 
-            <a href="index.php" class="text-sm text-gray-200 hover:text-white">
-                <i class="bi bi-arrow-left mr-2"></i>
-                Voltar ao painel
-            </a>
         </div>
+
     </header>
+
 
     <main class="max-w-7xl mx-auto px-5 py-10">
 

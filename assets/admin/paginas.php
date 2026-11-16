@@ -263,9 +263,9 @@ $editando = $paginaEdicao !== null;
                     <?= e($nomeAdmin) ?>
                 </span>
 
-                <a href="../logout.php" class="text-xs text-white/70 transition hover:text-white">
+                <a href="../admin/index.php" class="text-xs text-white/70 transition hover:text-white">
                     <i class="bi bi-box-arrow-right mr-1"></i>
-                    Sair
+                    Voltar
                 </a>
 
             </div>

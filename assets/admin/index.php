@@ -39,12 +39,15 @@ function contarRegistros($conn, $tabela)
     return $resultado ? (int) $resultado->fetch_assoc()["total"] : 0;
 }
 
+
+
 $totalPaginas = contarRegistros($conn, "paginas");
 $totalSecoes = contarRegistros($conn, "secoes");
 $totalCards = contarRegistros($conn, "cards");
 $totalLendas = contarRegistros($conn, "lendas");
 $totalPatrimonios = contarRegistros($conn, "patrimonios");
 $totalEventos = contarRegistros($conn, "linha_tempo");
+
 
 ?>
 
@@ -123,11 +126,13 @@ $totalEventos = contarRegistros($conn, "linha_tempo");
                     Olá, <?= htmlspecialchars($nomeAdmin) ?>
                 </span>
 
-                <a href="../logout.php"
-                    class="flex items-center gap-2 border border-white/20 px-4 py-2.5 text-[10px] font-bold uppercase tracking-wider transition hover:border-[#c9272c] hover:bg-[#c9272c]">
-                    <i class="bi bi-box-arrow-right"></i>
+                
+                <a href="javascript:void(0)" onclick="confirmarSaida()"
+                class="bg-red-700 hover:bg-red-800 text-white px-5 py-2 rounded-lg">
+                    <i class="bi bi-box-arrow-right mr-2"></i>
                     Sair
                 </a>
+
 
             </div>
 
@@ -537,6 +542,33 @@ $totalEventos = contarRegistros($conn, "linha_tempo");
         </div>
 
     </main>
+
+    
+<script>
+function confirmarSaida() {
+
+    // Pergunta se o administrador deseja sair
+    let confirmar = confirm("Tem certeza que deseja sair?");
+
+    // IF: verifica se a pessoa confirmou
+    if (confirmar) {
+
+        // Mostra a mensagem de saída
+        alert("Você está sendo deslogado...");
+
+        // Leva para o arquivo que encerra a sessão
+        window.location.href = "../logout.php";
+
+    } else {
+
+        // Caso a pessoa cancele
+        alert("Saída cancelada!");
+
+    }
+
+}
+</script>
+
 
 </body>
 </html>
