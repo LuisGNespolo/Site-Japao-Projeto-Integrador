@@ -137,6 +137,7 @@ return [
             'nome'         => 'Kuchisake-onna',
             'subtitulo'    => 'A mulher da boca cortada',
             'imagem'       => '../img/lendas/lenda1.png',
+            'banner'       => '../img/lendas/bannerKuchisake.png',
             'nome_japones' => '口裂け女 (Kuchisake-onna)',
             'significado'  => 'Mulher da boca cortada',
             'historia'     => [
@@ -155,6 +156,7 @@ return [
             'nome'         => 'Aka Manto',
             'subtitulo'    => 'O homem do manto vermelho',
             'imagem'       => '../img/lendas/lenda2.png',
+            'banner'       => '../img/lendas/bannerAkamanto.png',
             'nome_japones' => '赤マント (Aka Manto)',
             'significado'  => 'Manto vermelho',
             'historia'     => [
@@ -169,6 +171,7 @@ return [
             'nome'         => 'Teke Teke',
             'subtitulo'    => 'O espírito que se arrasta',
             'imagem'       => '../img/lendas/lenda3.png',
+            'banner'       => '../img/lendas/bannerTeketeke.png',
             'nome_japones' => 'テケテケ (Teke Teke)',
             'significado'  => 'Onomatopeia do som de arrastar',
             'historia'     => [
@@ -183,6 +186,7 @@ return [
             'nome'         => 'Amaterasu',
             'subtitulo'    => 'A deusa do Sol',
             'imagem'       => '../img/lendas/lenda4.png',
+            'banner'       => '../img/lendas/bannerAmaterasu.png',
             'nome_japones' => '天照大神 (Amaterasu Ōmikami)',
             'significado'  => 'A grande divindade que brilha no céu',
             'historia'     => [
@@ -197,6 +201,7 @@ return [
             'nome'         => 'Tsukuyomi',
             'subtitulo'    => 'O deus da Lua',
             'imagem'       => '../img/lendas/lenda5.png',
+            'banner'       => '../img/lendas/bannerTsukuyomi.png',
             'nome_japones' => '月読命 (Tsukuyomi-no-Mikoto)',
             'significado'  => 'Aquele que conta as luas',
             'historia'     => [
@@ -211,6 +216,7 @@ return [
             'nome'         => 'Susanoo',
             'subtitulo'    => 'O deus das tempestades',
             'imagem'       => '../img/lendas/lenda6.png',
+            'banner'       => '../img/lendas/bannerSusanoo.png',
             'nome_japones' => '須佐之男 (Susanoo-no-Mikoto)',
             'significado'  => 'O deus impetuoso',
             'historia'     => [

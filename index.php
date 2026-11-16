@@ -46,7 +46,7 @@ if (!function_exists('e')) {
 
                 </span>
 
-                <span class="font-serif text-xl font-bold tracking-[0.22em] text-white drop-shadow-md">
+                <span class="font-serif text-xl tracking-[0.22em] text-white drop-shadow-md">
                     JAPÃO
                 </span>
 

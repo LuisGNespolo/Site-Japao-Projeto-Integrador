@@ -1,7 +1,8 @@
-
 <?php
 $dados = require '../templates/dados.php';
-$lendas = $dados['lendas'];
+$lendas = array_values($dados['lendas']);
+$total = count($lendas);
+$destaques = array_slice($lendas, 0, 3);
 
 include_once '../templates/header.php';
 
@@ -11,103 +12,181 @@ function e(string $texto): string
 }
 ?>
 
-<main class="bg-[#11100f]">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+    .lg-mincho { font-family: 'Shippori Mincho', 'Noto Sans JP', serif; }
+    .lg-display { font-family: 'Cormorant Garamond', 'Playfair Display', serif; }
+    .lg-vertical { writing-mode: vertical-rl; }
+
+    /* Chama de vela */
+    .lg-flame {
+        display: inline-block;
+        width: 11px;
+        height: 20px;
+        border-radius: 50% 50% 50% 50% / 62%    62% 38% 38%;
+        background: radial-gradient(circle at 50% 72%, #fff3c4 0, #ffb347 42%, #c72b30 100%);
+        box-shadow: 0 0 16px 5px rgba(255, 150, 60, .5);
+        transform-origin: 50% 100%;
+        animation: lg-flicker 2.6s ease-in-out infinite;
+        transition: opacity .9s, transform .9s;
+    }
+    .lg-flame-sm { width: 7px; height: 13px; box-shadow: 0 0 10px 3px rgba(255, 150, 60, .5); }
+    @keyframes lg-flicker {
+        0%, 100% { transform: scale(1, 1) rotate(-1deg); }
+        25% { transform: scale(.92, 1.08) rotate(1.5deg); opacity: .9; }
+        50% { transform: scale(1.05, .95) rotate(-1deg); }
+        75% { transform: scale(.96, 1.05) rotate(1deg); opacity: .95; }
+    }
+    .apagada .lg-flame { animation: none; opacity: 0; transform: scale(.2); }
+    .lg-vela.apagada .lg-cera { opacity: .3; }
+
+    /* Lua e névoa */
+    .lg-moon {
+        background: radial-gradient(circle at 35% 35%, #fbf3dc 0, #eadfc0 55%, #c4b48c 100%);
+        box-shadow: 0 0 90px 20px rgba(243, 234, 214, .16), 0 0 200px 60px rgba(199, 43, 48, .14);
+        opacity: .9;
+    }
+    .lg-mist {
+        background:
+            radial-gradient(ellipse at 20% 100%, rgba(190, 200, 220, .16), transparent 60%),
+            radial-gradient(ellipse at 80% 100%, rgba(190, 200, 220, .12), transparent 55%);
+        animation: lg-drift 26s ease-in-out infinite alternate;
+    }
+    @keyframes lg-drift { from { transform: translateX(-4%); } to { transform: translateX(4%); } }
+
+    /* Cartas: ritmo escalonado e estado "vela apagada" */
+    .lg-relida { display: none; }
+    .lg-card.apagada .lg-acender { display: none; }
+    .lg-card.apagada .lg-relida { display: inline; }
+    @media (min-width: 640px) and (max-width: 1023px) { .lg-card:nth-child(even) { margin-top: 3rem; } }
+    @media (min-width: 1024px) { .lg-card:nth-child(3n+2) { margin-top: 4rem; } }
+
+    @media (prefers-reduced-motion: reduce) { .lg-flame, .lg-mist { animation: none; } }
+</style>
+
+<main class="bg-[#0b0908] font-['Noto_Sans_JP'] text-[#efe6d2]">
 
     <!-- BANNER -->
-    <section class="relative isolate flex min-h-[480px] items-center overflow-hidden bg-[#100d0c] md:min-h-[560px]">
+    <section class="relative isolate overflow-hidden bg-[#0b0908]">
 
-        <div
-            class="absolute inset-0 -z-20 bg-cover bg-center"
-            style="background-image: url('../img/lendas/banner.png');"
-        ></div>
+        <!-- Troque a foto salvando a nova imagem neste caminho -->
+        <div class="absolute inset-0 -z-30 bg-cover bg-center" style="background-image: url('../img/lendas/banner-noite.png');"></div>
+        <div class="absolute inset-0 -z-20 bg-gradient-to-b from-[#0b0908]/70 via-[#0b0908]/55 to-[#0b0908]"></div>
 
-        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#100d0c] via-[#100d0c]/85 to-[#100d0c]/20"></div>
+        <div class="lg-moon absolute -right-16 top-10 -z-10 h-64 w-64 rounded-full md:right-[14%] md:h-80 md:w-80"></div>
+        <div class="lg-mist absolute -left-[6%] -right-[6%] bottom-0 -z-10 h-1/2"></div>
 
-        <div class="mx-auto w-full max-w-7xl px-6 py-20 md:px-10">
+        <!-- Torii em silhueta -->
+        <svg class="absolute bottom-0 left-1/2 -z-10 w-[520px] max-w-none -translate-x-1/2 text-[#050404]/90" viewBox="0 0 120 100" fill="currentColor" aria-hidden="true">
+            <path d="M2 16 Q60 4 118 16 L114 26 Q60 17 6 26 Z" />
+            <rect x="14" y="32" width="92" height="6" />
+            <rect x="24" y="24" width="9" height="76" />
+            <rect x="87" y="24" width="9" height="76" />
+        </svg>
 
-            <div class="max-w-2xl">
+        <span class="lg-mincho lg-vertical absolute left-3 top-28 hidden text-sm tracking-[0.6em] text-[#efe6d2]/35 lg:block">神話 · 妖怪 · 伝説</span>
 
-                <span class="mb-6 inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#d64a4e]">
+        <div class="relative mx-auto grid min-h-[600px] max-w-7xl items-center gap-12 px-6 pb-32 pt-20 md:px-10 md:pt-28 lg:grid-cols-[1.1fr_1fr]">
+
+            <div class="max-w-xl">
+
+                <span class="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#e15a5e]">
                     <span class="h-px w-10 bg-[#c72b30]"></span>
-                    Folclore japonês
+                    百物語 · Hyakumonogatari
                 </span>
 
-                <h1 class="font-serif text-4xl font-bold italic leading-tight text-[#f8f5ef] md:text-6xl lg:text-7xl">
-                    Entre deuses,<br>
-                    monstros e <span class="text-[#c72b30]">lendas.</span>
+                <h1 class="lg-display mt-6 text-5xl font-semibold italic leading-[1.05] md:text-7xl">
+                    Acenda uma vela.<br>
+                    Ouça uma <span class="text-[#e15a5e]">lenda.</span>
                 </h1>
 
-                <p class="mt-6 max-w-lg text-sm leading-8 text-gray-300 md:text-base">
-                    Conheça histórias ancestrais, criaturas sobrenaturais e
-                    divindades que atravessaram gerações e moldaram o
-                    imaginário japonês.
+                <p class="mt-6 max-w-md text-sm leading-8 text-[#efe6d2]/70 md:text-base">
+                    Entre deuses, monstros e espíritos, o folclore japonês
+                    ainda sussurra quando a noite cai. Cada história é uma
+                    chama: ouça até o fim e ela se apaga.
                 </p>
 
-                <a
-                    href="#lendas"
-                    class="mt-9 inline-flex items-center gap-3 border border-[#c72b30] bg-[#c72b30] px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] text-white transition duration-300 hover:bg-transparent hover:text-[#e45a5e]"
-                >
-                    Explorar lendas
-                    <span>↓</span>
+                <a href="#lendas"
+                    class="group mt-10 inline-flex items-center gap-4 border border-[#c72b30] px-7 py-4 text-xs font-bold uppercase tracking-[0.25em] transition duration-300 hover:bg-[#c72b30]">
+                    <span class="lg-flame lg-flame-sm"></span>
+                    Começar a noite
                 </a>
 
             </div>
 
-        </div>
+            <!-- As lendas em evidência -->
+            <div class="relative hidden h-[480px] lg:block">
 
-        <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-[#c72b30] via-[#8b2024] to-transparent"></div>
+                <?php $posicoes = ['left-0 top-16 h-72 w-40', 'left-[11.5rem] top-0 h-80 w-44', 'left-[23.5rem] top-24 h-72 w-40']; ?>
+
+                <?php foreach ($destaques as $k => $d): ?>
+
+                    <figure class="absolute <?= $posicoes[$k] ?> overflow-hidden rounded-t-full border border-[#efe6d2]/20 shadow-[0_0_60px_-15px_rgba(199,43,48,.6)]">
+                        <img src="<?= e($d['imagem']) ?>" alt="<?= e($d['nome']) ?>" class="h-full w-full object-cover brightness-75 saturate-75">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#0b0908]/80 to-transparent"></div>
+                    </figure>
+
+                <?php endforeach; ?>
+
+            </div>
+
+        </div>
 
     </section>
 
 
-    <!-- INTRODUÇÃO -->
-    <section class="border-b border-white/5 bg-[#171513] py-16 md:py-20">
+    <!-- A NOITE DAS CEM VELAS -->
+    <section class="border-y border-[#efe6d2]/10 bg-[#0f0d0c] px-6 py-20 md:px-10 md:py-28">
 
-        <div class="mx-auto grid max-w-7xl items-center gap-10 px-6 md:grid-cols-2 md:px-10">
+        <div class="mx-auto grid max-w-6xl gap-10 md:grid-cols-[auto_1fr] md:gap-16">
+
+            <div class="hidden items-start gap-5 md:flex">
+                <span class="lg-mincho lg-vertical text-8xl font-extrabold leading-none text-[#c72b30]">百物語</span>
+                <span class="w-px self-stretch bg-gradient-to-b from-[#c72b30] to-transparent"></span>
+            </div>
 
             <div>
 
-                <span class="text-xs font-bold uppercase tracking-[0.3em] text-[#c72b30]">
-                    Tradição e mistério
+                <span class="text-xs font-bold uppercase tracking-[0.3em] text-[#e15a5e]">
+                    Hyakumonogatari Kaidankai
                 </span>
 
-                <h2 class="mt-4 font-serif text-3xl font-bold leading-tight text-[#f8f5ef] md:text-4xl">
-                    Um universo de histórias e criaturas extraordinárias
+                <h2 class="lg-display mt-4 text-4xl font-semibold italic leading-tight md:text-6xl">
+                    A noite das cem velas
                 </h2>
 
-                <div class="mt-5 h-px w-16 bg-[#c72b30]"></div>
-
-                <p class="mt-6 text-sm leading-8 text-gray-400 md:text-base">
-                    O folclore japonês é formado por histórias transmitidas
-                    de geração em geração. Nele encontramos deuses,
-                    espíritos, monstros e criaturas misteriosas que fazem
-                    parte da cultura e das tradições do Japão.
+                <p class="mt-7 max-w-2xl text-sm leading-8 text-[#efe6d2]/65 md:text-base">
+                    No período Edo, ficou famoso um jogo de contar histórias de
+                    fantasmas. Cem velas eram acesas num quarto escuro e, a
+                    cada história contada, uma delas era apagada. Dizia-se que,
+                    quando a última chama se fosse, algo sobrenatural poderia
+                    aparecer.
                 </p>
 
-                <p class="mt-4 text-sm leading-8 text-gray-400 md:text-base">
-                    Cada lenda possui características próprias, trazendo
-                    ensinamentos, mistérios e representações da relação
-                    entre os seres humanos e o mundo sobrenatural.
+                <p class="mt-4 max-w-2xl text-sm leading-8 text-[#efe6d2]/65 md:text-base">
+                    Esta página segue o ritual: cada lenda é uma vela. Acenda
+                    uma história e, ao fechá-la, sua chama se apaga.
                 </p>
 
-            </div>
+                <dl class="mt-10 grid max-w-2xl grid-cols-3 divide-x divide-[#efe6d2]/10 border-y border-[#efe6d2]/10">
 
-            <div class="relative">
+                    <div class="px-4 py-6 text-center">
+                        <dt class="lg-mincho text-3xl text-[#c72b30]">神</dt>
+                        <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Kami<br>deuses</dd>
+                    </div>
 
-                <div class="absolute -inset-3 rounded-lg border border-[#c72b30]/30"></div>
+                    <div class="px-4 py-6 text-center">
+                        <dt class="lg-mincho text-3xl text-[#c72b30]">妖怪</dt>
+                        <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yōkai<br>criaturas</dd>
+                    </div>
 
-                <img
-                    src="../img/lendas/lendas.png"
-                    alt="Universo das lendas japonesas"
-                    class="relative aspect-[5/4] w-full rounded-lg object-cover shadow-2xl"
-                    loading="lazy"
-                >
+                    <div class="px-4 py-6 text-center">
+                        <dt class="lg-mincho text-3xl text-[#c72b30]">幽霊</dt>
+                        <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yūrei<br>fantasmas</dd>
+                    </div>
 
-                <div class="absolute bottom-0 left-0 right-0 rounded-b-lg bg-gradient-to-t from-black/80 to-transparent p-6">
-                    <p class="font-serif text-lg italic text-white">
-                        Histórias que nunca deixam de ser contadas.
-                    </p>
-                </div>
+                </dl>
 
             </div>
 
@@ -116,84 +195,114 @@ function e(string $texto): string
     </section>
 
 
-    <!-- CARDS -->
-    <section id="lendas" class="bg-[#11100f] py-20 md:py-28">
+    <!-- AS HISTÓRIAS -->
+    <section id="lendas" class="bg-[#0b0908] px-6 py-24 md:px-10 md:py-32">
 
-        <div class="mx-auto max-w-7xl px-6 md:px-10">
+        <div class="mx-auto max-w-7xl">
 
-            <div class="mb-14 text-center">
+            <header class="mx-auto mb-20 max-w-2xl text-center">
 
-                <span class="text-xs font-bold uppercase tracking-[0.35em] text-[#c72b30]">
-                    Mitologia e folclore
-                </span>
+                <span class="lg-mincho text-sm tracking-[0.6em] text-[#c72b30]">伝説</span>
 
-                <h2 class="mt-4 font-serif text-3xl font-bold text-[#f8f5ef] md:text-5xl">
-                    Conheça as lendas
+                <h2 class="lg-display mt-4 text-4xl font-semibold italic md:text-6xl">
+                    As histórias da noite
                 </h2>
 
-                <p class="mx-auto mt-4 max-w-xl text-sm leading-7 text-gray-400">
-                    Cada história guarda mistérios, ensinamentos e criaturas
-                    que fazem parte da rica tradição japonesa.
+                <p class="mt-5 text-sm leading-7 text-[#efe6d2]/60">
+                    Toque numa vela para ouvir uma lenda. Quando a história
+                    terminar, a chama se apaga.
                 </p>
 
-                <div class="mx-auto mt-7 h-px w-20 bg-[#c72b30]"></div>
+                <!-- Velas -->
+                <ol class="mt-10 flex flex-wrap items-end justify-center gap-7">
 
-            </div>
+                    <?php foreach ($lendas as $lenda): ?>
+
+                        <li>
+                            <button
+                                type="button"
+                                data-abrir-modal="modal-<?= e($lenda['id']) ?>"
+                                data-vela="<?= e($lenda['id']) ?>"
+                                aria-haspopup="dialog"
+                                aria-label="Abrir a lenda <?= e($lenda['nome']) ?>"
+                                class="lg-vela group flex flex-col items-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c72b30]">
+
+                                <span class="lg-flame"></span>
+                                <span class="lg-cera mt-1 block h-9 w-3 rounded-sm bg-gradient-to-b from-[#efe6d2] to-[#b9ab8c] transition-opacity duration-700"></span>
+                                <span class="mt-3 text-[10px] uppercase tracking-[0.2em] text-[#efe6d2]/40 transition group-hover:text-[#efe6d2]">
+                                    <?= e($lenda['nome']) ?>
+                                </span>
+
+                            </button>
+                        </li>
+
+                    <?php endforeach; ?>
+
+                </ol>
+
+                <p class="mt-8 text-[11px] uppercase tracking-[0.3em] text-[#efe6d2]/45">
+                    <span id="contador">0</span> de <?= $total ?> histórias contadas
+                </p>
+
+                <p id="ultima-vela" class="lg-display mt-6 hidden text-2xl italic text-[#e15a5e]">
+                    A última vela se apagou… e algo, no escuro, começa a se aproximar.
+                </p>
+
+            </header>
 
 
-            <ul class="grid grid-cols-1 gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            <ul class="grid grid-cols-1 gap-x-10 gap-y-20 sm:grid-cols-2 lg:grid-cols-3">
 
-                <?php foreach ($lendas as $lenda): ?>
+                <?php foreach ($lendas as $i => $lenda): ?>
 
-                    <li>
+                    <li class="lg-card" data-card="<?= e($lenda['id']) ?>">
 
                         <button
                             type="button"
                             data-abrir-modal="modal-<?= e($lenda['id']) ?>"
                             aria-haspopup="dialog"
-                            class="group block w-full overflow-hidden rounded-lg border border-white/10 bg-[#1c1a18] text-left transition duration-500 hover:-translate-y-2 hover:border-[#c72b30]/70 hover:shadow-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#c72b30]"
-                        >
+                            class="group block w-full text-left focus:outline-none">
 
-                            <div class="relative overflow-hidden">
+                            <!-- Arco com a imagem -->
+                            <div class="relative overflow-hidden rounded-t-full border border-[#efe6d2]/15 bg-[#14110f] transition duration-700 group-hover:border-[#c72b30]/70 group-hover:shadow-[0_0_70px_-12px_rgba(199,43,48,.55)] group-focus-visible:border-[#c72b30]">
 
                                 <img
                                     src="<?= e($lenda['imagem']) ?>"
                                     alt="<?= e($lenda['nome']) ?>"
                                     loading="lazy"
-                                    class="aspect-[4/5] w-full object-cover transition duration-700 group-hover:scale-110"
-                                >
+                                    class="aspect-[3/4] w-full object-cover brightness-[.55] grayscale-[.7] transition duration-700 group-hover:scale-105 group-hover:brightness-90 group-hover:grayscale-0">
 
-                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#0b0908] via-transparent to-[#0b0908]/50"></div>
 
-                                <span class="absolute left-5 top-5 border border-white/30 bg-black/40 px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm">
-                                    Lenda japonesa
+                                <span class="absolute left-1/2 top-9 -translate-x-1/2">
+                                    <span class="lg-flame block"></span>
                                 </span>
 
-                                <div class="absolute inset-x-0 bottom-0 p-6">
+                                <span class="lg-mincho lg-vertical absolute bottom-6 right-5 max-h-[45%] overflow-hidden text-lg text-[#efe6d2]/75">
+                                    <?= e($lenda['nome_japones']) ?>
+                                </span>
 
-                                    <div class="mb-3 h-px w-10 bg-[#c72b30] transition-all duration-500 group-hover:w-20"></div>
+                            </div>
 
-                                    <h3 class="font-serif text-2xl font-bold text-white">
-                                        <?= e($lenda['nome']) ?>
-                                    </h3>
+                            <div class="mt-6">
 
-                                    <p class="mt-2 font-serif text-sm italic text-gray-300">
-                                        <?= e($lenda['subtitulo']) ?>
-                                    </p>
+                                <span class="text-[11px] font-semibold tracking-[0.35em] text-[#c72b30]">
+                                    Nº <?= sprintf('%02d', $i + 1) ?>
+                                </span>
 
-                                    <div class="mt-5 flex items-center justify-between border-t border-white/20 pt-4">
+                                <h3 class="lg-display mt-2 text-3xl font-semibold italic leading-tight">
+                                    <?= e($lenda['nome']) ?>
+                                </h3>
 
-                                        <span class="text-[10px] uppercase tracking-[0.2em] text-gray-300">
-                                            Descobrir história
-                                        </span>
+                                <p class="mt-2 text-sm leading-6 text-[#efe6d2]/55">
+                                    <?= e($lenda['subtitulo']) ?>
+                                </p>
 
-                                        <span class="flex h-8 w-8 items-center justify-center rounded-full border border-[#c72b30] text-[#e15a5e] transition group-hover:bg-[#c72b30] group-hover:text-white">
-                                            →
-                                        </span>
-
-                                    </div>
-
-                                </div>
+                                <span class="mt-5 inline-flex items-center gap-3 border-b border-[#c72b30]/60 pb-1 text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 group-hover:gap-5 group-hover:text-[#e15a5e]">
+                                    <span class="lg-acender">Acender esta história</span>
+                                    <span class="lg-relida">Vela apagada · ouvir de novo</span>
+                                    →
+                                </span>
 
                             </div>
 
@@ -210,52 +319,54 @@ function e(string $texto): string
     </section>
 
 
-    <!-- MODAIS -->
+    <!-- MODAIS (pergaminho) -->
     <?php foreach ($lendas as $lenda): ?>
 
         <dialog
             id="modal-<?= e($lenda['id']) ?>"
             aria-labelledby="titulo-<?= e($lenda['id']) ?>"
-            class="m-auto max-h-[90vh] w-[94%] max-w-3xl overflow-hidden rounded-xl border border-[#b18a60]/40 bg-[#171513] p-0 text-left text-[#f8f5ef] shadow-2xl backdrop:bg-black/80 backdrop:backdrop-blur-sm"
-        >
+            class="m-auto max-h-[90vh] w-[94%] max-w-3xl overflow-hidden rounded-sm border border-[#efe6d2]/15 bg-[#13100e] p-0 text-left text-[#efe6d2] shadow-2xl backdrop:bg-black/85 backdrop:backdrop-blur-sm">
 
             <div class="relative max-h-[90vh] overflow-y-auto">
+
+                <!-- Rolo superior -->
+                <div class="h-2 bg-gradient-to-b from-[#c72b30] to-[#8b2024]"></div>
 
                 <button
                     type="button"
                     data-fechar-modal
                     aria-label="Fechar"
-                    class="sticky right-4 top-4 z-20 float-right mr-4 mt-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-black/70 text-2xl text-white transition hover:border-[#c72b30] hover:bg-[#c72b30]"
-                >
+                    class="sticky top-3 z-20 -mb-[3.25rem] ml-auto mr-3 mt-3 flex h-10 w-10 items-center justify-center rounded-full border border-[#efe6d2]/25 bg-black/70 text-2xl text-white transition hover:border-[#c72b30] hover:bg-[#c72b30]">
                     &times;
                 </button>
 
 
-                <!-- CABEÇALHO DO MODAL -->
-                <div class="relative min-h-[260px] overflow-hidden">
+                <!-- CABEÇALHO -->
+                <div class="relative min-h-[280px] overflow-hidden">
 
                     <img
-                        src="<?= e($lenda['imagem']) ?>"
+                        src="<?= e($lenda['banner']) ?>"
                         alt="<?= e($lenda['nome']) ?>"
-                        class="absolute inset-0 h-full w-full object-cover opacity-40"
-                    >
+                        class="absolute inset-0 h-full w-full object-cover opacity-40 grayscale-[.4]">
 
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#171513] via-[#171513]/60 to-black/20"></div>
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#13100e] via-[#13100e]/60 to-black/20"></div>
 
-                    <div class="relative flex min-h-[260px] flex-col justify-end px-7 pb-8 pt-16 md:px-12">
+                    <span class="lg-mincho lg-vertical absolute right-8 top-20 max-h-40 overflow-hidden text-3xl text-[#c72b30]/80 md:text-4xl">
+                        <?= e($lenda['nome_japones']) ?>
+                    </span>
 
-                        <span class="mb-3 text-xs font-bold uppercase tracking-[0.3em] text-[#d64a4e]">
+                    <div class="relative flex min-h-[280px] flex-col justify-end px-7 pb-8 pt-16 md:px-12">
+
+                        <span class="mb-3 flex items-center gap-3 text-xs font-bold uppercase tracking-[0.3em] text-[#e15a5e]">
+                            <span class="lg-flame lg-flame-sm"></span>
                             Folclore japonês
                         </span>
 
-                        <h2
-                            id="titulo-<?= e($lenda['id']) ?>"
-                            class="font-serif text-3xl font-bold md:text-5xl"
-                        >
+                        <h2 id="titulo-<?= e($lenda['id']) ?>" class="lg-display text-4xl font-semibold italic md:text-6xl">
                             <?= e($lenda['nome']) ?>
                         </h2>
 
-                        <p class="mt-3 font-serif text-sm italic text-gray-300">
+                        <p class="mt-3 text-sm text-[#efe6d2]/65">
                             <?= e($lenda['subtitulo']) ?>
                         </p>
 
@@ -264,58 +375,35 @@ function e(string $texto): string
                 </div>
 
 
-                <!-- CONTEÚDO DO MODAL -->
+                <!-- CONTEÚDO -->
                 <div class="px-7 pb-10 md:px-12">
 
-                    <!-- SIGNIFICADO -->
-                    <div class="grid gap-5 border-y border-white/10 py-7 sm:grid-cols-2">
+                    <div class="grid gap-5 border-y border-[#efe6d2]/10 py-7 sm:grid-cols-2">
 
                         <div>
-
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">
-                                Nome japonês
-                            </span>
-
-                            <p class="mt-2 font-serif text-lg text-[#f8f5ef]">
-                                <?= e($lenda['nome_japones']) ?>
-                            </p>
-
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">Nome japonês</span>
+                            <p class="lg-mincho mt-2 text-lg"><?= e($lenda['nome_japones']) ?></p>
                         </div>
 
                         <div>
-
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">
-                                Significado
-                            </span>
-
-                            <p class="mt-2 font-serif text-lg text-[#f8f5ef]">
-                                <?= e($lenda['significado']) ?>
-                            </p>
-
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">Significado</span>
+                            <p class="lg-display mt-2 text-xl italic"><?= e($lenda['significado']) ?></p>
                         </div>
 
                     </div>
 
 
-                    <!-- HISTÓRIA -->
                     <div class="py-8">
 
                         <div class="mb-6 flex items-center gap-3">
-
                             <span class="h-px w-8 bg-[#c72b30]"></span>
-
-                            <h3 class="font-serif text-xl font-bold">
-                                A história
-                            </h3>
-
+                            <h3 class="lg-display text-2xl font-semibold italic">A história</h3>
                         </div>
 
-                        <div class="space-y-5 text-sm leading-8 text-gray-300 md:text-base">
+                        <div class="space-y-5 text-sm leading-8 text-[#efe6d2]/75 md:text-base">
 
                             <?php foreach ($lenda['historia'] as $paragrafo): ?>
-
                                 <p><?= e($paragrafo) ?></p>
-
                             <?php endforeach; ?>
 
                         </div>
@@ -323,21 +411,16 @@ function e(string $texto): string
                     </div>
 
 
-                    <!-- COMO AGE -->
                     <?php if (!empty($lenda['como_age'])): ?>
 
                         <div class="mb-8 border-l-2 border-[#c72b30] bg-white/[0.03] p-6">
 
-                            <h3 class="mb-4 font-serif text-lg font-bold text-[#d64a4e]">
-                                Como ela age
-                            </h3>
+                            <h3 class="lg-display mb-4 text-xl font-semibold italic text-[#e15a5e]">Como ela age</h3>
 
-                            <div class="space-y-4 text-sm leading-7 text-gray-300">
+                            <div class="space-y-4 text-sm leading-7 text-[#efe6d2]/75">
 
                                 <?php foreach ($lenda['como_age'] as $paragrafo): ?>
-
                                     <p><?= e($paragrafo) ?></p>
-
                                 <?php endforeach; ?>
 
                             </div>
@@ -347,16 +430,13 @@ function e(string $texto): string
                     <?php endif; ?>
 
 
-                    <!-- CURIOSIDADE -->
                     <?php if (!empty($lenda['curiosidade'])): ?>
 
-                        <div class="rounded-lg border border-[#b18a60]/30 bg-[#b18a60]/5 p-6">
+                        <div class="rounded-sm border border-[#b18a60]/30 bg-[#b18a60]/5 p-6">
 
-                            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d6ad7c]">
-                                Você sabia?
-                            </span>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d6ad7c]">Você sabia?</span>
 
-                            <p class="mt-3 font-serif text-sm leading-7 text-gray-300">
+                            <p class="lg-display mt-3 text-lg leading-8 text-[#efe6d2]/80">
                                 <?= e($lenda['curiosidade']) ?>
                             </p>
 
@@ -365,16 +445,16 @@ function e(string $texto): string
                     <?php endif; ?>
 
 
-                    <!-- RODAPÉ DO MODAL -->
-                    <div class="mt-10 border-t border-white/10 pt-6 text-center">
-
-                        <span class="font-serif text-xs italic tracking-widest text-gray-500">
-                            — Mistérios do folclore japonês —
+                    <div class="mt-10 border-t border-[#efe6d2]/10 pt-6 text-center">
+                        <span class="lg-display text-sm italic tracking-widest text-[#efe6d2]/40">
+                            — A vela se apaga —
                         </span>
-
                     </div>
 
                 </div>
+
+                <!-- Rolo inferior -->
+                <div class="h-2 bg-gradient-to-t from-[#c72b30] to-[#8b2024]"></div>
 
             </div>
 
@@ -383,18 +463,21 @@ function e(string $texto): string
     <?php endforeach; ?>
 
 
-    <!-- RODAPÉ DECORATIVO -->
-    <section class="border-t border-white/5 bg-[#171513] px-6 py-12 text-center">
+    <!-- FIM DA NOITE -->
+    <section class="border-t border-[#efe6d2]/10 bg-[#0f0d0c] px-6 py-20 text-center">
 
-        <span class="text-xs uppercase tracking-[0.3em] text-[#c72b30]">
-            Cultura japonesa
-        </span>
+        <svg class="mx-auto h-12 w-14 text-[#c72b30]" viewBox="0 0 120 100" fill="currentColor" aria-hidden="true">
+            <path d="M2 16 Q60 4 118 16 L114 26 Q60 17 6 26 Z" />
+            <rect x="14" y="32" width="92" height="6" />
+            <rect x="24" y="24" width="9" height="76" />
+            <rect x="87" y="24" width="9" height="76" />
+        </svg>
 
-        <p class="mx-auto mt-3 max-w-xl font-serif text-lg italic leading-8 text-gray-400">
+        <p class="lg-display mx-auto mt-6 max-w-xl text-2xl italic leading-9 text-[#efe6d2]/70">
             O passado permanece vivo nas histórias que continuam sendo contadas.
         </p>
 
-        <div class="mx-auto mt-6 h-px w-16 bg-[#c72b30]"></div>
+        <span class="lg-mincho mt-6 block text-xs tracking-[0.6em] text-[#efe6d2]/35">終</span>
 
     </section>
 
@@ -405,7 +488,30 @@ function e(string $texto): string
 <script>
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Abrir modal
+    const totalVelas = document.querySelectorAll('[data-vela]').length;
+    const contador = document.getElementById('contador');
+    const ultimaVela = document.getElementById('ultima-vela');
+
+    // Apaga a vela (e marca a carta) de uma lenda já contada
+    function apagarVela(id) {
+
+        document.querySelectorAll('[data-vela], [data-card]').forEach((el) => {
+            if ((el.dataset.vela || el.dataset.card) === id) {
+                el.classList.add('apagada');
+            }
+        });
+
+        const apagadas = document.querySelectorAll('[data-vela].apagada').length;
+
+        contador.textContent = apagadas;
+
+        if (totalVelas > 0 && apagadas === totalVelas) {
+            ultimaVela.classList.remove('hidden');
+        }
+
+    }
+
+    // Abrir modal (cartas e velas)
     document.querySelectorAll('[data-abrir-modal]').forEach((botao) => {
 
         botao.addEventListener('click', () => {
@@ -443,12 +549,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
 
-        // Restaurar rolagem
+        // Restaurar rolagem e apagar a vela
         modal.addEventListener('close', () => {
 
             if (!document.querySelector('dialog[open]')) {
                 document.body.classList.remove('overflow-hidden');
             }
+
+            apagarVela(modal.id.replace('modal-', ''));
 
         });
 
