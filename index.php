@@ -545,6 +545,8 @@ if (!function_exists('e')) {
 
                     <a href="./assets/pages/lendas.php" class="transition hover:text-[#e45a5e]">Lendas</a>
 
+                    <a href="./assets/login.php" class="transition hover:text-[#e45a5e]">Administração</a>
+
                 </nav>
 
             </div>
