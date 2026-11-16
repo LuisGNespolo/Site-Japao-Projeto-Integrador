@@ -15,10 +15,6 @@ function e(string $texto): string
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
 
 <style>
-    .lg-mincho { font-family: 'Shippori Mincho', 'Noto Sans JP', serif; }
-    .lg-display { font-family: 'Cormorant Garamond', 'Playfair Display', serif; }
-    .lg-vertical { writing-mode: vertical-rl; }
-
     /* Chama de vela */
     .lg-flame {
         display: inline-block;
@@ -59,6 +55,18 @@ function e(string $texto): string
     .lg-relida { display: none; }
     .lg-card.apagada .lg-acender { display: none; }
     .lg-card.apagada .lg-relida { display: inline; }
+    .lg-card { position: relative; }
+    .lg-card::after {
+        position: absolute;
+        right: 1.2rem;
+        top: 1.2rem;
+        width: .55rem;
+        height: .55rem;
+        border: 1px solid rgba(255,179,71,.7);
+        border-radius: 50%;
+        box-shadow: 0 0 12px rgba(255,150,60,.35);
+        content: '';
+    }
     @media (min-width: 640px) and (max-width: 1023px) { .lg-card:nth-child(even) { margin-top: 3rem; } }
     @media (min-width: 1024px) { .lg-card:nth-child(3n+2) { margin-top: 4rem; } }
 
@@ -85,7 +93,7 @@ function e(string $texto): string
             <rect x="87" y="24" width="9" height="76" />
         </svg>
 
-        <span class="lg-mincho lg-vertical absolute left-3 top-28 hidden text-sm tracking-[0.6em] text-[#efe6d2]/35 lg:block">神話 · 妖怪 · 伝説</span>
+        <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] absolute left-3 top-28 hidden text-sm tracking-[0.6em] text-[#efe6d2]/35 lg:block">ç¥žè©± · å¦–æ€ª · 伝説</span>
 
         <div class="relative mx-auto grid min-h-[600px] max-w-7xl items-center gap-12 px-6 pb-32 pt-20 md:px-10 md:pt-28 lg:grid-cols-[1.1fr_1fr]">
 
@@ -93,10 +101,10 @@ function e(string $texto): string
 
                 <span class="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#e15a5e]">
                     <span class="h-px w-10 bg-[#c72b30]"></span>
-                    百物語 · Hyakumonogatari
+                    ç™¾ç‰©èªž · Hyakumonogatari
                 </span>
 
-                <h1 class="lg-display mt-6 text-5xl font-semibold italic leading-[1.05] md:text-7xl">
+                <h1 class="font-['Cormorant_Garamond'] mt-6 text-5xl font-semibold italic leading-[1.05] md:text-7xl">
                     Acenda uma vela.<br>
                     Ouça uma <span class="text-[#e15a5e]">lenda.</span>
                 </h1>
@@ -142,7 +150,7 @@ function e(string $texto): string
         <div class="mx-auto grid max-w-6xl gap-10 md:grid-cols-[auto_1fr] md:gap-16">
 
             <div class="hidden items-start gap-5 md:flex">
-                <span class="lg-mincho lg-vertical text-8xl font-extrabold leading-none text-[#c72b30]">百物語</span>
+                <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] text-8xl font-extrabold leading-none text-[#c72b30]">ç™¾ç‰©èªž</span>
                 <span class="w-px self-stretch bg-gradient-to-b from-[#c72b30] to-transparent"></span>
             </div>
 
@@ -152,7 +160,7 @@ function e(string $texto): string
                     Hyakumonogatari Kaidankai
                 </span>
 
-                <h2 class="lg-display mt-4 text-4xl font-semibold italic leading-tight md:text-6xl">
+                <h2 class="font-['Cormorant_Garamond'] mt-4 text-4xl font-semibold italic leading-tight md:text-6xl">
                     A noite das cem velas
                 </h2>
 
@@ -172,17 +180,17 @@ function e(string $texto): string
                 <dl class="mt-10 grid max-w-2xl grid-cols-3 divide-x divide-[#efe6d2]/10 border-y border-[#efe6d2]/10">
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="lg-mincho text-3xl text-[#c72b30]">神</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">ç¥ž</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Kami<br>deuses</dd>
                     </div>
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="lg-mincho text-3xl text-[#c72b30]">妖怪</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">å¦–æ€ª</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yōkai<br>criaturas</dd>
                     </div>
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="lg-mincho text-3xl text-[#c72b30]">幽霊</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">å¹½éœŠ</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yūrei<br>fantasmas</dd>
                     </div>
 
@@ -195,16 +203,16 @@ function e(string $texto): string
     </section>
 
 
-    <!-- AS HISTÓRIAS -->
+    <!-- AS HISTÃ“RIAS -->
     <section id="lendas" class="bg-[#0b0908] px-6 py-24 md:px-10 md:py-32">
 
         <div class="mx-auto max-w-7xl">
 
             <header class="mx-auto mb-20 max-w-2xl text-center">
 
-                <span class="lg-mincho text-sm tracking-[0.6em] text-[#c72b30]">伝説</span>
+                <span class="font-['Shippori_Mincho'] text-sm tracking-[0.6em] text-[#c72b30]">伝説</span>
 
-                <h2 class="lg-display mt-4 text-4xl font-semibold italic md:text-6xl">
+                <h2 class="font-['Cormorant_Garamond'] mt-4 text-4xl font-semibold italic md:text-6xl">
                     As histórias da noite
                 </h2>
 
@@ -244,8 +252,8 @@ function e(string $texto): string
                     <span id="contador">0</span> de <?= $total ?> histórias contadas
                 </p>
 
-                <p id="ultima-vela" class="lg-display mt-6 hidden text-2xl italic text-[#e15a5e]">
-                    A última vela se apagou… e algo, no escuro, começa a se aproximar.
+                <p id="ultima-vela" class="font-['Cormorant_Garamond'] mt-6 hidden text-2xl italic text-[#e15a5e]">
+                    A última vela se apagouâ€¦ e algo, no escuro, começa a se aproximar.
                 </p>
 
             </header>
@@ -278,7 +286,7 @@ function e(string $texto): string
                                     <span class="lg-flame block"></span>
                                 </span>
 
-                                <span class="lg-mincho lg-vertical absolute bottom-6 right-5 max-h-[45%] overflow-hidden text-lg text-[#efe6d2]/75">
+                                <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] absolute bottom-6 right-5 max-h-[45%] overflow-hidden text-lg text-[#efe6d2]/75">
                                     <?= e($lenda['nome_japones']) ?>
                                 </span>
 
@@ -290,7 +298,7 @@ function e(string $texto): string
                                     Nº <?= sprintf('%02d', $i + 1) ?>
                                 </span>
 
-                                <h3 class="lg-display mt-2 text-3xl font-semibold italic leading-tight">
+                                <h3 class="font-['Cormorant_Garamond'] mt-2 text-3xl font-semibold italic leading-tight">
                                     <?= e($lenda['nome']) ?>
                                 </h3>
 
@@ -301,7 +309,7 @@ function e(string $texto): string
                                 <span class="mt-5 inline-flex items-center gap-3 border-b border-[#c72b30]/60 pb-1 text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 group-hover:gap-5 group-hover:text-[#e15a5e]">
                                     <span class="lg-acender">Acender esta história</span>
                                     <span class="lg-relida">Vela apagada · ouvir de novo</span>
-                                    →
+                                    â†’
                                 </span>
 
                             </div>
@@ -341,7 +349,7 @@ function e(string $texto): string
                 </button>
 
 
-                <!-- CABEÇALHO -->
+                <!-- CABEÃ‡ALHO -->
                 <div class="relative min-h-[280px] overflow-hidden">
 
                     <img
@@ -351,7 +359,7 @@ function e(string $texto): string
 
                     <div class="absolute inset-0 bg-gradient-to-t from-[#13100e] via-[#13100e]/60 to-black/20"></div>
 
-                    <span class="lg-mincho lg-vertical absolute right-8 top-20 max-h-40 overflow-hidden text-3xl text-[#c72b30]/80 md:text-4xl">
+                    <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] absolute right-8 top-20 max-h-40 overflow-hidden text-3xl text-[#c72b30]/80 md:text-4xl">
                         <?= e($lenda['nome_japones']) ?>
                     </span>
 
@@ -362,7 +370,7 @@ function e(string $texto): string
                             Folclore japonês
                         </span>
 
-                        <h2 id="titulo-<?= e($lenda['id']) ?>" class="lg-display text-4xl font-semibold italic md:text-6xl">
+                        <h2 id="titulo-<?= e($lenda['id']) ?>" class="font-['Cormorant_Garamond'] text-4xl font-semibold italic md:text-6xl">
                             <?= e($lenda['nome']) ?>
                         </h2>
 
@@ -375,19 +383,19 @@ function e(string $texto): string
                 </div>
 
 
-                <!-- CONTEÚDO -->
+                <!-- CONTEÃšDO -->
                 <div class="px-7 pb-10 md:px-12">
 
                     <div class="grid gap-5 border-y border-[#efe6d2]/10 py-7 sm:grid-cols-2">
 
                         <div>
                             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">Nome japonês</span>
-                            <p class="lg-mincho mt-2 text-lg"><?= e($lenda['nome_japones']) ?></p>
+                            <p class="font-['Shippori_Mincho'] mt-2 text-lg"><?= e($lenda['nome_japones']) ?></p>
                         </div>
 
                         <div>
                             <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c72b30]">Significado</span>
-                            <p class="lg-display mt-2 text-xl italic"><?= e($lenda['significado']) ?></p>
+                            <p class="font-['Cormorant_Garamond'] mt-2 text-xl italic"><?= e($lenda['significado']) ?></p>
                         </div>
 
                     </div>
@@ -397,7 +405,7 @@ function e(string $texto): string
 
                         <div class="mb-6 flex items-center gap-3">
                             <span class="h-px w-8 bg-[#c72b30]"></span>
-                            <h3 class="lg-display text-2xl font-semibold italic">A história</h3>
+                            <h3 class="font-['Cormorant_Garamond'] text-2xl font-semibold italic">A história</h3>
                         </div>
 
                         <div class="space-y-5 text-sm leading-8 text-[#efe6d2]/75 md:text-base">
@@ -415,7 +423,7 @@ function e(string $texto): string
 
                         <div class="mb-8 border-l-2 border-[#c72b30] bg-white/[0.03] p-6">
 
-                            <h3 class="lg-display mb-4 text-xl font-semibold italic text-[#e15a5e]">Como ela age</h3>
+                            <h3 class="font-['Cormorant_Garamond'] mb-4 text-xl font-semibold italic text-[#e15a5e]">Como ela age</h3>
 
                             <div class="space-y-4 text-sm leading-7 text-[#efe6d2]/75">
 
@@ -436,7 +444,7 @@ function e(string $texto): string
 
                             <span class="text-[10px] font-bold uppercase tracking-[0.25em] text-[#d6ad7c]">Você sabia?</span>
 
-                            <p class="lg-display mt-3 text-lg leading-8 text-[#efe6d2]/80">
+                            <p class="font-['Cormorant_Garamond'] mt-3 text-lg leading-8 text-[#efe6d2]/80">
                                 <?= e($lenda['curiosidade']) ?>
                             </p>
 
@@ -446,8 +454,8 @@ function e(string $texto): string
 
 
                     <div class="mt-10 border-t border-[#efe6d2]/10 pt-6 text-center">
-                        <span class="lg-display text-sm italic tracking-widest text-[#efe6d2]/40">
-                            — A vela se apaga —
+                        <span class="font-['Cormorant_Garamond'] text-sm italic tracking-widest text-[#efe6d2]/40">
+                            â€” A vela se apaga â€”
                         </span>
                     </div>
 
@@ -473,11 +481,11 @@ function e(string $texto): string
             <rect x="87" y="24" width="9" height="76" />
         </svg>
 
-        <p class="lg-display mx-auto mt-6 max-w-xl text-2xl italic leading-9 text-[#efe6d2]/70">
+        <p class="font-['Cormorant_Garamond'] mx-auto mt-6 max-w-xl text-2xl italic leading-9 text-[#efe6d2]/70">
             O passado permanece vivo nas histórias que continuam sendo contadas.
         </p>
 
-        <span class="lg-mincho mt-6 block text-xs tracking-[0.6em] text-[#efe6d2]/35">終</span>
+        <span class="font-['Shippori_Mincho'] mt-6 block text-xs tracking-[0.6em] text-[#efe6d2]/35">çµ‚</span>
 
     </section>
 

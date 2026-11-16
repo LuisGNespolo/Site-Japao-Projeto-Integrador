@@ -2,669 +2,337 @@
 include_once("../templates/header.php");
 ?>
 
-<main class="bg-[#f8f5ef] text-[#171717] antialiased font-['Noto_Sans_JP']">
+<style>
+    .jfa-page {
+        --jfa-blue: #071a2b;
+        --jfa-blue-2: #0d304b;
+        --jfa-red: #c72b30;
+        --jfa-red-light: #ee6b6e;
+        --jfa-cream: #f5f2eb;
+        background: var(--jfa-cream);
+        color: var(--jfa-blue);
+        overflow: hidden;
+    }
 
-    <!-- HERO -->
-    <section
-        class="relative flex min-h-[600px] items-center overflow-hidden bg-cover bg-center md:min-h-[700px]"
-        style="background-image: url('../img/futebol/banner.png');"
-    >
-        <div class="mx-auto w-full max-w-7xl px-6 py-28 md:px-10">
-            <div class="max-w-3xl text-white">
+    .jfa-page .jfa-hero {
+        background:
+            linear-gradient(110deg, rgba(3, 13, 23, .98) 0%, rgba(3, 13, 23, .84) 43%, rgba(3, 13, 23, .15) 100%),
+            url('../img/futebol/banner.png') center / cover;
+    }
 
-                <div class="mb-7 flex items-center gap-3">
-                    <span class="h-px w-12 bg-[#c9272c]"></span>
+    .jfa-page .jfa-red-line {
+        background: linear-gradient(90deg, var(--jfa-red), var(--jfa-red-light), transparent);
+    }
 
-                    <p class="text-xs font-bold uppercase tracking-[0.35em] text-red-300">
-                        Esporte · Cultura · União
+    .jfa-page .jfa-glass {
+        background: rgba(5, 20, 34, .72);
+        border: 1px solid rgba(255,255,255,.13);
+        box-shadow: 0 25px 70px -35px rgba(0,0,0,.8);
+        backdrop-filter: blur(14px);
+    }
+
+    .jfa-page .jfa-paper-grid {
+        background-color: var(--jfa-cream);
+        background-image: linear-gradient(90deg, rgba(7,26,43,.07) 1px, transparent 1px);
+        background-size: 72px 100%;
+    }
+
+    .jfa-page .jfa-field {
+        position: relative;
+        background:
+            linear-gradient(90deg, transparent 49.8%, rgba(255,255,255,.24) 50%, transparent 50.2%),
+            radial-gradient(circle at center, transparent 0 4.2rem, rgba(255,255,255,.24) 4.25rem 4.35rem, transparent 4.4rem),
+            repeating-linear-gradient(90deg, #123f42 0, #123f42 10%, #154748 10%, #154748 20%);
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.2), 0 25px 65px -35px rgba(0,0,0,.7);
+    }
+
+    .jfa-page .jfa-field::before,
+    .jfa-page .jfa-field::after {
+        position: absolute;
+        top: 12%;
+        bottom: 12%;
+        width: 20%;
+        border: 1px solid rgba(255,255,255,.22);
+        content: '';
+    }
+
+    .jfa-page .jfa-field::before { left: -1px; }
+    .jfa-page .jfa-field::after { right: -1px; }
+
+    .jfa-page .jfa-photo {
+        filter: saturate(.8);
+        transition: filter .5s ease;
+    }
+
+    .jfa-page .overflow-hidden:hover .jfa-photo {
+        filter: saturate(1.1) contrast(1.08);
+    }
+
+    .jfa-page .jfa-stamp {
+        border-left: 3px solid var(--jfa-red-light);
+        padding-left: .8rem;
+        color: var(--jfa-red-light);
+        text-align: left;
+    }
+
+    .jfa-page .jfa-match-row {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 1rem;
+        border-bottom: 1px solid rgba(255,255,255,.12);
+        padding: 1rem 0;
+    }
+
+    .jfa-page .jfa-match-row:last-child {
+        border-bottom: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .jfa-page .jfa-photo { transition: none; }
+    }
+</style>
+
+<main class="jfa-page font-['Poppins']">
+
+    <!-- ABERTURA / MATCHDAY -->
+    <section id="inicio" class="jfa-hero relative isolate min-h-[720px] overflow-hidden text-white md:min-h-[810px]">
+        <div class="relative mx-auto flex min-h-[720px] max-w-7xl flex-col justify-between px-6 pb-10 pt-28 md:min-h-[810px] md:px-10 md:pb-14">
+            <div class="relative z-10 flex items-start justify-between gap-6">
+                <div>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold uppercase text-white/55">Japan Football Association</p>
+                    <p class="mt-2 text-sm text-white/80">æ—¥æœ¬ã‚µãƒƒã‚«ãƒ¼ · å¤¢ã‚’åŠ›ã«</p>
+                </div>
+                <div class="jfa-stamp hidden text-[10px] font-bold uppercase tracking-[.2em] md:block">
+                    <span class="block text-white/45">LIVE / 90:00</span>
+                    <span class="mt-1 block text-2xl leading-none">JFA 01</span>
+                </div>
+            </div>
+
+            <div class="relative z-10 grid items-end gap-12 lg:grid-cols-[1fr_auto]">
+                <div class="max-w-3xl">
+                    <div class="mb-6 flex items-center gap-3">
+                        <span class="h-px w-14 bg-[#c72b30]"></span>
+                        <p class="tabular-nums tracking-[.12em] text-[10px] font-bold uppercase text-[#ee6b6e]">Matchday · Tokyo to the world</p>
+                    </div>
+                    <h1 class="font-['Playfair_Display'] tracking-[-.055em] text-6xl font-semibold leading-[.9] sm:text-7xl md:text-9xl">
+                        O jogo<br>
+                        <span class="text-[#ee6b6e]">começa aqui.</span>
+                    </h1>
+                    <p class="mt-8 max-w-xl text-sm leading-8 text-white/65 md:text-base">
+                        Uma viagem pela força, pela técnica e pelo espírito que
+                        fazem o futebol japonês jogar de igual para igual com o mundo.
                     </p>
+                    <div class="mt-9 flex flex-wrap gap-3">
+                        <a href="#samurai-blue" class="inline-flex items-center gap-3 bg-[#c72b30] px-6 py-4 text-[10px] font-bold uppercase tracking-[.2em] transition hover:-translate-y-1 hover:bg-[#a51f25]">
+                            Entrar em campo <i class="bi bi-arrow-down-right"></i>
+                        </a>
+                        <a href="#jfa-map" class="inline-flex items-center gap-3 border border-white/30 px-6 py-4 text-[10px] font-bold uppercase tracking-[.2em] transition hover:border-white hover:bg-white/10">
+                            Ver a jornada <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
 
-                <h1 class="mb-7 font-['Playfair_Display'] text-5xl font-semibold leading-tight md:text-7xl">
-                    Futebol no <span class="text-[#e05257]">Japão.</span>
-                </h1>
-
-                <p class="max-w-2xl text-base leading-8 text-gray-300 md:text-lg">
-                    Muito além das quatro linhas, o futebol japonês representa
-                    dedicação, disciplina e união. Conheça a trajetória das
-                    seleções masculina e feminina nos maiores campeonatos do mundo.
-                </p>
-
-                <div class="mt-8">
-                    <p class="font-['Playfair_Display'] text-5xl text-red-300">
-                        サッカー
-                    </p>
-
-                    <p class="mt-2 text-xs uppercase tracking-[0.3em] text-gray-400">
-                        A paixão japonesa pelo futebol
-                    </p>
+                <div class="jfa-glass relative z-10 hidden w-72 p-5 lg:block">
+                    <div class="mb-6 flex items-center justify-between border-b border-white/15 pb-4">
+                        <span class="tabular-nums tracking-[.12em] text-[9px] font-bold text-white/50">NEXT FIXTURE</span>
+                        <span class="h-2 w-2 rounded-full bg-[#ee6b6e] shadow-[0_0_14px_#ee6b6e]"></span>
+                    </div>
+                    <p class="tabular-nums tracking-[.12em] text-xs text-white/50">MATCH REPORT / 2022</p>
+                    <p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-3xl">A noite das viradas</p>
+                    <div class="mt-5">
+                        <div class="jfa-match-row"><span>JAPÃƒO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ALEMANHA</span></div>
+                        <div class="jfa-match-row"><span>JAPÃƒO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ESPANHA</span></div>
+                    </div>
+                    <p class="tabular-nums tracking-[.12em] mt-5 text-[9px] text-white/45">DISCIPLINA · VELOCIDADE · UNIÃƒO</p>
                 </div>
-
-                <a
-                    href="#historia"
-                    class="mt-10 inline-flex items-center gap-4 border border-white/30 px-7 py-4 text-xs font-bold uppercase tracking-[0.2em] transition duration-300 hover:border-[#c9272c] hover:bg-[#c9272c]"
-                >
-                    Explorar história
-                    <i class="bi bi-arrow-down"></i>
-                </a>
-
             </div>
         </div>
+        <div class="jfa-red-line absolute bottom-0 left-0 h-1 w-full"></div>
+    </section>
 
-        <div class="absolute bottom-0 right-0 hidden select-none opacity-10 md:block">
-            <span class="font-['Playfair_Display'] text-[180px] font-bold text-white">
-                日本
-            </span>
+    <!-- PLACAR DA IDENTIDADE -->
+    <section class="bg-[#071a2b] text-white">
+        <div class="mx-auto grid max-w-7xl divide-y divide-white/10 px-6 md:grid-cols-4 md:divide-x md:divide-y-0 md:px-10">
+            <div class="flex items-center gap-4 py-6 md:px-7 md:first:pl-0">
+                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-calendar3"></i></span>
+                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">1993</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">J.LEAGUE</p></div>
+            </div>
+            <div class="flex items-center gap-4 py-6 md:px-7">
+                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-trophy"></i></span>
+                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">WORLD CHAMPIONS</p></div>
+            </div>
+            <div class="flex items-center gap-4 py-6 md:px-7">
+                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-globe2"></i></span>
+                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">Asia</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">A CASA DO JOGO</p></div>
+            </div>
+            <div class="flex items-center gap-4 py-6 md:px-7 md:last:pr-0">
+                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-people"></i></span>
+                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">âˆž</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">NOVAS GERAÃ‡Ã•ES</p></div>
+            </div>
         </div>
     </section>
 
+    <!-- SAMURAI BLUE -->
+    <section id="samurai-blue" class="jfa-paper-grid px-6 py-24 md:px-10 md:py-32">
+        <div class="mx-auto max-w-7xl">
+            <div class="mb-14 flex flex-wrap items-end justify-between gap-8">
+                <div class="max-w-2xl">
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">01 / SELEÃ‡ÃƒO MASCULINA</p>
+                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Samurai<br><span class="text-[#c72b30]">Blue.</span></h2>
+                </div>
+                <p class="max-w-sm text-sm leading-7 text-[#52606c]">
+                    O azul da camisa, a precisão da técnica e a coragem de
+                    enfrentar qualquer adversário. Uma seleção em constante evolução.
+                </p>
+            </div>
 
-    <!-- HISTÓRIA -->
-    <section id="historia" class="scroll-mt-20 bg-[#f8f5ef] px-6 py-24 md:px-10">
-
-        <div class="mx-auto grid max-w-7xl items-center gap-16 md:grid-cols-2">
-
-            <div>
-
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="h-px w-10 bg-[#c9272c]"></span>
-
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-[#c9272c]">
-                        A trajetória do esporte
-                    </p>
+            <div class="grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
+                <div class="overflow-hidden relative min-h-[430px] bg-[#0d304b]">
+                    <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1400&q=85" alt="Jogadores disputando uma partida de futebol" class="jfa-photo absolute inset-0 h-full w-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#071a2b] via-transparent to-transparent"></div>
+                    <div class="absolute bottom-7 left-7 right-7 flex items-end justify-between text-white">
+                        <div>
+                            <p class="tabular-nums tracking-[.12em] text-[9px] text-white/55">THE BLUE LOCKER ROOM</p>
+                            <p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-3xl">Jogar juntos.</p>
+                        </div>
+                        <i class="bi bi-arrow-up-right text-2xl text-[#ee6b6e]"></i>
+                    </div>
                 </div>
 
-                <h2 class="mb-8 font-['Playfair_Display'] text-4xl font-semibold leading-tight md:text-5xl">
-                    História do futebol japonês
-                </h2>
-
-                <p class="mb-5 text-base leading-8 text-[#555]">
-                    O futebol começou a ganhar espaço no Japão durante o final
-                    do século XIX e se desenvolveu ao longo do século XX. Com o
-                    passar dos anos, o país investiu na formação de atletas,
-                    na organização dos clubes e na estrutura das competições.
-                </p>
-
-                <p class="mb-5 text-base leading-8 text-[#555]">
-                    A criação da liga profissional japonesa, a J.League, em 1993,
-                    ajudou a aumentar a popularidade do esporte e a melhorar o
-                    nível competitivo dos jogadores.
-                </p>
-
-                <p class="text-base leading-8 text-[#555]">
-                    Atualmente, o Japão é uma das principais forças do futebol
-                    asiático, com seleções competitivas e atletas que também
-                    atuam em grandes clubes internacionais.
-                </p>
-
-                <div class="mt-9 flex items-center gap-4 border-l-2 border-[#c9272c] pl-5">
-
-                    <span class="font-['Playfair_Display'] text-4xl font-bold text-[#c9272c]">
-                        1993
-                    </span>
-
+                <div class="flex flex-col justify-between bg-[#071a2b] p-8 text-white md:p-10">
                     <div>
-                        <p class="text-sm font-bold uppercase tracking-wider">
-                            Um novo capítulo
-                        </p>
-
-                        <p class="text-sm text-gray-500">
-                            Fundação da J.League profissional
-                        </p>
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="relative">
-
-                <img
-                    src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=85"
-                    alt="Campo de futebol em um estádio"
-                    class="h-[350px] w-full object-cover shadow-xl md:h-[500px]"
-                >
-
-                <div class="absolute -bottom-7 -left-5 bg-[#071018] px-8 py-6 text-white shadow-xl md:-left-8">
-
-                    <p class="font-['Playfair_Display'] text-4xl font-bold text-[#e05257]">
-                        J.LEAGUE
-                    </p>
-
-                    <p class="mt-2 text-xs uppercase tracking-[0.2em] text-gray-300">
-                        Futebol profissional japonês
-                    </p>
-
-                </div>
-
-                <div class="absolute -right-3 -top-3 h-24 w-24 border-r-2 border-t-2 border-[#c9272c]"></div>
-
-            </div>
-
-        </div>
-    </section>
-
-
-    <!-- SELEÇÃO MASCULINA -->
-    <section id="copa-masculina" class="scroll-mt-20 bg-[#071018] px-6 py-24 text-white md:px-10">
-
-        <div class="mx-auto max-w-7xl">
-
-            <div class="mb-16 max-w-3xl">
-
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="h-px w-10 bg-[#c9272c]"></span>
-
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-300">
-                        Seleção masculina
-                    </p>
-                </div>
-
-                <h2 class="mb-7 font-['Playfair_Display'] text-4xl font-semibold leading-tight md:text-5xl">
-                    O Japão nas Copas do Mundo
-                </h2>
-
-                <p class="leading-8 text-gray-400">
-                    A seleção masculina japonesa participou pela primeira vez
-                    de uma Copa do Mundo em 1998. Desde então, construiu uma
-                    trajetória marcada por evolução, organização e resultados
-                    importantes diante de seleções tradicionais.
-                </p>
-
-            </div>
-
-
-            <div class="grid items-start gap-16 md:grid-cols-2">
-
-                <!-- LINHA DO TEMPO -->
-
-                <div class="relative pl-10">
-
-                    <div class="absolute bottom-0 left-[5px] top-2 w-px bg-white/20"></div>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#071018]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#e05257]">
-                            1998
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            A primeira participação
-                        </h3>
-
-                        <p class="leading-7 text-gray-400">
-                            Na Copa da França, o Japão estreou no torneio
-                            mundial masculino, iniciando uma presença frequente
-                            nas edições seguintes.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#071018]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#e05257]">
-                            2002
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Oitavas de final em casa
-                        </h3>
-
-                        <p class="leading-7 text-gray-400">
-                            Como um dos países-sede, o Japão chegou às oitavas
-                            de final pela primeira vez, aumentando o interesse
-                            nacional pelo esporte.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#071018]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#e05257]">
-                            2010 · 2018
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Campanhas competitivas
-                        </h3>
-
-                        <p class="leading-7 text-gray-400">
-                            A seleção voltou às oitavas em 2010 e 2018,
-                            mostrando sua capacidade de competir em alto nível.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#071018]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#e05257]">
-                            2022
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Vitórias históricas
-                        </h3>
-
-                        <p class="leading-7 text-gray-400">
-                            No Catar, o Japão venceu Alemanha e Espanha na fase
-                            de grupos e chegou novamente às oitavas de final.
-                        </p>
-
-                    </article>
-
-                </div>
-
-
-                <!-- IMAGEM E DESTAQUE -->
-
-                <div>
-
-                    <img
-                        src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1200&q=85"
-                        alt="Jogadores disputando uma partida de futebol"
-                        class="h-[300px] w-full object-cover shadow-2xl md:h-[420px]"
-                    >
-
-                    <div class="mt-7 border border-white/10 bg-white/[0.03] p-8">
-
-                        <i class="bi bi-trophy mb-5 block text-3xl text-[#e05257]"></i>
-
-                        <h3 class="mb-4 font-['Playfair_Display'] text-2xl font-semibold">
-                            Uma seleção em crescimento
-                        </h3>
-
-                        <p class="leading-8 text-gray-400">
-                            A seleção japonesa é conhecida pela organização
-                            tática, pela velocidade de jogo e pela disciplina
-                            coletiva. Esses fatores ajudam o país a enfrentar
-                            adversários de diferentes estilos.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-    </section>
-
-
-    <!-- SELEÇÃO FEMININA -->
-    <section id="copa-feminina" class="scroll-mt-20 bg-[#f8f5ef] px-6 py-24 md:px-10">
-
-        <div class="mx-auto max-w-7xl">
-
-            <div class="mb-16 max-w-3xl">
-
-                <div class="mb-5 flex items-center gap-3">
-                    <span class="h-px w-10 bg-[#c9272c]"></span>
-
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-[#c9272c]">
-                        Seleção feminina · Nadeshiko Japan
-                    </p>
-                </div>
-
-                <h2 class="mb-7 font-['Playfair_Display'] text-4xl font-semibold leading-tight md:text-5xl">
-                    O Japão na Copa do Mundo Feminina
-                </h2>
-
-                <p class="leading-8 text-[#555]">
-                    A seleção feminina japonesa conquistou reconhecimento
-                    internacional com seu estilo de jogo coletivo e técnico.
-                    O maior momento de sua história aconteceu em 2011, quando
-                    o Japão conquistou o título mundial pela primeira vez.
-                </p>
-
-            </div>
-
-
-            <div class="grid items-center gap-16 md:grid-cols-2">
-
-                <!-- IMAGEM E CONQUISTA -->
-
-                <div>
-
-                    <div class="relative">
-
-                        <img
-                            src="../img/futebol/mulheres.png"
-                            alt="Partida de futebol feminino"
-                            class="h-[320px] w-full object-cover shadow-xl md:h-[440px]"
-                        >
-
-                        <div class="absolute bottom-5 left-5 bg-[#c9272c] px-6 py-4 text-white">
-
-                            <p class="font-['Playfair_Display'] text-3xl font-bold">
-                                2011
-                            </p>
-
-                            <p class="text-xs font-bold uppercase tracking-widest">
-                                Campeãs mundiais
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="mt-7 border border-[#e5ded2] bg-white p-7 shadow-sm">
-
-                        <div class="flex items-center gap-4">
-
-                            <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#fbe9e8] text-2xl text-[#c9272c]">
-                                <i class="bi bi-trophy-fill"></i>
+                        <p class="tabular-nums tracking-[.12em] text-[10px] text-[#ee6b6e]">A EVOLUÃ‡ÃƒO EM QUATRO TEMPOS</p>
+                        <div class="mt-8 space-y-7">
+                            <div class="flex gap-5">
+                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">98</span>
+                                <div><h3 class="font-semibold">A primeira presença</h3><p class="mt-1 text-sm leading-6 text-white/50">O Japão estreia na Copa e começa a escrever sua história.</p></div>
                             </div>
-
-                            <div>
-
-                                <p class="text-xs font-bold uppercase tracking-widest text-[#c9272c]">
-                                    Conquista histórica
-                                </p>
-
-                                <h3 class="font-['Playfair_Display'] text-2xl font-semibold">
-                                    Campeãs em 2011
-                                </h3>
-
+                            <div class="flex gap-5">
+                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">02</span>
+                                <div><h3 class="font-semibold">O jogo em casa</h3><p class="mt-1 text-sm leading-6 text-white/50">Oitavas de final e uma torcida que descobre sua voz.</p></div>
                             </div>
-
+                            <div class="flex gap-5">
+                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">22</span>
+                                <div><h3 class="font-semibold">Vitórias gigantes</h3><p class="mt-1 text-sm leading-6 text-white/50">Alemanha e Espanha ficam pelo caminho no Catar.</p></div>
+                            </div>
                         </div>
-
-                        <p class="mt-5 leading-8 text-gray-600">
-                            Na Alemanha, o Japão venceu os Estados Unidos na
-                            decisão por pênaltis e conquistou seu primeiro
-                            título da Copa do Mundo Feminina.
-                        </p>
-
                     </div>
-
+                    <div class="mt-10 border-t border-white/10 pt-5">
+                        <span class="tabular-nums tracking-[.12em] text-[9px] text-white/40">BLUE SAMURAI · ä¾ãƒ–ãƒ«ãƒ¼</span>
+                    </div>
                 </div>
-
-
-                <!-- LINHA DO TEMPO FEMININA -->
-
-                <div class="relative pl-10">
-
-                    <div class="absolute bottom-0 left-[5px] top-2 w-px bg-[#d8cfc3]"></div>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#f8f5ef]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#c9272c]">
-                            1991
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Primeira Copa
-                        </h3>
-
-                        <p class="leading-7 text-gray-600">
-                            O Japão participou da primeira edição da Copa do
-                            Mundo Feminina, realizada na China.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#f8f5ef]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#c9272c]">
-                            2011
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            O título mundial
-                        </h3>
-
-                        <p class="leading-7 text-gray-600">
-                            A seleção conquistou o campeonato após superar
-                            os Estados Unidos na disputa de pênaltis.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative mb-12">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#f8f5ef]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#c9272c]">
-                            2015
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Vice-campeonato
-                        </h3>
-
-                        <p class="leading-7 text-gray-600">
-                            O Japão chegou novamente à final, mas terminou
-                            a competição como vice-campeão diante dos Estados Unidos.
-                        </p>
-
-                    </article>
-
-
-                    <article class="relative">
-
-                        <div class="absolute -left-[40px] top-1 h-3 w-3 rounded-full border-2 border-[#c9272c] bg-[#f8f5ef]"></div>
-
-                        <p class="mb-2 font-['Playfair_Display'] text-3xl font-semibold text-[#c9272c]">
-                            2023
-                        </p>
-
-                        <h3 class="mb-3 text-xl font-semibold">
-                            Uma campanha marcante
-                        </h3>
-
-                        <p class="leading-7 text-gray-600">
-                            A equipe chegou às quartas de final e chamou
-                            atenção pelo futebol organizado e ofensivo.
-                        </p>
-
-                    </article>
-
-                </div>
-
             </div>
-
         </div>
     </section>
 
-
-    <!-- CULTURA JAPONESA -->
-    <section id="cultura" class="scroll-mt-20 bg-[#071018] px-6 py-24 text-white md:px-10">
-
+    <!-- JOGO EM CAMPO -->
+    <section id="jfa-map" class="bg-[#0d304b] px-6 py-24 text-white md:px-10 md:py-32">
         <div class="mx-auto max-w-7xl">
-
-            <div class="mb-16 text-center">
-
-                <div class="mb-5 flex items-center justify-center gap-3">
-
-                    <span class="h-px w-10 bg-[#c9272c]"></span>
-
-                    <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-300">
-                        Muito além do jogo
+            <div class="grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+                <div>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#ee6b6e]">02 / O DNA DO JOGO</p>
+                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Tática com<br><span class="text-[#ee6b6e]">propósito.</span></h2>
+                    <p class="mt-7 max-w-md text-sm leading-8 text-white/55">
+                        O futebol japonês une preparação minuciosa e liberdade
+                        criativa. Cada passe tem uma intenção; cada movimento,
+                        uma responsabilidade com o coletivo.
                     </p>
-
-                    <span class="h-px w-10 bg-[#c9272c]"></span>
-
+                    <div class="mt-9 flex gap-8 border-t border-white/15 pt-6">
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">3</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PILARES</p></div>
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">11</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">EM CAMPO</p></div>
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">1</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PROPÃ“SITO</p></div>
+                    </div>
                 </div>
 
-                <h2 class="mb-6 font-['Playfair_Display'] text-4xl font-semibold md:text-5xl">
-                    Futebol e cultura japonesa
-                </h2>
-
-                <p class="mx-auto max-w-2xl leading-8 text-gray-400">
-                    O futebol no Japão também é uma forma de demonstrar respeito,
-                    disciplina e união entre jogadores e torcedores.
-                </p>
-
-            </div>
-
-
-            <!-- CARDS DE CULTURA -->
-
-            <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
-
-                <!-- CARD 1 -->
-
-                <article class="group border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-[#c9272c] hover:bg-white/[0.06]">
-
-                    <div class="mb-7 flex h-14 w-14 items-center justify-center rounded-full bg-[#c9272c]/15 text-2xl text-[#e05257] transition group-hover:bg-[#c9272c] group-hover:text-white">
-
-                        <i class="bi bi-people-fill"></i>
-
+                <div class="grid gap-5 sm:grid-cols-2">
+                    <div class="jfa-field min-h-[300px] p-5 sm:col-span-2">
+                        <div class="absolute left-[22%] top-1/2 -translate-y-1/2 text-4xl text-[#ee6b6e]"><i class="bi bi-circle-fill"></i></div>
+                        <div class="absolute right-[20%] top-1/3 text-3xl text-white"><i class="bi bi-circle-fill"></i></div>
+                        <span class="absolute bottom-4 left-5 tabular-nums tracking-[.12em] text-[9px] text-white/60">CAMPO · 105 Ã— 68</span>
                     </div>
-
-                    <h3 class="mb-4 font-['Playfair_Display'] text-xl font-semibold">
-                        Trabalho em equipe
-                    </h3>
-
-                    <p class="text-sm leading-7 text-gray-400">
-                        A cooperação e a organização coletiva são valorizadas
-                        dentro e fora de campo.
-                    </p>
-
-                </article>
-
-
-                <!-- CARD 2 -->
-
-                <article class="group border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-[#c9272c] hover:bg-white/[0.06]">
-
-                    <div class="mb-7 flex h-14 w-14 items-center justify-center rounded-full bg-[#c9272c]/15 text-2xl text-[#e05257] transition group-hover:bg-[#c9272c] group-hover:text-white">
-
-                        <i class="bi bi-heart-fill"></i>
-
-                    </div>
-
-                    <h3 class="mb-4 font-['Playfair_Display'] text-xl font-semibold">
-                        Respeito
-                    </h3>
-
-                    <p class="text-sm leading-7 text-gray-400">
-                        O respeito aos adversários, aos árbitros e aos torcedores
-                        faz parte da cultura esportiva.
-                    </p>
-
-                </article>
-
-
-                <!-- CARD 3 -->
-
-                <article class="group border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-[#c9272c] hover:bg-white/[0.06]">
-
-                    <div class="mb-7 flex h-14 w-14 items-center justify-center rounded-full bg-[#c9272c]/15 text-2xl text-[#e05257] transition group-hover:bg-[#c9272c] group-hover:text-white">
-
-                        <i class="bi bi-stars"></i>
-
-                    </div>
-
-                    <h3 class="mb-4 font-['Playfair_Display'] text-xl font-semibold">
-                        Disciplina
-                    </h3>
-
-                    <p class="text-sm leading-7 text-gray-400">
-                        Treinamento, dedicação e preparação são importantes
-                        para o desenvolvimento dos atletas.
-                    </p>
-
-                </article>
-
-
-                <!-- CARD 4 -->
-
-                <article class="group border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-[#c9272c] hover:bg-white/[0.06]">
-
-                    <div class="mb-7 flex h-14 w-14 items-center justify-center rounded-full bg-[#c9272c]/15 text-2xl text-[#e05257] transition group-hover:bg-[#c9272c] group-hover:text-white">
-
-                        <i class="bi bi-flag-fill"></i>
-
-                    </div>
-
-                    <h3 class="mb-4 font-['Playfair_Display'] text-xl font-semibold">
-                        Paixão nacional
-                    </h3>
-
-                    <p class="text-sm leading-7 text-gray-400">
-                        As seleções reúnem torcedores e representam o país
-                        nas competições internacionais.
-                    </p>
-
-                </article>
-
-            </div>
-
-
-            <!-- DESTAQUE FINAL -->
-
-            <div class="relative mt-16 overflow-hidden border border-white/10 md:flex">
-
-                <img
-                    src="https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=85"
-                    alt="Estádio preparado para uma partida"
-                    class="h-64 w-full object-cover md:h-auto md:w-1/2"
-                >
-
-                <div class="relative flex flex-col justify-center bg-[#0d1d2b] p-9 md:w-1/2 md:p-14">
-
-                    <div class="pointer-events-none absolute right-5 top-0 select-none font-['Playfair_Display'] text-8xl font-bold text-white/[0.03]">
-                        日
-                    </div>
-
-                    <div class="mb-5 flex items-center gap-3">
-
-                        <span class="h-px w-10 bg-[#c9272c]"></span>
-
-                        <p class="text-xs font-bold uppercase tracking-[0.3em] text-red-300">
-                            Espírito esportivo
-                        </p>
-
-                    </div>
-
-                    <h3 class="mb-6 font-['Playfair_Display'] text-3xl font-semibold leading-tight md:text-4xl">
-                        Uma paixão que conecta pessoas
-                    </h3>
-
-                    <p class="leading-8 text-gray-400">
-                        Seja no futebol masculino ou feminino, o Japão continua
-                        ampliando sua presença no cenário internacional e
-                        inspirando novas gerações de atletas.
-                    </p>
-
-                    <a
-                        href="#historia"
-                        class="mt-8 inline-flex w-fit items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-red-300 transition hover:text-white"
-                    >
-                        Voltar ao início
-                        <i class="bi bi-arrow-up"></i>
-                    </a>
-
+                    <article class="border border-white/10 bg-white/5 p-6">
+                        <i class="bi bi-diagram-3 text-2xl text-[#ee6b6e]"></i>
+                        <h3 class="mt-5 font-semibold">Leitura coletiva</h3>
+                        <p class="mt-2 text-sm leading-6 text-white/50">O espaço é ocupado com inteligência e confiança.</p>
+                    </article>
+                    <article class="border border-white/10 bg-white/5 p-6">
+                        <i class="bi bi-lightning-charge text-2xl text-[#ee6b6e]"></i>
+                        <h3 class="mt-5 font-semibold">Transição veloz</h3>
+                        <p class="mt-2 text-sm leading-6 text-white/50">Recuperar, acelerar, surpreender.</p>
+                    </article>
                 </div>
-
             </div>
-
         </div>
     </section>
 
+    <!-- NADESHIKO -->
+    <section class="jfa-paper-grid px-6 py-24 md:px-10 md:py-32">
+        <div class="mx-auto max-w-7xl">
+            <div class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
+                <div class="order-2 lg:order-1">
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">03 / SELEÃ‡ÃƒO FEMININA</p>
+                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Nadeshiko<br><span class="text-[#c72b30]">Japan.</span></h2>
+                    <p class="mt-7 max-w-lg text-sm leading-8 text-[#52606c]">
+                        Flores de cravo, futebol de posse e uma conquista que
+                        mudou a história: em 2011, o Japão se tornou campeão
+                        mundial feminino pela primeira vez.
+                    </p>
+                    <div class="mt-9 flex items-center gap-5">
+                        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-[#c72b30] text-2xl text-white"><i class="bi bi-trophy-fill"></i></span>
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-[#c72b30]">CAMPEÃƒS DO MUNDO</p></div>
+                    </div>
+                </div>
+                <div class="overflow-hidden order-1 relative h-[430px] bg-[#d8cfc3] lg:order-2">
+                    <img src="../img/futebol/mulheres.png" alt="Jogadoras japonesas em uma partida de futebol" class="jfa-photo h-full w-full object-cover">
+                    <div class="absolute left-5 top-5 bg-[#f5f2eb] px-4 py-3 text-[#071a2b] shadow-lg">
+                        <p class="tabular-nums tracking-[.12em] text-[9px] font-bold">NADESHIKO</p>
+                        <p class="text-xs text-[#52606c]">æ’«å­ · força delicada</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CULTURA DE ARQUIBANCADA -->
+    <section class="bg-[#071a2b] px-6 py-24 text-white md:px-10 md:py-32">
+        <div class="mx-auto max-w-7xl">
+            <div class="grid gap-12 lg:grid-cols-[.75fr_1.25fr]">
+                <div>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#ee6b6e]">04 / FORA DAS QUATRO LINHAS</p>
+                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">O jogo<br><span class="text-[#ee6b6e]">é de todos.</span></h2>
+                    <p class="mt-7 max-w-sm text-sm leading-8 text-white/55">No Japão, a partida continua depois do apito final. Respeito, comunidade e paixão fazem parte do espetáculo.</p>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-3">
+                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
+                        <i class="bi bi-stars text-2xl text-[#ee6b6e]"></i>
+                        <h3 class="mt-10 font-semibold">Respeito</h3>
+                        <p class="mt-3 text-sm leading-6 text-white/45">Torcida e jogadores cuidam do espaço que compartilham.</p>
+                    </article>
+                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
+                        <i class="bi bi-people text-2xl text-[#ee6b6e]"></i>
+                        <h3 class="mt-10 font-semibold">Comunidade</h3>
+                        <p class="mt-3 text-sm leading-6 text-white/45">Clubes conectam bairros, cidades e gerações.</p>
+                    </article>
+                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
+                        <i class="bi bi-heart text-2xl text-[#ee6b6e]"></i>
+                        <h3 class="mt-10 font-semibold">Paixão</h3>
+                        <p class="mt-3 text-sm leading-6 text-white/45">Cada camisa carrega uma história para cantar.</p>
+                    </article>
+                </div>
+            </div>
+
+            <div class="mt-20 border-t border-white/10 pt-8 md:flex md:items-end md:justify-between">
+                <div>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] text-white/40">A PRÃ“XIMA GERAÃ‡ÃƒO JÁ ESTÁ EM CAMPO</p>
+                    <p class="font-['Playfair_Display'] tracking-[-.055em] mt-3 max-w-2xl text-4xl md:text-6xl">Do Japão para o mundo.</p>
+                </div>
+                <a href="#inicio" class="mt-7 inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.2em] text-[#ee6b6e] transition hover:text-white md:mt-0">
+                    Voltar ao topo <i class="bi bi-arrow-up-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
 </main>
 
 <?php include '../../assets/templates/footer.php'; ?>
