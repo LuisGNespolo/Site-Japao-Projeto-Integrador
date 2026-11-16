@@ -254,10 +254,10 @@ $totalInativos = $conn->query("SELECT COUNT(*) AS total FROM cards WHERE ativo =
 <body class="min-h-screen">
 
     <!-- CABEÇALHO -->
-    <header class="bg-[#172334] text-white px-6 py-5">
+    <header class="bg-[#172334]  px-6 py-5">
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             <div>
-                <p class="text-xs tracking-[.25em] text-[#d6a5a0] uppercase">Painel administrativo</p>
+                <p class="text-xs tracking-[.25em] text-[#a82415] uppercase">Painel administrativo</p>
                 <h1 class="text-2xl font-semibold mt-1">Japão</h1>
             </div>
 
