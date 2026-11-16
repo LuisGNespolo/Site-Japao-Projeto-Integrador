@@ -44,12 +44,12 @@ $menuLinks = [
             <a href="../../index.php"
                 class="group flex shrink-0 items-center gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
 
-                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-[#c72b30] font-['Noto_Sans_JP'] text-2xl font-bold text-white shadow-lg ring-1 ring-white/30 transition duration-300 group-hover:bg-white group-hover:text-[#c72b30] md:h-14 md:w-14 md:text-3xl">
+                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c72b30] font-['Noto_Sans_JP'] text-2xl font-bold text-white shadow-lg ring-1 ring-white/30 transition duration-300 group-hover:bg-white group-hover:text-[#c72b30] md:h-12 md:w-12 md:text-3xl">
                     日
                 </span>
 
-                <span class="font-['Playfair_Display'] text-2xl font-semibold tracking-[0.06em] text-white drop-shadow-md md:text-3xl">
-                    Japão
+                <span class="font-serif text-xl tracking-[0.22em] text-white drop-shadow-md">
+                    JAPÃO
                 </span>
 
             </a>
