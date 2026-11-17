@@ -1,12 +1,10 @@
-
 <?php
 session_start();
 
-// Encerra a sessão do administrador
 session_unset();
 session_destroy();
 
-// Redireciona para a página principal
+// Volta para a página principal do site
 header("Location: ../index.php");
 exit;
 ?>
