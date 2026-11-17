@@ -1,8 +1,11 @@
 <?php
-$dados = require_once '../templates/dados.php';
+
+require_once __DIR__ . '/../../database/conexao.php';
+
+$dados = require __DIR__ . '/../templates/dados.php';
 $patrimonios = $dados['patrimonios'];
 
-include_once '../templates/header.php';
+include_once __DIR__ . '/../templates/header.php';
 
 if (!function_exists('e')) {
     function e(string $texto): string
@@ -10,6 +13,41 @@ if (!function_exists('e')) {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
     }
 }
+
+$imagensPadrao = [
+    'patrimonios_banner' => 'assets/img/patrimonios/banner.png',
+    'patrimonios_memoria' => 'assets/img/patrimonios/memoria.png',
+    'patrimonios_monte' => 'assets/img/patrimonios/monte.png',
+    'patrimonios_santuario' => 'assets/img/patrimonios/santuario.png',
+    'patrimonios_castelo' => 'assets/img/patrimonios/castelo.png'
+];
+
+$imagensSite = $imagensPadrao;
+
+if (isset($conn) && $conn instanceof mysqli) {
+    $resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+
+    if ($resultado) {
+        while ($imagem = $resultado->fetch_assoc()) {
+            $chave = $imagem['chave'];
+            $caminho = trim($imagem['caminho']);
+
+            if (isset($imagensPadrao[$chave]) && $caminho !== '') {
+                $imagensSite[$chave] = $caminho;
+            }
+        }
+
+        $resultado->free();
+    }
+}
+
+function imagemPatrimonio(string $chave): string
+{
+    global $imagensSite;
+
+    return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
+}
+
 ?>
 
 <style>
@@ -27,7 +65,7 @@ if (!function_exists('e')) {
     .heritage-page .heritage-hero {
         background:
             linear-gradient(105deg, rgba(10, 30, 30, .95), rgba(10, 30, 30, .68) 48%, rgba(10, 30, 30, .12)),
-            url('../img/patrimonios/banner.png') center / cover;
+            url('<?= htmlspecialchars(imagemPatrimonio('patrimonios_banner')) ?>') center / cover;
     }
 
     .heritage-page .heritage-paper {
@@ -154,7 +192,7 @@ if (!function_exists('e')) {
             </div>
             <div class="relative min-h-[430px]">
                 <div class="overflow-hidden absolute inset-0">
-                    <img src="../img/patrimonios/memoria.png" alt="Arquitetura tradicional japonesa" class="heritage-photo h-full w-full object-cover">
+                    <img src="<?= htmlspecialchars(imagemPatrimonio('patrimonios_memoria')) ?>" alt="Arquitetura tradicional japonesa" class="heritage-photo h-full w-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/80 via-transparent to-transparent"></div>
                 </div>
                 <p class="border-l border-[#d9ae72]/60 pl-2 tracking-[.18em] absolute right-5 top-6 text-xs text-white/70">é™ · ç¾Ž · 伝 · çµ†</p>
@@ -223,10 +261,10 @@ if (!function_exists('e')) {
                 <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Da montanha<br><span class="text-[#b83a36]">ao santuário.</span></h2>
             </div>
             <div class="grid gap-5 md:grid-cols-[1.25fr_.75fr]">
-                <div class="overflow-hidden relative min-h-[430px]"><img src="../img/patrimonios/monte.png" alt="Monte Fuji" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 via-transparent to-transparent"></div><div class="absolute bottom-7 left-7 text-white"><p class="tracking-[.2em] text-[9px] text-[#d9ae72]">PAISAGEM CULTURAL</p><p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-4xl">Monte Fuji</p></div></div>
+                <div class="overflow-hidden relative min-h-[430px]"><img src="<?= e(imagemPatrimonio('patrimonios_monte')) ?>" alt="Monte Fuji" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 via-transparent to-transparent"></div><div class="absolute bottom-7 left-7 text-white"><p class="tracking-[.2em] text-[9px] text-[#d9ae72]">PAISAGEM CULTURAL</p><p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-4xl">Monte Fuji</p></div></div>
                 <div class="grid gap-5 sm:grid-cols-2 md:grid-cols-1">
-                    <div class="overflow-hidden relative min-h-[205px]"><img src="../img/patrimonios/santuario.png" alt="Santuário japonês" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 to-transparent"></div><p class="absolute bottom-5 left-5 font-['Playfair_Display'] tracking-[-.055em] text-2xl text-white">Espiritualidade</p></div>
-                    <div class="overflow-hidden relative min-h-[205px]"><img src="../img/patrimonios/castelo.png" alt="Castelo japonês" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 to-transparent"></div><p class="absolute bottom-5 left-5 font-['Playfair_Display'] tracking-[-.055em] text-2xl text-white">Fortaleza</p></div>
+                    <div class="overflow-hidden relative min-h-[205px]"><img src="<?= e(imagemPatrimonio('patrimonios_santuario')) ?>" alt="Santuário japonês" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 to-transparent"></div><p class="absolute bottom-5 left-5 font-['Playfair_Display'] tracking-[-.055em] text-2xl text-white">Espiritualidade</p></div>
+                    <div class="overflow-hidden relative min-h-[205px]"><img src="<?= e(imagemPatrimonio('patrimonios_castelo')) ?>" alt="Castelo japonês" class="heritage-photo absolute inset-0 h-full w-full object-cover"><div class="absolute inset-0 bg-gradient-to-t from-[#102c2b]/85 to-transparent"></div><p class="absolute bottom-5 left-5 font-['Playfair_Display'] tracking-[-.055em] text-2xl text-white">Fortaleza</p></div>
                 </div>
             </div>
         </div>
