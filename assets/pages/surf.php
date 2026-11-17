@@ -1,5 +1,43 @@
 <?php
-include_once("../templates/header.php");
+
+require_once __DIR__ . '/../../database/conexao.php';
+
+include_once __DIR__ . '/../templates/header.php';
+
+$imagensPadrao = [
+    'surf_banner' => 'assets/img/surf/surfBanner.png',
+    'surf_praia' => 'assets/img/surf/praia.png',
+    'surf_shonan' => 'assets/img/surf/shonan.png',
+    'surf_chiba' => 'assets/img/surf/chiba.png',
+    'surf_kanoa' => 'assets/img/surf/kanoa.png'
+];
+
+$imagensSite = $imagensPadrao;
+
+if (isset($conn) && $conn instanceof mysqli) {
+    $resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+
+    if ($resultado) {
+        while ($imagem = $resultado->fetch_assoc()) {
+            $chave = $imagem['chave'];
+            $caminho = trim($imagem['caminho']);
+
+            if (isset($imagensPadrao[$chave]) && $caminho !== '') {
+                $imagensSite[$chave] = $caminho;
+            }
+        }
+
+        $resultado->free();
+    }
+}
+
+function imagemSurf(string $chave): string
+{
+    global $imagensSite;
+
+    return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
+}
+
 ?>
 
 <style>
@@ -18,7 +56,7 @@ include_once("../templates/header.php");
     .surf-page .surf-hero {
         background:
             linear-gradient(105deg, rgba(3, 18, 30, .96), rgba(3, 18, 30, .72) 45%, rgba(3, 18, 30, .1)),
-            url('../img/surf/surfBanner.png') center / cover;
+            url('<?= htmlspecialchars(imagemSurf('surf_banner')) ?>') center / cover;
     }
 
     .surf-page .surf-wave-pattern {
@@ -193,8 +231,7 @@ include_once("../templates/header.php");
             </div>
             <div class="relative min-h-[430px]">
                 <div class="overflow-hidden absolute inset-0">
-                    <img src="../img/surf/praia.png" alt="Surfista em uma onda no litoral japonês" class="surf-photo h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#071b2a]/80 via-transparent to-transparent"></div>
+<img src="<?= htmlspecialchars(imagemSurf('surf_praia')) ?>" alt="Surfista em uma onda no litoral japonês" class="surf-photo h-full w-full object-cover">                    <div class="absolute inset-0 bg-gradient-to-t from-[#071b2a]/80 via-transparent to-transparent"></div>
                 </div>
                 <p class="[writing-mode:vertical-rl] tracking-[.28em] absolute right-5 top-6 text-xs text-white/70">海 · 風 · 波 · è‡ªç”±</p>
                 <div class="absolute bottom-7 left-7">
@@ -253,7 +290,7 @@ include_once("../templates/header.php");
             </div>
             <div class="grid gap-6 md:grid-cols-2">
                 <article class="overflow-hidden group relative min-h-[420px]">
-                    <img src="../img/surf/shonan.png" alt="Praia de Shonan, no Japão" class="surf-photo absolute inset-0 h-full w-full object-cover">
+                    <img src="<?= htmlspecialchars(imagemSurf('surf_shonan')) ?>" alt="Praia de Shonan, no Japão" class="surf-photo absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#071b2a]/95 via-[#071b2a]/20 to-transparent"></div>
                     <div class="absolute bottom-7 left-7">
                         <p class="tracking-[.2em] text-[9px] text-[#f08b82]">KANAGAWA · 35°N</p>
@@ -262,7 +299,7 @@ include_once("../templates/header.php");
                     </div>
                 </article>
                 <article class="overflow-hidden group relative min-h-[420px]">
-                    <img src="../img/surf/chiba.png" alt="Litoral de Chiba, no Japão" class="surf-photo absolute inset-0 h-full w-full object-cover">
+                    <img src="<?= htmlspecialchars(imagemSurf('surf_chiba')) ?>" alt="Litoral de Chiba, no Japão" class="surf-photo absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#071b2a]/95 via-[#071b2a]/20 to-transparent"></div>
                     <div class="absolute bottom-7 left-7">
                         <p class="tracking-[.2em] text-[9px] text-[#f08b82]">CHIBA · 35°N</p>
@@ -278,8 +315,7 @@ include_once("../templates/header.php");
     <section class="surf-paper px-6 py-24 md:px-10 md:py-32">
         <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1.05fr_.95fr] lg:items-center">
             <div class="overflow-hidden relative min-h-[450px]">
-                <img src="../img/surf/kanoa.png" alt="Surfista durante as Olimpíadas de Tóquio" class="surf-photo absolute inset-0 h-full w-full object-cover">
-                <div class="absolute left-6 top-6 bg-[#c72b30] px-4 py-3 text-white">
+<img src="<?= htmlspecialchars(imagemSurf('surf_kanoa')) ?>" alt="Surfista durante as Olimpíadas de Tóquio" class="surf-photo absolute inset-0 h-full w-full object-cover">                <div class="absolute left-6 top-6 bg-[#c72b30] px-4 py-3 text-white">
                     <p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2020</p>
                     <p class="tracking-[.2em] text-[8px]">TOKYO OLYMPICS</p>
                 </div>

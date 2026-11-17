@@ -302,12 +302,12 @@ function imagemCulinaria(string $chave): string
                 </div>
                 <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
                 <article class="group washoku-card overflow-hidden bg-white">
-                    <div class="overflow-hidden relative h-52"><img src="../img/culinaria/ramen.png" alt="Ramen japonês" class="washoku-photo h-full w-full object-cover"></div>
+                    <div class="overflow-hidden relative h-52"><img ssrc="<?= htmlspecialchars(imagemCulinaria('culinaria_ramen')) ?>"rc="../img/culinaria/ramen.png" alt="Ramen japonês" class="washoku-photo h-full w-full object-cover"></div>
                     <div class="washoku-steam" aria-hidden="true"><span></span><span></span></div>
                     <div class="p-5"><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">03 / CALOR</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-2 text-3xl">Ramen</h3><p class="mt-2 text-xs leading-6 text-[#68736e]">Caldo, vapor e conforto em uma tigela.</p></div>
                 </article>
                 <article class="group washoku-card overflow-hidden bg-white sm:translate-y-7">
-                    <div class="overflow-hidden relative h-52"><img src="../img/culinaria/yakisoba.png" alt="Yakisoba japonês" class="washoku-photo h-full w-full object-cover"></div>
+                    <div class="overflow-hidden relative h-52"><img src="<?= htmlspecialchars(imagemCulinaria('culinaria_yakisoba')) ?>" alt="Yakisoba japonês" class="washoku-photo h-full w-full object-cover"></div>
                     <div class="p-5"><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">04 / RUA</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-2 text-3xl">Yakisoba</h3><p class="mt-2 text-xs leading-6 text-[#68736e]">O encontro vibrante entre cidade e tradição.</p></div>
                 </article>
                 </div>
@@ -320,7 +320,7 @@ function imagemCulinaria(string $chave): string
         <div class="mx-auto max-w-7xl">
             <div class="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-center">
                 <div class="relative min-h-[410px] overflow-hidden">
-                    <img src="../img/culinaria/japonesCozinhando.png" alt="Chef japonês preparando alimentos" class="washoku-photo absolute inset-0 h-full w-full object-cover">
+                    <img src="<?= htmlspecialchars(imagemCulinaria('culinaria_chef')) ?>" alt="Chef japonês preparando alimentos" class="washoku-photo absolute inset-0 h-full w-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-[#0b2528] via-transparent to-transparent"></div>
                     <p class="[writing-mode:vertical-rl] tracking-[.3em] absolute right-5 top-6 text-xs text-white/60">山 · 川 · 海 · 森</p>
                     <div class="absolute bottom-6 left-6">

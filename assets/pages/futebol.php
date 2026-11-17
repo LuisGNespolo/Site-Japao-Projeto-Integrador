@@ -1,6 +1,48 @@
+
 <?php
-include_once("../templates/header.php");
+
+require_once __DIR__ . '/../../database/conexao.php';
+
+include_once __DIR__ . '/../templates/header.php';
+
+$imagensPadrao = [
+    'futebol_banner' => 'assets/img/futebol/banner.png',
+    'futebol_mulheres' => 'assets/img/futebol/mulheres.png'
+];
+
+$imagensSite = $imagensPadrao;
+
+if (isset($conn) && $conn instanceof mysqli) {
+    $resultado = $conn->query(
+        "SELECT chave, caminho FROM imagens_site"
+    );
+
+    if ($resultado) {
+        while ($imagem = $resultado->fetch_assoc()) {
+            $chave = $imagem['chave'];
+            $caminho = trim($imagem['caminho']);
+
+            if (isset($imagensPadrao[$chave]) && $caminho !== '') {
+                $imagensSite[$chave] = $caminho;
+            }
+        }
+
+        $resultado->free();
+    }
+}
+
+function imagemFutebol(string $chave): string
+{
+    global $imagensSite;
+
+    return '../../' . ltrim(
+        $imagensSite[$chave] ?? '',
+        '/'
+    );
+}
+
 ?>
+
 
 <style>
     .jfa-page {
@@ -17,7 +59,7 @@ include_once("../templates/header.php");
     .jfa-page .jfa-hero {
         background:
             linear-gradient(110deg, rgba(3, 13, 23, .98) 0%, rgba(3, 13, 23, .84) 43%, rgba(3, 13, 23, .15) 100%),
-            url('../img/futebol/banner.png') center / cover;
+            url('<?= htmlspecialchars(imagemFutebol('futebol_banner')) ?>') center / cover;
     }
 
     .jfa-page .jfa-red-line {
@@ -284,8 +326,7 @@ include_once("../templates/header.php");
                     </div>
                 </div>
                 <div class="overflow-hidden order-1 relative h-[430px] bg-[#d8cfc3] lg:order-2">
-                    <img src="../img/futebol/mulheres.png" alt="Jogadoras japonesas em uma partida de futebol" class="jfa-photo h-full w-full object-cover">
-                    <div class="absolute left-5 top-5 bg-[#f5f2eb] px-4 py-3 text-[#071a2b] shadow-lg">
+<img src="<?= htmlspecialchars(imagemFutebol('futebol_mulheres')) ?>" alt="Jogadoras japonesas em uma partida de futebol" class="jfa-photo h-full w-full object-cover">                    <div class="absolute left-5 top-5 bg-[#f5f2eb] px-4 py-3 text-[#071a2b] shadow-lg">
                         <p class="tabular-nums tracking-[.12em] text-[9px] font-bold">NADESHIKO</p>
                         <p class="text-xs text-[#52606c]">æ’«å­ · força delicada</p>
                     </div>
