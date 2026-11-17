@@ -1,5 +1,9 @@
+
 <?php
-$dados = require './assets/templates/dados.php';
+
+require_once __DIR__ . '/database/conexao.php';
+
+$dados = require __DIR__ . '/assets/templates/dados.php';
 $cardsExplorar = $dados['cards_explorar'];
 
 if (!function_exists('e')) {
@@ -8,7 +12,54 @@ if (!function_exists('e')) {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
     }
 }
+
+// Caminhos originais usados como alternativa
+$imagensPadrao = [
+    'home_banner' => 'assets/img/home/banner.png',
+    'home_fundo' => 'assets/img/home/fundo.png',
+    'home_cultura' => 'assets/img/home/cultura.png',
+    'home_arquitetura' => 'assets/img/home/arquitetura.png',
+    'home_paisagem' => 'assets/img/home/paisagem.png'
+];
+
+// Começa com os caminhos originais
+$imagensSite = $imagensPadrao;
+
+// Busca os caminhos atualizados no banco
+if (isset($conn) && $conn instanceof mysqli) {
+    $resultadoImagens = $conn->query(
+        "SELECT chave, caminho FROM imagens_site"
+    );
+
+    if ($resultadoImagens) {
+        while ($imagem = $resultadoImagens->fetch_assoc()) {
+            $chave = $imagem['chave'];
+            $caminho = trim($imagem['caminho']);
+
+            if (
+                isset($imagensPadrao[$chave]) &&
+                $caminho !== ''
+            ) {
+                $imagensSite[$chave] = $caminho;
+            }
+        }
+
+        $resultadoImagens->free();
+    }
+}
+
+// Retorna o caminho pronto para ser usado no HTML
+function imagemSite(string $chave): string
+{
+    global $imagensSite;
+
+    $caminho = $imagensSite[$chave] ?? '';
+
+    return './' . ltrim($caminho, '/');
+}
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -113,7 +164,7 @@ if (!function_exists('e')) {
 
             <div
                 class="absolute inset-0 -z-20 bg-cover bg-center"
-                style="background-image: url('./assets/img/home/banner.png');"></div>
+                style="background-image: url('<?= e(imagemSite('home_banner')) ?>');"></div>
 
             <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#071018]/95 via-[#071018]/65 to-[#071018]/10"></div>
 
@@ -227,7 +278,7 @@ if (!function_exists('e')) {
                     <div class="space-y-4">
 
                         <img
-                            src="./assets/img/home/paisagem.png"
+                            src="<?= e(imagemSite('home_paisagem')) ?>"
                             alt="Paisagem japonesa"
                             loading="lazy"
                             class="h-64 w-full rounded-sm object-cover shadow-lg md:h-80">
@@ -261,7 +312,7 @@ if (!function_exists('e')) {
                         </div>
 
                         <img
-                            src="./assets/img/home/arquitetura.png"
+                            src="<?= e(imagemSite('home_arquitetura')) ?>"
                             alt="Arquitetura japonesa"
                             loading="lazy"
                             class="h-64 w-full rounded-sm object-cover shadow-lg md:h-80">
@@ -279,7 +330,7 @@ if (!function_exists('e')) {
 
         <!-- FRASE DE DESTAQUE -->
         <section class="relative isolate overflow-hidden bg-cover bg-center bg-no-repeat px-6 py-24 text-center md:py-32"
-            style="background-image: url('./assets/img/home/fundo.png');">
+            style="background-image: url('<?= e(imagemSite('home_fundo')) ?>');">
 
             <!-- Camada escura para melhorar a leitura -->
             <div class="absolute inset-0 -z-10 bg-[#071018]/75"></div>
@@ -406,7 +457,7 @@ if (!function_exists('e')) {
                 <div class="relative min-h-[350px] overflow-hidden lg:min-h-[550px]">
 
                     <img
-                        src="./assets//img/home/cultura.png"
+                        src="<?= e(imagemSite('home_cultura')) ?>"
                         alt="Paisagem japonesa"
                         loading="lazy"
                         class="absolute inset-0 h-full w-full object-cover transition duration-700 hover:scale-105">

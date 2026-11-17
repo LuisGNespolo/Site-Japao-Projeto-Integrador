@@ -1,6 +1,52 @@
+
 <?php
-include_once("../templates/header.php");
+
+require_once __DIR__ . '/../../database/conexao.php';
+
+include_once __DIR__ . '/../templates/header.php';
+
+$imagensPadrao = [
+    'culinaria_banner' => 'assets/img/culinaria/banner.png',
+    'culinaria_sushi' => 'assets/img/culinaria/sushi.png',
+    'culinaria_sashimi' => 'assets/img/culinaria/sashimi.png',
+    'culinaria_ramen' => 'assets/img/culinaria/ramen.png',
+    'culinaria_yakisoba' => 'assets/img/culinaria/yakisoba.png',
+    'culinaria_chef' => 'assets/img/culinaria/japonesCozinhando.png'
+];
+
+$imagensSite = $imagensPadrao;
+
+if (isset($conn) && $conn instanceof mysqli) {
+    $resultado = $conn->query(
+        "SELECT chave, caminho FROM imagens_site"
+    );
+
+    if ($resultado) {
+        while ($imagem = $resultado->fetch_assoc()) {
+            $chave = $imagem['chave'];
+            $caminho = trim($imagem['caminho']);
+
+            if (isset($imagensPadrao[$chave]) && $caminho !== '') {
+                $imagensSite[$chave] = $caminho;
+            }
+        }
+
+        $resultado->free();
+    }
+}
+
+function imagemCulinaria(string $chave): string
+{
+    global $imagensSite;
+
+    return '../../' . ltrim(
+        $imagensSite[$chave] ?? '',
+        '/'
+    );
+}
+
 ?>
+
 
 <style>
     .washoku-page {
@@ -18,7 +64,7 @@ include_once("../templates/header.php");
     .washoku-page .washoku-hero {
         background:
             linear-gradient(90deg, rgba(6, 25, 27, .94), rgba(6, 25, 27, .67) 48%, rgba(6, 25, 27, .13)),
-            url('../img/culinaria/banner.png') center / cover;
+            url('<?= htmlspecialchars(imagemCulinaria('culinaria_banner')) ?>')center / cover;
     }
 
     .washoku-page .washoku-paper {
@@ -243,13 +289,13 @@ include_once("../templates/header.php");
                 <div class="divide-y divide-[#132b2c]/10">
                 <article class="group washoku-card overflow-hidden bg-white">
                     <div class="washoku-menu-item flex items-center gap-5 bg-white px-5">
-                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img src="../img/culinaria/sushi.png" alt="Sushi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
+                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img 	src="<?= htmlspecialchars(imagemCulinaria('culinaria_sushi')) ?>" alt="Sushi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
                         <div><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">01 / MAR</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-1 text-3xl">Sushi</h3><p class="mt-1 text-xs text-[#68736e]">Precisão, frescor e simplicidade.</p></div>
                     </div>
                 </article>
                 <article class="group washoku-card overflow-hidden bg-white sm:translate-y-7">
                     <div class="washoku-menu-item flex items-center gap-5 bg-white px-5">
-                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img src="../img/culinaria/sashimi.png" alt="Sashimi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
+                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img src="<?= htmlspecialchars(imagemCulinaria('culinaria_sashimi')) ?>" alt="Sashimi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
                         <div><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">02 / OCEANO</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-1 text-3xl">Sashimi</h3><p class="mt-1 text-xs text-[#68736e]">A fauna marinha no seu estado mais puro.</p></div>
                     </div>
                 </article>

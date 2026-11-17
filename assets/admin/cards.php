@@ -669,12 +669,19 @@ $totalInativos = $conn->query("SELECT COUNT(*) AS total FROM cards WHERE ativo =
             </div>
         </section>
 
-        <div class="mt-8 text-center">
-            <a href="index.php" class="text-sm text-gray-500 hover:text-[#a52828]">
-                <i class="bi bi-arrow-left mr-1"></i>
-                Voltar ao painel administrativo
-            </a>
-        </div>
+        <footer class="mt-14 border-t border-[#e8dfd2] py-6">
+
+            <div class="flex flex-col justify-between gap-3 text-xs text-[#a69a90] sm:flex-row">
+
+                <p>Japão Integrador · Administração</p>
+
+                <p class="tracking-[0.2em]">
+                    日本 — CULTURA E TRADIÇÃO
+                </p>
+
+            </div>
+
+        </footer>
 
     </main>
 
