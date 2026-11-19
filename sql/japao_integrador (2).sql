@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 19/11/2026 às 15:13
+-- Tempo de geração: 19/11/2026 às 16:07
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -209,22 +209,23 @@ CREATE TABLE `lendas` (
   `texto_completo` text DEFAULT NULL,
   `imagem` varchar(255) DEFAULT NULL,
   `ordem` int(11) NOT NULL DEFAULT 0,
-  `ativo` tinyint(1) NOT NULL DEFAULT 1
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `identificador` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `lendas`
 --
 
-INSERT INTO `lendas` (`id`, `nome`, `nome_japones`, `romanizacao`, `resumo`, `texto_completo`, `imagem`, `ordem`, `ativo`) VALUES
-(1, 'Onibaba', '鬼婆', 'Onibaba', 'Mulher transformada em demônio.', 'Escreva aqui a história completa da lenda.', 'img/lenda-1.jpg', 1, 1),
-(2, 'Lenda 2', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-2.jpg', 2, 1),
-(3, 'Lenda 3', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-3.jpg', 3, 1),
-(4, 'Lenda 4', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-4.jpg', 4, 1),
-(5, 'Lenda 5', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-5.jpg', 5, 1),
-(6, 'Lenda 6', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-6.jpg', 6, 1),
-(7, 'Lenda 7', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-7.jpg', 7, 1),
-(8, 'Lenda 8', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-8.jpg', 8, 1);
+INSERT INTO `lendas` (`id`, `nome`, `nome_japones`, `romanizacao`, `resumo`, `texto_completo`, `imagem`, `ordem`, `ativo`, `identificador`) VALUES
+(1, 'Kuchisake-onna', '口裂け女 (Kuchisake-onna)', 'Onibaba', 'A mulher da boca cortada', 'SIGNIFICADO\r\nMulher da boca cortada\r\n\r\nHISTÓRIA\r\nKuchisake-onna é uma das lendas urbanas mais conhecidas do Japão. Ela é descrita como uma mulher misteriosa, de cabelos longos e escuros, que costuma usar uma máscara cirúrgica para esconder uma enorme cicatriz que se estende de um canto da boca ao outro.\r\n\r\nSegundo a versão mais popular da história, ela teria sido uma mulher muito bonita que sofreu uma mutilação no rosto. Em algumas versões, seu agressor seria seu próprio marido, que teria agido por ciúme. Depois disso, ela teria se transformado em um espírito vingativo que persegue pessoas pelas ruas.\r\n\r\nA lenda ganhou popularidade no Japão entre 1978 e 1979, quando rumores sobre uma mulher com a boca cortada começaram a se espalhar entre crianças e estudantes. A história ficou tão conhecida que provocou medo em várias comunidades e levou alguns pais a acompanharem seus filhos no caminho para a escola.\r\n\r\nCOMO AGE\r\nKuchisake-onna costuma abordar pessoas na rua e perguntar: \"Eu sou bonita?\". Se a vítima responder que sim, ela retira a máscara e revela sua boca deformada, perguntando novamente se continua bonita. Na maioria das versões, qualquer resposta pode resultar em um ataque.\r\n\r\nAlgumas histórias afirmam que ela carrega uma tesoura ou uma faca e consegue correr em uma velocidade sobrenatural. Outras apresentam maneiras de escapar, como distraí-la com doces ou dar uma resposta que a confunda.\r\n\r\nCURIOSIDADE\r\nApesar de algumas versões tentarem relacioná-la a histórias antigas de fantasmas japoneses, a fama moderna da Kuchisake-onna está documentada principalmente a partir do final da década de 1970. Ela se tornou uma figura popular em filmes, mangás e jogos de terror.', '../img/lendas/lenda1.png', 1, 1, 'kuchisake-onna'),
+(2, 'Aka Manto', '赤マント (Aka Manto)', NULL, 'O homem do manto vermelho', 'SIGNIFICADO\nManto vermelho\n\nHISTÓRIA\nAka Manto é uma lenda urbana japonesa que, segundo o relato mais comum, tem como cenário os banheiros das escolas. Ele aparece como uma figura coberta por um manto vermelho, com o rosto escondido.\n\nA história diz que, ao ficar sozinha em uma cabine, a pessoa ouve uma voz perguntando se ela prefere papel vermelho ou papel azul. A escolha da cor decide o destino da vítima, e nenhuma das respostas termina bem.\n\nCURIOSIDADE\nA lenda circula entre estudantes há várias décadas e ganhou muitas variações ao longo do tempo, passando de boca em boca nas escolas do país.', '../img/lendas/lenda2.png', 2, 1, 'aka-manto'),
+(3, 'Teke Teke', 'テケテケ (Teke Teke)', NULL, 'O espírito que se arrasta', 'SIGNIFICADO\nOnomatopeia do som de arrastar\n\nHISTÓRIA\nTeke Teke é o espírito de uma jovem que, segundo a lenda, teria sido atingida por um trem e partida ao meio. Desde então, ela vaga em busca de vingança, arrastando-se pelo chão com os braços.\n\nO nome vem do som que ela faz ao se mover, uma imitação do barulho de algo sendo arrastado. Quem ouve esse ruído se aproximando precisa fugir o mais rápido possível.\n\nCURIOSIDADE\nA história se espalhou principalmente a partir dos anos 1990 e hoje aparece em filmes, quadrinhos e jogos de terror.', '../img/lendas/lenda3.png', 3, 1, 'teke-teke'),
+(4, 'Amaterasu', '天照大神 (Amaterasu Ōmikami)', NULL, 'A deusa do Sol', 'SIGNIFICADO\nA grande divindade que brilha no céu\n\nHISTÓRIA\nAmaterasu é a deusa do Sol na mitologia japonesa e uma das divindades mais importantes do xintoísmo. Tradicionalmente, a família imperial japonesa é considerada descendente dela.\n\nEm um dos mitos mais conhecidos, Amaterasu se escondeu em uma caverna após um conflito com o irmão, Susanoo, e o mundo mergulhou na escuridão. Os outros deuses a convenceram a sair com uma festa e um espelho, e a luz voltou ao mundo.\n\nCURIOSIDADE\nO principal santuário dedicado a ela é o Santuário de Ise, um dos locais mais sagrados do Japão.', '../img/lendas/lenda4.png', 4, 1, 'amaterasu'),
+(5, 'Tsukuyomi', '月読命 (Tsukuyomi-no-Mikoto)', NULL, 'O deus da Lua', 'SIGNIFICADO\nAquele que conta as luas\n\nHISTÓRIA\nTsukuyomi é o deus da Lua na mitologia japonesa e irmão de Amaterasu e Susanoo. Ele aparece de forma discreta nos relatos mais antigos.\n\nSegundo uma das tradições, ele foi enviado para visitar a deusa Uke Mochi e, ofendido com a forma como ela preparava a comida, a matou. Irritada, Amaterasu se recusou a vê-lo novamente, e é por isso que o Sol e a Lua nunca se encontram no céu, dando origem ao dia e à noite.\n\nCURIOSIDADE\nO nome Tsukuyomi está ligado à contagem do tempo pelo calendário lunar.', '../img/lendas/lenda5.png', 5, 1, 'tsukuyomi'),
+(6, 'Susanoo', '須佐之男 (Susanoo-no-Mikoto)', NULL, 'O deus das tempestades', 'SIGNIFICADO\nO deus impetuoso\n\nHISTÓRIA\nSusanoo é o deus das tempestades e do mar, conhecido por seu temperamento forte. Depois de causar problemas no céu, foi expulso e desceu à Terra.\n\nLá, ele enfrentou a serpente de oito cabeças Yamata no Orochi, que ameaçava uma família. Susanoo derrotou o monstro e, dentro de seu corpo, encontrou a espada Kusanagi, que se tornou um dos tesouros sagrados do Japão.\n\nCURIOSIDADE\nA espada Kusanagi é um dos três tesouros sagrados que simbolizam a autoridade imperial japonesa.', '../img/lendas/lenda6.png', 6, 1, 'susanoo'),
+(7, 'Lenda 7', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-7.jpg', 7, 1, 'lenda-7'),
+(8, 'Lenda 8', NULL, NULL, 'Resumo da lenda.', 'Escreva aqui a história completa da lenda.', 'img/lenda-8.jpg', 8, 1, 'lenda-8');
 
 -- --------------------------------------------------------
 
@@ -302,9 +303,9 @@ CREATE TABLE `paginas` (
 --
 
 INSERT INTO `paginas` (`id`, `slug`, `titulo`, `hero_imagem`, `hero_titulo`, `hero_subtitulo`, `hero_kanji`, `meta_descricao`, `ativo`, `atualizado_em`) VALUES
-(1, 'inicio', 'Início', 'img/hero-fuji-pagoda.jpg', 'Japão', 'Uma viagem pela cultura, história e tradições do país do sol nascente.', '日本', NULL, 1, '2026-11-10 16:04:42'),
-(2, 'historia', 'História', 'img/hero-futebol.jpg', 'História', 'Do período feudal à era moderna: os marcos que formaram o Japão.', '足球', NULL, 1, '2026-11-10 16:04:42'),
-(3, 'culinaria', 'Culinária', 'img/hero-sushi.jpg', 'Culinária', 'Sabores, técnicas e a arte de preparar a comida japonesa.', '食物', NULL, 1, '2026-11-10 16:04:42'),
+(1, 'inicio', 'Início', 'img/hero-fuji-pagoda.jpg', 'Japão', 'Uma viagem pela cultura, história e tradições do país do sol nascente.', '日本', '', 1, '2026-11-19 14:21:17'),
+(2, 'Futebol', 'Futebol', 'img/hero-futebol.jpg', 'Futebol', 'Historia do Futebol Japonês.', '足球', '', 1, '2026-11-19 14:46:42'),
+(3, 'culinaria', 'Culinária', 'img/hero-sushi.jpg', 'Culinária', 'Sabores, técnicas e a arte de preparar a comida japonesa.', '食物', '', 1, '2026-11-19 14:46:11'),
 (4, 'surfe', 'Surfe', 'img/hero-surfe.jpg', 'O surfe no Japão', 'Ondas, cultura e a chegada do surfe às Olimpíadas.', NULL, NULL, 1, '2026-11-10 16:04:42'),
 (5, 'patrimonios', 'Patrimônios', 'img/hero-fuji-pagoda.jpg', 'Patrimônios que contam histórias', 'Lugares que preservam a memória do povo japonês.', NULL, NULL, 1, '2026-11-10 16:04:42'),
 (6, 'lendas', 'Lendas', 'img/hero-lendas.jpg', 'Entre deuses, monstros e lendas', 'Criaturas e histórias do folclore japonês.', NULL, NULL, 1, '2026-11-10 16:04:42');
@@ -434,7 +435,8 @@ ALTER TABLE `imagens_site`
 -- Índices de tabela `lendas`
 --
 ALTER TABLE `lendas`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `identificador` (`identificador`);
 
 --
 -- Índices de tabela `linha_tempo`
@@ -506,7 +508,7 @@ ALTER TABLE `imagens_site`
 -- AUTO_INCREMENT de tabela `lendas`
 --
 ALTER TABLE `lendas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT de tabela `linha_tempo`

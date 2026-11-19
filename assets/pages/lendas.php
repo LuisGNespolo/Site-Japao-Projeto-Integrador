@@ -1,55 +1,177 @@
+
 <?php
 
 require_once __DIR__ . '/../../database/conexao.php';
 
 $dados = require __DIR__ . '/../templates/dados.php';
 
-$lendas = array_values($dados['lendas']);
+$lendasOriginais = array_values($dados['lendas'] ?? []);
+
+$originaisPorId = [];
+
+foreach ($lendasOriginais as $original) {
+    $originaisPorId[$original['id']] = $original;
+}
+
+// Busca as imagens cadastradas no painel administrativo.
 
 $imagensSite = [];
 
-$resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+$resultadoImagens = $conn->query(
+    "SELECT chave, caminho FROM imagens_site"
+);
 
-if ($resultado) {
-    while ($imagem = $resultado->fetch_assoc()) {
+if ($resultadoImagens) {
+    while ($imagem = $resultadoImagens->fetch_assoc()) {
         $imagensSite[$imagem['chave']] = $imagem['caminho'];
     }
 
-    $resultado->free();
+    $resultadoImagens->free();
 }
 
-// Substitui as imagens originais pelas imagens do banco
-foreach ($lendas as &$lenda) {
+// Função para carregar as imagens.
 
-    $id = $lenda['id'];
+if (!function_exists('imagemLenda')) {
+    function imagemLenda(string $chave): string
+    {
+        global $imagensSite;
 
-    $chaveImagem = "lenda_{$id}_imagem";
-    $chaveBanner = "lenda_{$id}_banner";
+        $caminho = $imagensSite[$chave]
+            ?? 'assets/img/lendas/banner-noite.png';
 
-    if (!empty($imagensSite[$chaveImagem])) {
-        $lenda['imagem'] = '../../' . ltrim($imagensSite[$chaveImagem], '/');
-    }
-
-    if (!empty($imagensSite[$chaveBanner])) {
-        $lenda['banner'] = '../../' . ltrim($imagensSite[$chaveBanner], '/');
+        return '../../' . ltrim($caminho, '/');
     }
 }
 
-unset($lenda);
+// Busca somente as lendas ativas no banco.
+
+$sql = "SELECT
+            identificador,
+            nome,
+            nome_japones,
+            romanizacao,
+            resumo,
+            texto_completo,
+            imagem,
+            ordem,
+            ativo
+        FROM lendas
+        WHERE ativo = 1
+        ORDER BY ordem ASC, id ASC";
+
+$resultadoLendas = $conn->query($sql);
+
+$lendas = [];
+
+if ($resultadoLendas) {
+
+    while ($registro = $resultadoLendas->fetch_assoc()) {
+
+        $id = $registro['identificador'];
+
+        // Recupera os dados originais para preservar
+        // informações que não são editadas no painel.
+
+        $lenda = $originaisPorId[$id] ?? [
+            'id' => $id,
+            'nome' => '',
+            'nome_japones' => '',
+            'subtitulo' => '',
+            'significado' => '',
+            'historia' => [],
+            'como_age' => [],
+            'curiosidade' => '',
+            'imagem' => '',
+            'banner' => ''
+        ];
+
+        // Atualiza as informações editáveis.
+
+        $lenda['id'] = $id;
+        $lenda['nome'] = $registro['nome'];
+        $lenda['nome_japones'] = $registro['nome_japones'];
+        $lenda['romanizacao'] = $registro['romanizacao'];
+        $lenda['subtitulo'] = $registro['resumo'];
+
+        // Recupera as seções da história salvas no banco.
+
+        $texto = $registro['texto_completo'] ?? '';
+
+        $secoes = [
+            'significado' => 'SIGNIFICADO',
+            'historia' => 'HISTÓRIA',
+            'como_age' => 'COMO AGE',
+            'curiosidade' => 'CURIOSIDADE'
+        ];
+
+        $titulos = implode('|', array_map(
+            fn($titulo) => preg_quote($titulo, '/'),
+            array_values($secoes)
+        ));
+
+        foreach ($secoes as $campo => $titulo) {
+
+            $padrao = '/(?:^|\R)' . preg_quote($titulo, '/') .
+                '\s*\R(.*?)(?=\R(?:' . $titulos . ')\s*\R|$)/is';
+
+            if (preg_match($padrao, $texto, $matches)) {
+
+                $conteudo = trim($matches[1]);
+
+                if ($campo === 'historia' || $campo === 'como_age') {
+                    $lenda[$campo] = preg_split(
+                        '/\R{2,}/',
+                        $conteudo,
+                        -1,
+                        PREG_SPLIT_NO_EMPTY
+                    );
+                } else {
+                    $lenda[$campo] = $conteudo;
+                }
+            }
+        }
+
+        // Mantém as imagens originais caso não exista
+        // uma imagem cadastrada para aquela lenda.
+
+        $chaveImagem = "lenda_{$id}_imagem";
+        $chaveBanner = "lenda_{$id}_banner";
+
+        if (!empty($imagensSite[$chaveImagem])) {
+            $lenda['imagem'] = '../../' .
+                ltrim($imagensSite[$chaveImagem], '/');
+        }
+
+        if (!empty($imagensSite[$chaveBanner])) {
+            $lenda['banner'] = '../../' .
+                ltrim($imagensSite[$chaveBanner], '/');
+        }
+
+        $lendas[] = $lenda;
+    }
+
+    $resultadoLendas->free();
+}
 
 $total = count($lendas);
+
 $destaques = array_slice($lendas, 0, 3);
 
 if (!function_exists('e')) {
     function e(string $texto): string
     {
-        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars(
+            $texto,
+            ENT_QUOTES,
+            'UTF-8'
+        );
     }
 }
 
 include_once __DIR__ . '/../templates/header.php';
 
 ?>
+
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
 
