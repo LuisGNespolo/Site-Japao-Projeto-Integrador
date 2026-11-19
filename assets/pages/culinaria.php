@@ -204,11 +204,11 @@ function imagemCulinaria(string $chave): string
             <div class="relative z-10 flex items-start justify-between">
                 <div>
                     <p class="tracking-[.22em] text-[10px] font-bold uppercase text-white/55">A mesa como paisagem</p>
-                    <p class="mt-2 text-sm text-white/75">å’Œé£Ÿ · Washoku</p>
+                    <p class="mt-2 text-sm text-white/75">和食 · Washoku</p>
                 </div>
                 <div class="washoku-stamp hidden text-[10px] font-bold text-[#f08b82] md:block">
                     <span class="block text-[9px] uppercase tracking-[.25em] text-white/50">MENU DU JOUR</span>
-                    <span class="mt-1 block font-['Noto_Sans_JP'] text-xl leading-none">ä¸€æ±ä¸‰èœ</span>
+                    <span class="mt-1 block font-['Noto_Sans_JP'] text-xl leading-none">一汁三菜</span>
                 </div>
             </div>
 

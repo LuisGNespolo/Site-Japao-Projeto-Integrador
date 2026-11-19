@@ -79,7 +79,7 @@ function e(string $texto): string
     <section class="relative isolate overflow-hidden bg-[#0b0908]">
 
         <!-- Troque a foto salvando a nova imagem neste caminho -->
-        <div class="absolute inset-0 -z-30 bg-cover bg-center" style="background-image: url('../img/lendas/banner-noite.png');"></div>
+        <div class="absolute inset-0 -z-30 bg-cover bg-center" style="background-image: url('<?= e(imagemLenda('lendas_banner')) ?>');"></div>
         <div class="absolute inset-0 -z-20 bg-gradient-to-b from-[#0b0908]/70 via-[#0b0908]/55 to-[#0b0908]"></div>
 
         <div class="lg-moon absolute -right-16 top-10 -z-10 h-64 w-64 rounded-full md:right-[14%] md:h-80 md:w-80"></div>
