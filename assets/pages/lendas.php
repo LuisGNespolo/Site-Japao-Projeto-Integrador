@@ -1,15 +1,54 @@
 <?php
-$dados = require '../templates/dados.php';
+
+require_once __DIR__ . '/../../database/conexao.php';
+
+$dados = require __DIR__ . '/../templates/dados.php';
+
 $lendas = array_values($dados['lendas']);
+
+$imagensSite = [];
+
+$resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+
+if ($resultado) {
+    while ($imagem = $resultado->fetch_assoc()) {
+        $imagensSite[$imagem['chave']] = $imagem['caminho'];
+    }
+
+    $resultado->free();
+}
+
+// Substitui as imagens originais pelas imagens do banco
+foreach ($lendas as &$lenda) {
+
+    $id = $lenda['id'];
+
+    $chaveImagem = "lenda_{$id}_imagem";
+    $chaveBanner = "lenda_{$id}_banner";
+
+    if (!empty($imagensSite[$chaveImagem])) {
+        $lenda['imagem'] = '../../' . ltrim($imagensSite[$chaveImagem], '/');
+    }
+
+    if (!empty($imagensSite[$chaveBanner])) {
+        $lenda['banner'] = '../../' . ltrim($imagensSite[$chaveBanner], '/');
+    }
+}
+
+unset($lenda);
+
 $total = count($lendas);
 $destaques = array_slice($lendas, 0, 3);
 
-include_once '../templates/header.php';
-
-function e(string $texto): string
-{
-    return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+if (!function_exists('e')) {
+    function e(string $texto): string
+    {
+        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+    }
 }
+
+include_once __DIR__ . '/../templates/header.php';
+
 ?>
 
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">

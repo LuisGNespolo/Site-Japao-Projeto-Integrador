@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 10/11/2026 às 16:01
--- Versão do servidor: 10.11.16-MariaDB
--- Versão do PHP: 8.5.12
+-- Tempo de geração: 19/11/2026 às 15:13
+-- Versão do servidor: 10.4.32-MariaDB
+-- Versão do PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,7 +41,7 @@ CREATE TABLE `administradores` (
 --
 
 INSERT INTO `administradores` (`id`, `nome`, `email`, `senha_hash`, `ativo`, `criado_em`) VALUES
-(1, 'Administrador', 'admin@japao.com', 'COLE_AQUI_O_HASH_GERADO_NO_PHP', 1, '2026-11-10 13:04:42');
+(1, 'Administrador', 'admin@japao.com', '$2a$12$i1hHDSzfRZd7e/pzBet/Re65eEgc.uK3RTmVrTabd/msJo437sO2i', 1, '2026-11-10 16:04:42');
 
 -- --------------------------------------------------------
 
@@ -127,6 +127,68 @@ INSERT INTO `habitos_culturais` (`id`, `titulo`, `descricao`, `icone`, `ordem`, 
 (2, 'Hábito 2', 'Descrição do hábito cultural.', 'bi-star', 2, 1),
 (3, 'Hábito 3', 'Descrição do hábito cultural.', 'bi-gem', 3, 1),
 (4, 'Hábito 4', 'Descrição do hábito cultural.', 'bi-people', 4, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `imagens_site`
+--
+
+CREATE TABLE `imagens_site` (
+  `id` int(11) NOT NULL,
+  `chave` varchar(80) NOT NULL,
+  `nome` varchar(120) NOT NULL,
+  `descricao` varchar(255) DEFAULT NULL,
+  `caminho` varchar(255) NOT NULL,
+  `atualizado_em` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `imagens_site`
+--
+
+INSERT INTO `imagens_site` (`id`, `chave`, `nome`, `descricao`, `caminho`, `atualizado_em`) VALUES
+(1, 'home_banner', 'Banner principal', 'Imagem de destaque da página inicial', 'assets/img/home/banner.png', '2026-11-17 13:57:34'),
+(2, 'home_fundo', 'Fundo da página inicial', 'Imagem utilizada como fundo', 'assets/img/gerenciadas/3cfec765e9966951bab06dad35c49651.jpg', '2026-11-19 14:10:10'),
+(3, 'home_cultura', 'Imagem de cultura', 'Imagem da seção de cultura da página inicial', 'assets/img/home/cultura.png', '2026-11-17 13:57:34'),
+(4, 'home_arquitetura', 'Imagem de arquitetura', 'Imagem da seção de arquitetura da página inicial', 'assets/img/home/arquitetura.png', '2026-11-17 13:57:34'),
+(5, 'home_paisagem', 'Imagem de paisagem', 'Imagem da seção de paisagens da página inicial', 'assets/img/home/paisagem.png', '2026-11-17 13:57:34'),
+(6, 'culinaria_banner', 'Banner da culinária', 'Imagem principal da página de culinária', 'assets/img/culinaria/banner.png', '2026-11-17 13:57:34'),
+(7, 'futebol_banner', 'Banner do futebol', 'Imagem principal da página de futebol', 'assets/img/futebol/banner.png', '2026-11-17 13:57:34'),
+(8, 'lendas_banner', 'Banner das lendas', 'Imagem principal da página de lendas', 'assets/img/lendas/banner.png', '2026-11-17 13:57:34'),
+(9, 'patrimonios_banner', 'Banner dos patrimônios', 'Imagem principal da página de patrimônios', 'assets/img/patrimonios/banner.png', '2026-11-17 13:57:34'),
+(10, 'surf_banner', 'Banner do surfe', 'Imagem principal da página de surfe', 'assets/img/surf/surfBanner.png', '2026-11-17 13:57:34'),
+(11, 'culinaria_sushi', 'Sushi', 'Imagem do sushi japonês', 'assets/img/culinaria/sushi.png', '2026-11-17 14:13:32'),
+(12, 'culinaria_sashimi', 'Sashimi', 'Imagem do sashimi japonês', 'assets/img/culinaria/sashimi.png', '2026-11-17 14:13:32'),
+(13, 'culinaria_ramen', 'Ramen', 'Imagem do ramen japonês', 'assets/img/culinaria/ramen.png', '2026-11-17 14:13:32'),
+(14, 'culinaria_yakisoba', 'Yakisoba', 'Imagem do yakisoba japonês', 'assets/img/culinaria/yakisoba.png', '2026-11-17 14:13:32'),
+(15, 'culinaria_chef', 'Chef japonês', 'Imagem do preparo da culinária japonesa', 'assets/img/culinaria/japonesCozinhando.png', '2026-11-17 14:13:32'),
+(16, 'futebol_mulheres', 'Seleção feminina', 'Imagem da seleção feminina japonesa', 'assets/img/futebol/mulheres.png', '2026-11-17 14:29:21'),
+(18, 'surf_praia', 'Praia do Surf', 'Imagem da cultura do surf no Japão', 'assets/img/surf/praia.png', '2026-11-17 14:32:02'),
+(19, 'surf_shonan', 'Praia de Shonan', 'Imagem do litoral de Shonan', 'assets/img/surf/shonan.png', '2026-11-17 14:32:02'),
+(20, 'surf_chiba', 'Litoral de Chiba', 'Imagem do litoral de Chiba', 'assets/img/surf/chiba.png', '2026-11-17 14:32:02'),
+(21, 'surf_kanoa', 'Surfista Kanoa', 'Imagem da participação do Japão nas Olimpíadas', 'assets/img/surf/kanoa.png', '2026-11-17 14:32:02'),
+(22, 'patrimonios_memoria', 'Arquitetura e memória', 'Imagem da arquitetura tradicional japonesa', 'assets/img/patrimonios/memoria.png', '2026-11-17 14:35:39'),
+(23, 'patrimonios_monte', 'Monte Fuji', 'Imagem do Monte Fuji', 'assets/img/patrimonios/monte.png', '2026-11-17 14:35:39'),
+(24, 'patrimonios_santuario', 'Santuário japonês', 'Imagem de um santuário japonês', 'assets/img/patrimonios/santuario.png', '2026-11-17 14:35:39'),
+(25, 'patrimonios_castelo', 'Castelo japonês', 'Imagem de um castelo japonês', 'assets/img/patrimonios/castelo.png', '2026-11-17 14:35:39'),
+(26, 'patrimonio_castelo-himeji', 'Castelo de Himeji', 'Imagem do Castelo de Himeji', 'assets/img/patrimonios/castelo.png', '2026-11-19 14:05:48'),
+(27, 'patrimonio_monte-fuji', 'Monte Fuji', 'Imagem do Monte Fuji', 'assets/img/patrimonios/monte.png', '2026-11-19 14:05:48'),
+(28, 'patrimonio_santuario-itsukushima', 'Santuário Itsukushima', 'Imagem do Santuário Itsukushima', 'assets/img/patrimonios/santuario.png', '2026-11-19 14:05:48'),
+(29, 'patrimonio_templo-kinkaku-ji', 'Templo Kinkaku-ji', 'Imagem do Templo Kinkaku-ji', 'assets/img/patrimonios/templo.png', '2026-11-19 14:05:48'),
+(30, 'patrimonio_santuario-fushimi-inari', 'Santuário Fushimi Inari', 'Imagem do Santuário Fushimi Inari', 'assets/img/patrimonios/santuario2.png', '2026-11-19 14:05:48'),
+(31, 'lenda_kuchisake-onna_imagem', 'Kuchisake-onna - Imagem', 'Imagem principal da lenda Kuchisake-onna', 'assets/img/lendas/lenda1.png', '2026-11-19 14:05:48'),
+(32, 'lenda_aka-manto_imagem', 'Aka Manto - Imagem', 'Imagem principal da lenda Aka Manto', 'assets/img/lendas/lenda2.png', '2026-11-19 14:05:48'),
+(33, 'lenda_teke-teke_imagem', 'Teke Teke - Imagem', 'Imagem principal da lenda Teke Teke', 'assets/img/lendas/lenda3.png', '2026-11-19 14:05:48'),
+(34, 'lenda_amaterasu_imagem', 'Amaterasu - Imagem', 'Imagem principal da lenda Amaterasu', 'assets/img/lendas/lenda4.png', '2026-11-19 14:05:48'),
+(35, 'lenda_tsukuyomi_imagem', 'Tsukuyomi - Imagem', 'Imagem principal da lenda Tsukuyomi', 'assets/img/lendas/lenda5.png', '2026-11-19 14:05:48'),
+(36, 'lenda_susanoo_imagem', 'Susanoo - Imagem', 'Imagem principal da lenda Susanoo', 'assets/img/lendas/lenda6.png', '2026-11-19 14:05:48'),
+(37, 'lenda_kuchisake-onna_banner', 'Kuchisake-onna - Banner', 'Banner da lenda Kuchisake-onna', 'assets/img/lendas/bannerKuchisake.png', '2026-11-19 14:05:48'),
+(38, 'lenda_aka-manto_banner', 'Aka Manto - Banner', 'Banner da lenda Aka Manto', 'assets/img/lendas/bannerAkamanto.png', '2026-11-19 14:05:48'),
+(39, 'lenda_teke-teke_banner', 'Teke Teke - Banner', 'Banner da lenda Teke Teke', 'assets/img/lendas/bannerTeketeke.png', '2026-11-19 14:05:48'),
+(40, 'lenda_amaterasu_banner', 'Amaterasu - Banner', 'Banner da lenda Amaterasu', 'assets/img/lendas/bannerAmaterasu.png', '2026-11-19 14:05:48'),
+(41, 'lenda_tsukuyomi_banner', 'Tsukuyomi - Banner', 'Banner da lenda Tsukuyomi', 'assets/img/lendas/bannerTsukuyomi.png', '2026-11-19 14:05:48'),
+(42, 'lenda_susanoo_banner', 'Susanoo - Banner', 'Banner da lenda Susanoo', 'assets/img/lendas/bannerSusanoo.png', '2026-11-19 14:05:48');
 
 -- --------------------------------------------------------
 
@@ -236,12 +298,12 @@ CREATE TABLE `paginas` (
 --
 
 INSERT INTO `paginas` (`id`, `slug`, `titulo`, `hero_imagem`, `hero_titulo`, `hero_subtitulo`, `hero_kanji`, `meta_descricao`, `ativo`, `atualizado_em`) VALUES
-(1, 'inicio', 'Início', 'img/hero-fuji-pagoda.jpg', 'Japão', 'Uma viagem pela cultura, história e tradições do país do sol nascente.', '日本', NULL, 1, '2026-11-10 13:04:42'),
-(2, 'historia', 'História', 'img/hero-futebol.jpg', 'História', 'Do período feudal à era moderna: os marcos que formaram o Japão.', '足球', NULL, 1, '2026-11-10 13:04:42'),
-(3, 'culinaria', 'Culinária', 'img/hero-sushi.jpg', 'Culinária', 'Sabores, técnicas e a arte de preparar a comida japonesa.', '食物', NULL, 1, '2026-11-10 13:04:42'),
-(4, 'surfe', 'Surfe', 'img/hero-surfe.jpg', 'O surfe no Japão', 'Ondas, cultura e a chegada do surfe às Olimpíadas.', NULL, NULL, 1, '2026-11-10 13:04:42'),
-(5, 'patrimonios', 'Patrimônios', 'img/hero-fuji-pagoda.jpg', 'Patrimônios que contam histórias', 'Lugares que preservam a memória do povo japonês.', NULL, NULL, 1, '2026-11-10 13:04:42'),
-(6, 'lendas', 'Lendas', 'img/hero-lendas.jpg', 'Entre deuses, monstros e lendas', 'Criaturas e histórias do folclore japonês.', NULL, NULL, 1, '2026-11-10 13:04:42');
+(1, 'inicio', 'Início', 'img/hero-fuji-pagoda.jpg', 'Japão', 'Uma viagem pela cultura, história e tradições do país do sol nascente.', '日本', NULL, 1, '2026-11-10 16:04:42'),
+(2, 'historia', 'História', 'img/hero-futebol.jpg', 'História', 'Do período feudal à era moderna: os marcos que formaram o Japão.', '足球', NULL, 1, '2026-11-10 16:04:42'),
+(3, 'culinaria', 'Culinária', 'img/hero-sushi.jpg', 'Culinária', 'Sabores, técnicas e a arte de preparar a comida japonesa.', '食物', NULL, 1, '2026-11-10 16:04:42'),
+(4, 'surfe', 'Surfe', 'img/hero-surfe.jpg', 'O surfe no Japão', 'Ondas, cultura e a chegada do surfe às Olimpíadas.', NULL, NULL, 1, '2026-11-10 16:04:42'),
+(5, 'patrimonios', 'Patrimônios', 'img/hero-fuji-pagoda.jpg', 'Patrimônios que contam histórias', 'Lugares que preservam a memória do povo japonês.', NULL, NULL, 1, '2026-11-10 16:04:42'),
+(6, 'lendas', 'Lendas', 'img/hero-lendas.jpg', 'Entre deuses, monstros e lendas', 'Criaturas e histórias do folclore japonês.', NULL, NULL, 1, '2026-11-10 16:04:42');
 
 -- --------------------------------------------------------
 
@@ -358,6 +420,13 @@ ALTER TABLE `habitos_culturais`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices de tabela `imagens_site`
+--
+ALTER TABLE `imagens_site`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `chave` (`chave`);
+
+--
 -- Índices de tabela `lendas`
 --
 ALTER TABLE `lendas`
@@ -422,6 +491,12 @@ ALTER TABLE `cards`
 --
 ALTER TABLE `habitos_culturais`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT de tabela `imagens_site`
+--
+ALTER TABLE `imagens_site`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT de tabela `lendas`

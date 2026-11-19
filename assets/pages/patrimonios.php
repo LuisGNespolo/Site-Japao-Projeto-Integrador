@@ -48,6 +48,30 @@ function imagemPatrimonio(string $chave): string
     return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
 }
 
+$imagensBanco = [];
+
+$resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+
+if ($resultado) {
+    while ($imagem = $resultado->fetch_assoc()) {
+        $imagensBanco[$imagem['chave']] = $imagem['caminho'];
+    }
+
+    $resultado->free();
+}
+
+// Atualiza as imagens dos patrimônios
+foreach ($patrimonios as &$patrimonio) {
+
+    $id = $patrimonio['id'];
+    $chave = "patrimonio_{$id}";
+
+    if (!empty($imagensBanco[$chave])) {
+        $patrimonio['imagem'] = '../../' . ltrim($imagensBanco[$chave], '/');
+    }
+}
+
+unset($patrimonio);
 ?>
 
 <style>
