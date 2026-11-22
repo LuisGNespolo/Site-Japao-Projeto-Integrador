@@ -252,34 +252,26 @@ $editando = $secaoEdicao !== null;
 
     <!-- CABEÇALHO -->
 
-    <header class="bg-[#071018] text-white">
+    <header class="bg-[#172334] text-white shadow-md">
 
-        <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10">
+        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5">
 
-            <a href="index.php" class="flex items-center gap-3">
+            <div>
+                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#e45a5e]">
+                    Japão
+                </p>
 
-                <span class="flex h-8 w-8 items-center justify-center rounded-full bg-white">
-                    <span class="h-5 w-5 rounded-full bg-[#c9272c]"></span>
-                </span>
+                <h1 class="mt-1 text-2xl font-semibold">
+                    Gerenciar seções
+                </h1>
+            </div>
 
-                <span class="titulo text-xl tracking-[0.2em]">
-                    JAPÃO
-                </span>
+            <a href="index.php" class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm transition hover:bg-white/10">
+
+                <i class="bi bi-arrow-left"></i>
+                Voltar ao painel
 
             </a>
-
-            <div class="flex items-center gap-5">
-
-                <span class="hidden text-xs text-white/60 sm:block">
-                    <?= e($nomeAdmin) ?>
-                </span>
-
-                <a href="../admin/index.php" class="text-xs text-white/70 transition hover:text-white">
-                    <i class="bi bi-box-arrow-right mr-1"></i>
-                    Voltar
-                </a>
-
-            </div>
 
         </div>
 
