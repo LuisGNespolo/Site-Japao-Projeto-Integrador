@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../../database/conexao.php';
@@ -172,8 +171,10 @@ include_once __DIR__ . '/../templates/header.php';
 
 ?>
 
-
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
+<!-- Google Fonts otimizadas com suporte adequado -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Noto+Sans+JP:wght@400;500;700&family=Shippori+Mincho:wght@500;700;800&display=swap" rel="stylesheet">
 
 <style>
     /* Chama de vela */
@@ -181,7 +182,7 @@ include_once __DIR__ . '/../templates/header.php';
         display: inline-block;
         width: 11px;
         height: 20px;
-        border-radius: 50% 50% 50% 50% / 62%    62% 38% 38%;
+        border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
         background: radial-gradient(circle at 50% 72%, #fff3c4 0, #ffb347 42%, #c72b30 100%);
         box-shadow: 0 0 16px 5px rgba(255, 150, 60, .5);
         transform-origin: 50% 100%;
@@ -239,7 +240,6 @@ include_once __DIR__ . '/../templates/header.php';
     <!-- BANNER -->
     <section class="relative isolate overflow-hidden bg-[#0b0908]">
 
-        <!-- Troque a foto salvando a nova imagem neste caminho -->
         <div class="absolute inset-0 -z-30 bg-cover bg-center" style="background-image: url('<?= e(imagemLenda('lendas_banner')) ?>');"></div>
         <div class="absolute inset-0 -z-20 bg-gradient-to-b from-[#0b0908]/70 via-[#0b0908]/55 to-[#0b0908]"></div>
 
@@ -254,7 +254,7 @@ include_once __DIR__ . '/../templates/header.php';
             <rect x="87" y="24" width="9" height="76" />
         </svg>
 
-        <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] absolute left-3 top-28 hidden text-sm tracking-[0.6em] text-[#efe6d2]/35 lg:block">ç¥žè©± · å¦–æ€ª · 伝説</span>
+        <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] absolute left-3 top-28 hidden text-sm tracking-[0.6em] text-[#efe6d2]/35 lg:block">神話 · 妖怪 · 伝説</span>
 
         <div class="relative mx-auto grid min-h-[600px] max-w-7xl items-center gap-12 px-6 pb-32 pt-20 md:px-10 md:pt-28 lg:grid-cols-[1.1fr_1fr]">
 
@@ -262,7 +262,7 @@ include_once __DIR__ . '/../templates/header.php';
 
                 <span class="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.35em] text-[#e15a5e]">
                     <span class="h-px w-10 bg-[#c72b30]"></span>
-                    ç™¾ç‰©èªž · Hyakumonogatari
+                    百物語 · Hyakumonogatari
                 </span>
 
                 <h1 class="font-['Cormorant_Garamond'] mt-6 text-5xl font-semibold italic leading-[1.05] md:text-7xl">
@@ -311,7 +311,7 @@ include_once __DIR__ . '/../templates/header.php';
         <div class="mx-auto grid max-w-6xl gap-10 md:grid-cols-[auto_1fr] md:gap-16">
 
             <div class="hidden items-start gap-5 md:flex">
-                <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] text-8xl font-extrabold leading-none text-[#c72b30]">ç™¾ç‰©èªž</span>
+                <span class="font-['Shippori_Mincho'] [writing-mode:vertical-rl] text-8xl font-extrabold leading-none text-[#c72b30]">百物語</span>
                 <span class="w-px self-stretch bg-gradient-to-b from-[#c72b30] to-transparent"></span>
             </div>
 
@@ -341,17 +341,17 @@ include_once __DIR__ . '/../templates/header.php';
                 <dl class="mt-10 grid max-w-2xl grid-cols-3 divide-x divide-[#efe6d2]/10 border-y border-[#efe6d2]/10">
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">ç¥ž</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">神</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Kami<br>deuses</dd>
                     </div>
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">å¦–æ€ª</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">妖怪</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yōkai<br>criaturas</dd>
                     </div>
 
                     <div class="px-4 py-6 text-center">
-                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">å¹½éœŠ</dt>
+                        <dt class="font-['Shippori_Mincho'] text-3xl text-[#c72b30]">幽霊</dt>
                         <dd class="mt-2 text-[11px] uppercase tracking-[0.2em] text-[#efe6d2]/60">Yūrei<br>fantasmas</dd>
                     </div>
 
@@ -364,7 +364,7 @@ include_once __DIR__ . '/../templates/header.php';
     </section>
 
 
-    <!-- AS HISTÃ“RIAS -->
+    <!-- AS HISTÓRIAS -->
     <section id="lendas" class="bg-[#0b0908] px-6 py-24 md:px-10 md:py-32">
 
         <div class="mx-auto max-w-7xl">
@@ -414,7 +414,7 @@ include_once __DIR__ . '/../templates/header.php';
                 </p>
 
                 <p id="ultima-vela" class="font-['Cormorant_Garamond'] mt-6 hidden text-2xl italic text-[#e15a5e]">
-                    A última vela se apagouâ€¦ e algo, no escuro, começa a se aproximar.
+                    A última vela se apagou... e algo, no escuro, começa a se aproximar.
                 </p>
 
             </header>
@@ -470,7 +470,7 @@ include_once __DIR__ . '/../templates/header.php';
                                 <span class="mt-5 inline-flex items-center gap-3 border-b border-[#c72b30]/60 pb-1 text-[11px] font-bold uppercase tracking-[0.25em] transition-all duration-300 group-hover:gap-5 group-hover:text-[#e15a5e]">
                                     <span class="lg-acender">Acender esta história</span>
                                     <span class="lg-relida">Vela apagada · ouvir de novo</span>
-                                    â†’
+                                    →
                                 </span>
 
                             </div>
@@ -510,7 +510,7 @@ include_once __DIR__ . '/../templates/header.php';
                 </button>
 
 
-                <!-- CABEÃ‡ALHO -->
+                <!-- CABEÇALHO -->
                 <div class="relative min-h-[280px] overflow-hidden">
 
                     <img
@@ -544,7 +544,7 @@ include_once __DIR__ . '/../templates/header.php';
                 </div>
 
 
-                <!-- CONTEÃšDO -->
+                <!-- CONTEÚDO -->
                 <div class="px-7 pb-10 md:px-12">
 
                     <div class="grid gap-5 border-y border-[#efe6d2]/10 py-7 sm:grid-cols-2">
@@ -616,7 +616,7 @@ include_once __DIR__ . '/../templates/header.php';
 
                     <div class="mt-10 border-t border-[#efe6d2]/10 pt-6 text-center">
                         <span class="font-['Cormorant_Garamond'] text-sm italic tracking-widest text-[#efe6d2]/40">
-                            â€” A vela se apaga â€”
+                            — A vela se apaga —
                         </span>
                     </div>
 
@@ -646,7 +646,7 @@ include_once __DIR__ . '/../templates/header.php';
             O passado permanece vivo nas histórias que continuam sendo contadas.
         </p>
 
-        <span class="font-['Shippori_Mincho'] mt-6 block text-xs tracking-[0.6em] text-[#efe6d2]/35">çµ‚</span>
+        <span class="font-['Shippori_Mincho'] mt-6 block text-xs tracking-[0.6em] text-[#efe6d2]/35">終</span>
 
     </section>
 
