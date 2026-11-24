@@ -14,6 +14,10 @@ USE `japao_integrador`;
 
 
 
+CREATE DATABASE IF NOT EXISTS `japao_integrador` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `japao_integrador`;
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";

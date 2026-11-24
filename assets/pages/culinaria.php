@@ -1,9 +1,13 @@
-
 <?php
 
 require_once __DIR__ . '/../../database/conexao.php';
 
-include_once __DIR__ . '/../templates/header.php';
+if (!function_exists('e')) {
+    function e(string $texto): string
+    {
+        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+    }
+}
 
 $imagensPadrao = [
     'culinaria_banner' => 'assets/img/culinaria/banner.png',
@@ -17,9 +21,7 @@ $imagensPadrao = [
 $imagensSite = $imagensPadrao;
 
 if (isset($conn) && $conn instanceof mysqli) {
-    $resultado = $conn->query(
-        "SELECT chave, caminho FROM imagens_site"
-    );
+    $resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
 
     if ($resultado) {
         while ($imagem = $resultado->fetch_assoc()) {
@@ -39,336 +41,532 @@ function imagemCulinaria(string $chave): string
 {
     global $imagensSite;
 
-    return '../../' . ltrim(
-        $imagensSite[$chave] ?? '',
-        '/'
-    );
+    return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
 }
 
+// As cinco cores do washoku (goshiki)
+$cores = [
+    ['kanji' => '白', 'leitura' => 'Shiro', 'nome' => 'Branco',   'itens' => 'Arroz, tofu e daikon',           'bg' => '#faf6ee', 'fg' => '#1c1511'],
+    ['kanji' => '黒', 'leitura' => 'Kuro',  'nome' => 'Preto',    'itens' => 'Nori, gergelim preto e shiitake', 'bg' => '#1c1511', 'fg' => '#faf6ee'],
+    ['kanji' => '赤', 'leitura' => 'Aka',   'nome' => 'Vermelho', 'itens' => 'Atum, umeboshi e pimenta',        'bg' => '#a3201f', 'fg' => '#faf6ee'],
+    ['kanji' => '黄', 'leitura' => 'Ki',    'nome' => 'Amarelo',  'itens' => 'Tamago (ovo), takuan e yuzu',     'bg' => '#f0b33c', 'fg' => '#1c1511'],
+    ['kanji' => '青', 'leitura' => 'Ao',    'nome' => 'Verde',    'itens' => 'Cebolinha, wasabi e edamame',     'bg' => '#5f7d3a', 'fg' => '#faf6ee'],
+];
+
+// Compartimentos da marmita (bento)
+$pratos = [
+    ['img' => 'culinaria_sushi', 'alt' => 'Sushi japonês', 'kanji' => '寿司', 'nome' => 'Sushi', 'texto' => 'Arroz temperado com vinagre e ingredientes do mar. A precisão está no corte e no ponto do arroz.', 'classe' => 'md:col-span-2', 'vapor' => false],
+    ['img' => 'culinaria_sashimi', 'alt' => 'Sashimi japonês', 'kanji' => '刺身', 'nome' => 'Sashimi', 'texto' => 'Fatias de peixe cru, sem arroz. Aqui, o frescor e o corte são os protagonistas.', 'classe' => 'md:col-start-3 md:row-start-1 md:row-span-2', 'vapor' => false],
+    ['img' => 'culinaria_ramen', 'alt' => 'Ramen japonês', 'kanji' => 'ラーメン', 'nome' => 'Ramen', 'texto' => 'Macarrão em caldo de shoyu, miso, shio ou tonkotsu. Veio de fora e virou símbolo do Japão.', 'classe' => '', 'vapor' => true],
+    ['img' => 'culinaria_yakisoba', 'alt' => 'Yakisoba japonês', 'kanji' => '焼きそば', 'nome' => 'Yakisoba', 'texto' => 'Macarrão frito na chapa com legumes e molho, clássico das barracas de festival.', 'classe' => '', 'vapor' => false],
+];
+
+include_once __DIR__ . '/../templates/header.php';
 ?>
 
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,600;0,9..144,800;1,9..144,600&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 
 <style>
-    .washoku-page {
-        --washoku-ink: #132b2c;
-        --washoku-deep: #0b2528;
-        --washoku-red: #c72b30;
-        --washoku-coral: #e56761;
-        --washoku-sand: #f5f0e7;
-        --washoku-moss: #71856a;
-        background: var(--washoku-sand);
-        color: var(--washoku-ink);
-        overflow: hidden;
-    }
+    .cu-serif { font-family: 'Fraunces', Georgia, serif; }
+    .cu-sans { font-family: 'Zen Maru Gothic', 'Noto Sans JP', sans-serif; }
 
-    .washoku-page .washoku-hero {
-        background:
-            linear-gradient(90deg, rgba(6, 25, 27, .94), rgba(6, 25, 27, .67) 48%, rgba(6, 25, 27, .13)),
-            url('<?= htmlspecialchars(imagemCulinaria('culinaria_banner')) ?>')center / cover;
-    }
+    /* Toalha xadrez (ichimatsu) */
+    .cu-toalha { background: repeating-conic-gradient(#f4ede0 0% 25%, #faf6ee 0% 50%) 0 0 / 56px 56px; }
 
-    .washoku-page .washoku-paper {
-        background-color: var(--washoku-sand);
-        background-image: linear-gradient(115deg, rgba(199,43,48,.045) 1px, transparent 1px);
-        background-size: 28px 28px;
-    }
-
-    .washoku-page .washoku-photo {
-        filter: saturate(.86);
-        transition: filter .5s ease;
-    }
-
-    .washoku-page .overflow-hidden:hover .washoku-photo {
-        filter: saturate(1.1);
-    }
-
-    .washoku-page .washoku-wave {
-        background-image: url("data:image/svg+xml,%3Csvg width='180' height='38' viewBox='0 0 180 38' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 25 C22 5 38 5 60 25 S98 45 120 25 S158 5 180 25' fill='none' stroke='%23c72b30' stroke-width='1.3' opacity='.45'/%3E%3C/svg%3E");
-        background-repeat: repeat-x;
-        background-position: center;
-    }
-
-    .washoku-page .washoku-card {
-        position: relative;
-        box-shadow: 0 22px 50px -35px rgba(11,37,40,.75);
-    }
-
-    .washoku-page .washoku-ingredient {
-        display: inline-flex;
-        align-items: center;
-        gap: .45rem;
-        color: rgba(255,255,255,.55);
-        font-size: .6rem;
-        font-weight: 600;
-        letter-spacing: .18em;
-        text-transform: uppercase;
-    }
-
-    .washoku-page .washoku-ingredient::before {
-        width: .3rem;
-        height: .3rem;
-        border-radius: 999px;
-        background: var(--washoku-coral);
+    /* Noren: cortina de entrada dos restaurantes */
+    .cu-noren { position: absolute; top: 0; right: 7%; display: flex; gap: 6px; padding: 16px 8px 0; }
+    .cu-noren::before {
         content: '';
-    }
-
-    .washoku-page .washoku-steam {
         position: absolute;
-        bottom: 1.2rem;
-        left: 1.2rem;
+        top: 0; left: 0; right: 0;
+        height: 16px;
+        border-radius: 8px;
+        background: linear-gradient(#7a5535, #3b2716);
+    }
+    .cu-noren span {
         display: flex;
-        gap: .3rem;
-        opacity: .65;
+        align-items: center;
+        justify-content: center;
+        width: 64px;
+        height: 190px;
+        border-bottom: 10px solid #a3201f;
+        background: #1d2a4a;
+        color: #faf6ee;
+        font-family: 'Zen Maru Gothic', sans-serif;
+        font-size: 2rem;
+        font-weight: 700;
+        transform-origin: top center;
+        animation: cu-sway 5s ease-in-out infinite alternate;
     }
+    .cu-noren span:nth-child(2) { height: 174px; animation-delay: -1.2s; }
+    .cu-noren span:nth-child(3) { height: 196px; animation-delay: -2.4s; }
+    .cu-noren span:nth-child(4) { height: 180px; animation-delay: -3.3s; }
+    @keyframes cu-sway { from { transform: rotate(-1.8deg); } to { transform: rotate(1.8deg); } }
 
-    .washoku-page .washoku-steam span {
+    /* Paleta das cinco cores: faixa que se expande */
+    .cu-cor { flex: 1 1 0; transition: flex .6s cubic-bezier(.2, .8, .2, 1); }
+    .cu-itens { max-height: 0; opacity: 0; overflow: hidden; transition: opacity .4s, max-height .6s; }
+    @media (min-width: 768px) {
+        .cu-cor:hover, .cu-cor:focus { flex: 2.8 1 0; }
+        .cu-cor:hover .cu-itens, .cu-cor:focus .cu-itens { max-height: 6rem; opacity: .85; }
+    }
+    @media (max-width: 767px) { .cu-itens { max-height: none; opacity: .85; } }
+    .cu-cor:focus-visible { outline: 3px solid #f0b33c; outline-offset: -6px; }
+
+    /* Vapor do ramen */
+    .cu-vapor { position: absolute; top: 1rem; right: 1.25rem; display: flex; gap: .45rem; }
+    .cu-vapor i {
         display: block;
-        width: .25rem;
-        height: 1.8rem;
-        border-left: 1px solid rgba(255,255,255,.75);
+        width: 6px;
+        height: 34px;
+        border-left: 2px solid rgba(255, 255, 255, .75);
         border-radius: 50%;
-        transform: rotate(12deg);
+        animation: cu-sobe 2.8s ease-in infinite;
+    }
+    .cu-vapor i:nth-child(2) { height: 44px; animation-delay: -.9s; }
+    .cu-vapor i:nth-child(3) { animation-delay: -1.8s; }
+    @keyframes cu-sobe {
+        0% { opacity: 0; transform: translateY(10px) rotate(8deg); }
+        40% { opacity: .85; }
+        100% { opacity: 0; transform: translateY(-22px) rotate(-8deg); }
     }
 
-    .washoku-page .washoku-steam span:nth-child(2) {
-        height: 1.25rem;
-        transform: translateY(.3rem) rotate(-8deg);
-    }
-
-    .washoku-page .washoku-chopsticks {
-        position: relative;
-        height: 1rem;
-    }
-
-    .washoku-page .washoku-chopsticks::before,
-    .washoku-page .washoku-chopsticks::after {
-        position: absolute;
-        top: .4rem;
-        right: 0;
-        width: 5rem;
-        height: 1px;
-        background: var(--washoku-red);
+    /* Hashi apoiados na marmita */
+    .cu-hashi { position: absolute; right: -1.5rem; bottom: -1.4rem; display: none; height: 1.6rem; width: 15rem; pointer-events: none; }
+    @media (min-width: 1024px) { .cu-hashi { display: block; } }
+    .cu-hashi::before, .cu-hashi::after {
         content: '';
-        transform: rotate(-8deg);
-        transform-origin: right;
-    }
-
-    .washoku-page .washoku-chopsticks::after {
-        top: .7rem;
-        width: 4.2rem;
-        opacity: .45;
-        transform: rotate(-11deg);
-    }
-
-    .washoku-page .washoku-stamp {
-        width: 11rem;
-        border-bottom: 1px solid rgba(255,255,255,.35);
-        border-top: 1px solid rgba(255,255,255,.35);
-        padding: .8rem 0;
-        text-align: left;
-    }
-
-    .washoku-page .washoku-menu-item {
-        position: relative;
-        border-bottom: 1px solid rgba(19,43,44,.16);
-        padding: 1.25rem 1rem 1.25rem 0;
-    }
-
-    .washoku-page .washoku-menu-item::after {
         position: absolute;
-        right: 0;
-        top: 1.6rem;
-        width: .55rem;
-        height: .55rem;
-        border: 1px solid var(--washoku-red);
-        border-radius: 50%;
-        content: '';
+        left: 0;
+        width: 100%;
+        height: 5px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, #2a1b10, #c99a5b 70%, #e6c58f);
+        transform-origin: right center;
     }
+    .cu-hashi::before { top: 0; transform: rotate(-3deg); }
+    .cu-hashi::after { top: 13px; transform: rotate(1.5deg); }
 
-    .washoku-page .washoku-plate {
-        border: 1px solid rgba(199,43,48,.35);
-        border-radius: 50%;
-        box-shadow: inset 0 0 0 7px var(--washoku-sand), inset 0 0 0 8px rgba(199,43,48,.18);
+    /* Laboratório de dashi */
+    .cu-item { opacity: 0; transform: scale(.6); transform-box: fill-box; transform-origin: center; transition: opacity .5s, transform .5s; }
+    .cu-item.on { opacity: 1; transform: scale(1); }
+    .cu-chip {
+        border: 1px solid rgba(250, 246, 238, .25);
+        border-radius: 999px;
+        padding: .6rem 1.1rem;
+        font-size: .8rem;
+        font-weight: 500;
+        color: #faf6ee;
+        transition: background .3s, color .3s, border-color .3s;
     }
+    .cu-chip:hover { border-color: #f0b33c; }
+    .cu-chip[aria-pressed="true"] { border-color: #f0b33c; background: #f0b33c; color: #1c1511; }
 
     @media (prefers-reduced-motion: reduce) {
-        .washoku-page .washoku-photo { transition: none; }
+        .cu-noren span, .cu-vapor i { animation: none; }
+        .cu-cor, .cu-itens, .cu-item { transition: none; }
     }
 </style>
 
-<main class="washoku-page font-['Poppins']">
+<main class="cu-sans bg-[#faf6ee] text-[#1c1511]">
 
     <!-- ABERTURA -->
-    <section id="inicio" class="washoku-hero relative isolate min-h-[720px] overflow-hidden text-white md:min-h-[800px]">
-        <div class="relative mx-auto flex min-h-[720px] max-w-7xl flex-col justify-between px-6 pb-12 pt-28 md:min-h-[800px] md:px-10">
-            <div class="relative z-10 flex items-start justify-between">
-                <div>
-                    <p class="tracking-[.22em] text-[10px] font-bold uppercase text-white/55">A mesa como paisagem</p>
-                    <p class="mt-2 text-sm text-white/75">和食 · Washoku</p>
-                </div>
-                <div class="washoku-stamp hidden text-[10px] font-bold text-[#f08b82] md:block">
-                    <span class="block text-[9px] uppercase tracking-[.25em] text-white/50">MENU DU JOUR</span>
-                    <span class="mt-1 block font-['Noto_Sans_JP'] text-xl leading-none">一汁三菜</span>
-                </div>
-            </div>
+    <section id="inicio" class="relative isolate overflow-hidden border-b-[10px] border-[#a3201f] bg-[#14100d] text-white">
 
-            <div class="relative z-10 max-w-3xl">
-                <div class="mb-6 flex items-center gap-3">
-                    <span class="h-px w-14 bg-[#c72b30]"></span>
-                    <p class="tracking-[.22em] text-[10px] font-bold uppercase text-[#f08b82]">Mar · floresta · estação</p>
-                </div>
-                <div class="mb-5 flex flex-wrap gap-x-5 gap-y-2">
-                    <span class="washoku-ingredient">arroz</span>
-                    <span class="washoku-ingredient">maré</span>
-                    <span class="washoku-ingredient">tempo</span>
-                </div>
-                <h1 class="font-['Playfair_Display'] tracking-[-.05em] text-6xl font-semibold leading-[.9] sm:text-7xl md:text-9xl">
-                    Comer é<br><span class="text-[#e56761]">contemplar.</span>
-                </h1>
-                <p class="mt-8 max-w-xl text-sm leading-8 text-white/65 md:text-base">
-                    Na culinária japonesa, cada prato nasce do encontro entre
-                    natureza, técnica e tempo. Um universo de sabores onde o
-                    oceano, os campos e a fauna também chegam à mesa.
-                </p>
-                <a href="#sabores" class="mt-9 inline-flex items-center gap-3 bg-[#c72b30] px-7 py-4 text-[10px] font-bold uppercase tracking-[.2em] transition hover:-translate-y-1 hover:bg-[#a51f25]">
-                    Explorar o washoku <i class="bi bi-arrow-down-right"></i>
+        <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('<?= e(imagemCulinaria('culinaria_banner')) ?>');"></div>
+        <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#14100d]/95 via-[#14100d]/70 to-[#14100d]/20"></div>
+
+        <!-- Noren: おいしい (oishii, "delicioso") -->
+        <div class="cu-noren hidden md:flex" aria-hidden="true">
+            <span>お</span><span>い</span><span>し</span><span>い</span>
+        </div>
+
+        <div class="mx-auto flex min-h-[680px] max-w-7xl flex-col justify-end px-6 pb-20 pt-24 md:min-h-[760px] md:px-10">
+
+            <p class="flex items-center gap-3 text-xs font-bold uppercase tracking-[.3em] text-[#f0b33c]">
+                <span class="h-px w-12 bg-[#f0b33c]"></span>
+                和食 · Washoku
+            </p>
+
+            <h1 class="cu-serif mt-6 text-6xl font-extrabold leading-[.95] tracking-[-.02em] sm:text-7xl md:text-8xl">
+                Comer é<br><span class="font-semibold italic text-[#f0b33c]">contemplar.</span>
+            </h1>
+
+            <p class="mt-8 max-w-xl text-sm leading-8 text-white/75 md:text-base">
+                Na culinária japonesa, cada prato nasce do encontro entre
+                natureza, técnica e tempo. Um universo de sabores onde o
+                oceano, os campos e as estações chegam à mesa.
+            </p>
+
+            <div class="mt-9 flex flex-wrap items-center gap-5">
+
+                <a href="#principio" class="inline-flex items-center gap-3 bg-[#a3201f] px-7 py-4 text-xs font-bold uppercase tracking-[.2em] transition hover:-translate-y-1 hover:bg-[#c72b30]">
+                    Sentar à mesa <i class="bi bi-arrow-down-right"></i>
                 </a>
+
+                <span class="border border-white/25 px-5 py-3 text-xs text-white/70">
+                    <span class="text-base text-[#f0b33c]">一汁三菜</span> · uma sopa, três pratos
+                </span>
+
             </div>
+
         </div>
-        <div class="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-[#c72b30] via-[#e56761] to-transparent"></div>
+
     </section>
 
-    <!-- IDEIA CENTRAL -->
-    <section id="historia" class="washoku-paper px-6 py-24 md:px-10 md:py-32">
-        <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-end">
-            <div>
-                <p class="tracking-[.22em] text-[10px] font-bold text-[#c72b30]">01 / O PRINCÍPIO</p>
-                <h2 class="font-['Playfair_Display'] tracking-[-.05em] mt-4 text-5xl font-semibold leading-none md:text-7xl">A natureza<br><span class="text-[#c72b30]">servida.</span></h2>
-                <p class="mt-7 max-w-md text-sm leading-8 text-[#53615d]">
-                    O washoku valoriza cinco cores, cinco sabores e cinco
-                    sentidos. O resultado é uma cozinha equilibrada, sazonal
-                    e profundamente ligada ao território japonês.
-                </p>
-                <div class="mt-9 flex gap-8 border-t border-[#c72b30]/25 pt-6">
-                    <div><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl text-[#c72b30]">5</p><p class="tracking-[.22em] text-[9px] text-[#718078]">SABORES</p></div>
-                    <div><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl text-[#c72b30]">4</p><p class="tracking-[.22em] text-[9px] text-[#718078]">ESTAÃ‡Ã•ES</p></div>
-                    <div><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl text-[#c72b30]">âˆž</p><p class="tracking-[.22em] text-[9px] text-[#718078]">MEMÃ“RIAS</p></div>
-                </div>
-            </div>
 
-            <div class="relative grid gap-5 sm:grid-cols-2">
-                <article class="washoku-card bg-[#0b2528] p-7 text-white sm:translate-y-8">
-                    <i class="bi bi-water text-3xl text-[#e56761]"></i>
-                    <h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-12 text-3xl">Do oceano</h3>
-                    <p class="mt-3 text-sm leading-7 text-white/55">Peixes, algas e marés revelam a relação do Japão com suas águas.</p>
-                    <span class="mt-8 block font-['Noto_Sans_JP'] text-5xl text-white/10">海</span>
-                </article>
-                <article class="washoku-card bg-[#71856a] p-7 text-white">
-                    <i class="bi bi-flower1 text-3xl text-white/80"></i>
-                    <h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-12 text-3xl">Da estação</h3>
-                    <p class="mt-3 text-sm leading-7 text-white/70">A primavera, o outono e cada ingrediente têm sua hora certa.</p>
-                    <span class="mt-8 block font-['Noto_Sans_JP'] text-5xl text-white/20">季</span>
-                </article>
-            </div>
-        </div>
-    </section>
+    <!-- O PRINCÍPIO -->
+    <section id="principio" class="cu-toalha px-6 py-24 md:px-10 md:py-32">
 
-    <!-- GALERIA DE SABORES -->
-    <section id="sabores" class="bg-[#fdfbf7] px-6 py-24 md:px-10 md:py-32">
         <div class="mx-auto max-w-7xl">
-            <div class="mb-14 flex flex-wrap items-end justify-between gap-8">
-                <div>
-                    <p class="tracking-[.22em] text-[10px] font-bold text-[#c72b30]">02 / UM MAPA DE SABORES</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.05em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Quatro gestos,<br><span class="text-[#c72b30]">uma cultura.</span></h2>
-                </div>
-                <p class="max-w-sm text-sm leading-7 text-[#53615d]">Texturas, aromas e temperaturas criam uma experiência que começa antes da primeira mordida.</p>
-            </div>
-            <div class="washoku-chopsticks mb-3 hidden sm:block"></div>
 
-            <div class="grid gap-8 lg:grid-cols-[1fr_.9fr]">
-                <div class="divide-y divide-[#132b2c]/10">
-                <article class="group washoku-card overflow-hidden bg-white">
-                    <div class="washoku-menu-item flex items-center gap-5 bg-white px-5">
-                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img 	src="<?= htmlspecialchars(imagemCulinaria('culinaria_sushi')) ?>" alt="Sushi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
-                        <div><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">01 / MAR</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-1 text-3xl">Sushi</h3><p class="mt-1 text-xs text-[#68736e]">Precisão, frescor e simplicidade.</p></div>
-                    </div>
-                </article>
-                <article class="group washoku-card overflow-hidden bg-white sm:translate-y-7">
-                    <div class="washoku-menu-item flex items-center gap-5 bg-white px-5">
-                        <div class="washoku-plate h-20 w-20 shrink-0 overflow-hidden p-2"><img src="<?= htmlspecialchars(imagemCulinaria('culinaria_sashimi')) ?>" alt="Sashimi japonês" class="washoku-photo h-full w-full rounded-full object-cover"></div>
-                        <div><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">02 / OCEANO</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-1 text-3xl">Sashimi</h3><p class="mt-1 text-xs text-[#68736e]">A fauna marinha no seu estado mais puro.</p></div>
-                    </div>
-                </article>
-                </div>
-                <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-1">
-                <article class="group washoku-card overflow-hidden bg-white">
-                    <div class="overflow-hidden relative h-52"><img ssrc="<?= htmlspecialchars(imagemCulinaria('culinaria_ramen')) ?>"rc="../img/culinaria/ramen.png" alt="Ramen japonês" class="washoku-photo h-full w-full object-cover"></div>
-                    <div class="washoku-steam" aria-hidden="true"><span></span><span></span></div>
-                    <div class="p-5"><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">03 / CALOR</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-2 text-3xl">Ramen</h3><p class="mt-2 text-xs leading-6 text-[#68736e]">Caldo, vapor e conforto em uma tigela.</p></div>
-                </article>
-                <article class="group washoku-card overflow-hidden bg-white sm:translate-y-7">
-                    <div class="overflow-hidden relative h-52"><img src="<?= htmlspecialchars(imagemCulinaria('culinaria_yakisoba')) ?>" alt="Yakisoba japonês" class="washoku-photo h-full w-full object-cover"></div>
-                    <div class="p-5"><p class="tracking-[.22em] text-[9px] font-bold text-[#c72b30]">04 / RUA</p><h3 class="font-['Playfair_Display'] tracking-[-.05em] mt-2 text-3xl">Yakisoba</h3><p class="mt-2 text-xs leading-6 text-[#68736e]">O encontro vibrante entre cidade e tradição.</p></div>
-                </article>
-                </div>
-            </div>
-        </div>
-    </section>
+            <div class="grid gap-14 lg:grid-cols-2 lg:items-end">
 
-    <!-- FAUNA E TERRITÃ“RIO -->
-    <section class="bg-[#0b2528] px-6 py-24 text-white md:px-10 md:py-32">
-        <div class="mx-auto max-w-7xl">
-            <div class="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:items-center">
-                <div class="relative min-h-[410px] overflow-hidden">
-                    <img src="<?= htmlspecialchars(imagemCulinaria('culinaria_chef')) ?>" alt="Chef japonês preparando alimentos" class="washoku-photo absolute inset-0 h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#0b2528] via-transparent to-transparent"></div>
-                    <p class="[writing-mode:vertical-rl] tracking-[.3em] absolute right-5 top-6 text-xs text-white/60">山 · 川 · 海 · 森</p>
-                    <div class="absolute bottom-6 left-6">
-                        <p class="tracking-[.22em] text-[9px] text-[#e56761]">DO TERRITÃ“RIO Ã€ MESA</p>
-                        <p class="font-['Playfair_Display'] tracking-[-.05em] mt-2 text-3xl">Respeitar é cozinhar.</p>
-                    </div>
-                </div>
                 <div>
-                    <p class="tracking-[.22em] text-[10px] font-bold text-[#e56761]">03 / FAUNA E PAISAGEM</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.05em] mt-4 text-5xl font-semibold leading-none md:text-7xl">O Japão<br><span class="text-[#e56761]">vivo.</span></h2>
-                    <p class="mt-7 max-w-lg text-sm leading-8 text-white/60">
-                        Da carpa koi que atravessa os jardins às garças que
-                        acompanham os arrozais, a fauna japonesa inspira
-                        símbolos, ingredientes e formas de servir.
+
+                    <p class="text-xs font-bold uppercase tracking-[.3em] text-[#a3201f]">01 / O princípio</p>
+
+                    <h2 class="cu-serif mt-4 text-5xl font-extrabold leading-[1] tracking-[-.02em] md:text-7xl">
+                        A natureza<br><span class="font-semibold italic text-[#a3201f]">servida.</span>
+                    </h2>
+
+                    <p class="mt-7 max-w-md text-sm leading-8 text-[#5a4a40]">
+                        O washoku busca equilíbrio em tudo: cinco cores, cinco
+                        sabores e cinco formas de preparo. O resultado é uma
+                        cozinha sazonal, ligada ao território e feita para
+                        agradar aos olhos antes da boca.
                     </p>
-                    <div class="mt-9 grid gap-4 sm:grid-cols-3">
-                        <div class="border border-white/10 p-5"><span class="text-2xl text-[#e56761]">é¯‰</span><h3 class="mt-5 text-sm font-semibold">Koi</h3><p class="mt-2 text-xs leading-5 text-white/45">Persistência e beleza.</p></div>
-                        <div class="border border-white/10 p-5"><span class="text-2xl text-[#e56761]">鶴</span><h3 class="mt-5 text-sm font-semibold">Tsuru</h3><p class="mt-2 text-xs leading-5 text-white/45">Elegância e longevidade.</p></div>
-                        <div class="border border-white/10 p-5"><span class="text-2xl text-[#e56761]">é­š</span><h3 class="mt-5 text-sm font-semibold">Sakana</h3><p class="mt-2 text-xs leading-5 text-white/45">O oceano à mesa.</p></div>
-                    </div>
+
                 </div>
+
+                <!-- Cinco formas de preparo (gohō) -->
+                <div>
+
+                    <p class="mb-4 text-[11px] font-bold uppercase tracking-[.25em] text-[#5a4a40]/80">Cinco formas de preparo</p>
+
+                    <ul class="grid grid-cols-5 border border-[#1c1511]/15 bg-[#faf6ee]/80">
+                        <li class="border-r border-[#1c1511]/15 px-2 py-5 text-center"><span class="block text-3xl font-bold text-[#a3201f]">生</span><span class="mt-2 block text-[10px] uppercase tracking-[.12em]">Cru</span></li>
+                        <li class="border-r border-[#1c1511]/15 px-2 py-5 text-center"><span class="block text-3xl font-bold text-[#a3201f]">煮</span><span class="mt-2 block text-[10px] uppercase tracking-[.12em]">Cozido</span></li>
+                        <li class="border-r border-[#1c1511]/15 px-2 py-5 text-center"><span class="block text-3xl font-bold text-[#a3201f]">焼</span><span class="mt-2 block text-[10px] uppercase tracking-[.12em]">Grelhado</span></li>
+                        <li class="border-r border-[#1c1511]/15 px-2 py-5 text-center"><span class="block text-3xl font-bold text-[#a3201f]">揚</span><span class="mt-2 block text-[10px] uppercase tracking-[.12em]">Frito</span></li>
+                        <li class="px-2 py-5 text-center"><span class="block text-3xl font-bold text-[#a3201f]">蒸</span><span class="mt-2 block text-[10px] uppercase tracking-[.12em]">Vapor</span></li>
+                    </ul>
+
+                </div>
+
             </div>
+
+
+            <!-- Cinco cores (goshiki) -->
+            <div class="mt-20">
+
+                <p class="mb-4 text-[11px] font-bold uppercase tracking-[.25em] text-[#5a4a40]/80">
+                    Cinco cores · 五色 <span class="hidden md:inline">(passe o mouse ou use o teclado)</span>
+                </p>
+
+                <div class="flex flex-col overflow-hidden rounded-sm shadow-[0_30px_60px_-45px_rgba(28,21,17,.9)] md:h-[380px] md:flex-row">
+
+                    <?php foreach ($cores as $cor): ?>
+
+                        <div tabindex="0"
+                            class="cu-cor flex flex-row items-center gap-5 p-6 md:flex-col md:items-stretch md:justify-between"
+                            style="background: <?= e($cor['bg']) ?>; color: <?= e($cor['fg']) ?>;">
+
+                            <span class="hidden text-[10px] font-bold uppercase tracking-[.25em] opacity-70 md:block"><?= e($cor['leitura']) ?></span>
+
+                            <span class="cu-sans text-6xl font-bold leading-none md:text-8xl"><?= e($cor['kanji']) ?></span>
+
+                            <div>
+                                <p class="cu-serif text-2xl font-semibold"><?= e($cor['nome']) ?></p>
+                                <p class="cu-itens mt-2 text-sm leading-6"><?= e($cor['itens']) ?></p>
+                            </div>
+
+                        </div>
+
+                    <?php endforeach; ?>
+
+                </div>
+
+            </div>
+
         </div>
+
     </section>
 
-    <!-- RITUAL -->
-    <section class="washoku-paper px-6 py-24 md:px-10 md:py-32">
+
+    <!-- A MARMITA (BENTO) -->
+    <section class="bg-[#f4ede0] px-6 py-24 md:px-10 md:py-32">
+
+        <div class="mx-auto max-w-6xl">
+
+            <div class="mb-14 max-w-2xl">
+                <p class="text-xs font-bold uppercase tracking-[.3em] text-[#a3201f]">02 / A marmita</p>
+                <h2 class="cu-serif mt-4 text-5xl font-extrabold leading-[1] tracking-[-.02em] md:text-7xl">
+                    Quatro pratos,<br><span class="font-semibold italic text-[#a3201f]">uma bandeja.</span>
+                </h2>
+            </div>
+
+            <div class="relative">
+
+                <div class="rounded-[1.75rem] bg-[#1c1511] p-3 shadow-[0_40px_80px_-40px_rgba(28,21,17,.9)] md:p-4">
+
+                    <div class="grid gap-3 rounded-[1.25rem] bg-gradient-to-br from-[#a3201f] to-[#6e1413] p-3 md:grid-cols-3 md:grid-rows-[300px_260px] md:gap-4 md:p-4">
+
+                        <?php foreach ($pratos as $prato): ?>
+
+                            <article class="group relative min-h-[280px] overflow-hidden rounded-xl bg-[#1c1511] <?= e($prato['classe']) ?>">
+
+                                <img
+                                    src="<?= e(imagemCulinaria($prato['img'])) ?>"
+                                    alt="<?= e($prato['alt']) ?>"
+                                    loading="lazy"
+                                    class="absolute inset-0 h-full w-full object-cover saturate-[.9] transition duration-700 group-hover:scale-105 group-hover:saturate-110">
+
+                                <div class="absolute inset-0 bg-gradient-to-t from-[#1c1511]/90 via-[#1c1511]/10 to-transparent"></div>
+
+                                <span class="absolute left-4 top-4 rounded-sm bg-[#faf6ee] px-3 py-1.5 text-xs font-bold text-[#1c1511]"><?= e($prato['kanji']) ?></span>
+
+                                <?php if ($prato['vapor']): ?>
+                                    <div class="cu-vapor" aria-hidden="true"><i></i><i></i><i></i></div>
+                                <?php endif; ?>
+
+                                <div class="absolute inset-x-0 bottom-0 p-5 text-white">
+                                    <h3 class="cu-serif text-3xl font-semibold"><?= e($prato['nome']) ?></h3>
+                                    <p class="mt-2 max-w-xs text-xs leading-6 text-white/75"><?= e($prato['texto']) ?></p>
+                                </div>
+
+                            </article>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                </div>
+
+                <div class="cu-hashi" aria-hidden="true"></div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LABORATÓRIO DE DASHI -->
+    <section class="bg-[#1c1511] px-6 py-24 text-white md:px-10 md:py-32">
+
         <div class="mx-auto max-w-7xl">
-            <div class="text-center">
-                <p class="tracking-[.22em] text-[10px] font-bold text-[#c72b30]">04 / O RITUAL</p>
-                <h2 class="font-['Playfair_Display'] tracking-[-.05em] mt-4 text-5xl font-semibold md:text-7xl">Antes do sabor,<br><span class="text-[#c72b30]">vem o cuidado.</span></h2>
-                <p class="mx-auto mt-7 max-w-xl text-sm leading-8 text-[#53615d]">A mesa japonesa é uma pausa. Um gesto de gratidão aos ingredientes, às pessoas e à natureza que tornou tudo possível.</p>
+
+            <div class="mb-14 grid gap-8 lg:grid-cols-2 lg:items-end">
+
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[.3em] text-[#f0b33c]">03 / O caldo</p>
+                    <h2 class="cu-serif mt-4 text-5xl font-extrabold leading-[1] tracking-[-.02em] md:text-7xl">
+                        A base de tudo:<br><span class="font-semibold italic text-[#f0b33c]">dashi.</span>
+                    </h2>
+                </div>
+
+                <p class="max-w-md text-sm leading-8 text-white/60">
+                    Em 1908, o químico Kikunae Ikeda isolou o glutamato do caldo
+                    de kombu e deu nome ao quinto sabor: umami (旨味). Monte o seu
+                    dashi e veja o que cada ingrediente faz.
+                </p>
+
             </div>
-            <div class="washoku-wave mt-16 h-10"></div>
-            <div class="mt-10 grid gap-5 md:grid-cols-3">
-                <article class="border-t-2 border-[#c72b30] pt-5"><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl">01</p><h3 class="mt-4 font-semibold">Itadakimasu</h3><p class="mt-2 text-sm leading-7 text-[#68736e]">Agradecer antes de comer.</p></article>
-                <article class="border-t-2 border-[#71856a] pt-5"><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl">02</p><h3 class="mt-4 font-semibold">Ichiju sansai</h3><p class="mt-2 text-sm leading-7 text-[#68736e]">Uma sopa, três acompanhamentos e equilíbrio.</p></article>
-                <article class="border-t-2 border-[#0b2528] pt-5"><p class="font-['Playfair_Display'] tracking-[-.05em] text-4xl">03</p><h3 class="mt-4 font-semibold">Gochisousama</h3><p class="mt-2 text-sm leading-7 text-[#68736e]">Reconhecer o trabalho por trás da refeição.</p></article>
+
+            <div class="grid gap-8 lg:grid-cols-[.9fr_1.1fr]">
+
+                <figure class="relative min-h-[420px] overflow-hidden">
+
+                    <img
+                        src="<?= e(imagemCulinaria('culinaria_chef')) ?>"
+                        alt="Chef japonês preparando alimentos"
+                        loading="lazy"
+                        class="absolute inset-0 h-full w-full object-cover saturate-[.9]">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#1c1511] via-transparent to-transparent"></div>
+
+                    <figcaption class="absolute bottom-6 left-6">
+                        <p class="text-[10px] font-bold uppercase tracking-[.25em] text-[#f0b33c]">Do território à mesa</p>
+                        <p class="cu-serif mt-2 text-3xl font-semibold italic">Respeitar é cozinhar.</p>
+                    </figcaption>
+
+                </figure>
+
+                <div class="border border-white/10 bg-[#241a15] p-6 md:p-8">
+
+                    <p class="text-[11px] font-bold uppercase tracking-[.25em] text-white/50">Laboratório de dashi</p>
+
+                    <!-- Tigela vista de cima -->
+                    <svg viewBox="0 0 240 240" class="mx-auto mt-4 h-60 w-60" role="img" aria-label="Tigela de caldo vista de cima">
+                        <circle cx="120" cy="120" r="112" fill="#a3201f" />
+                        <circle cx="120" cy="120" r="104" fill="#1c1511" />
+                        <circle id="cu-caldo" cx="120" cy="120" r="94" fill="#d8e8e4" style="transition: fill .6s;" />
+
+                        <g class="cu-item" data-item="k">
+                            <rect x="66" y="104" width="96" height="26" rx="4" fill="#2f4a2a" transform="rotate(-18 114 117)" />
+                            <path d="M78 112 L150 92 M76 122 L148 102" stroke="#4f7a45" stroke-width="1.5" fill="none" />
+                        </g>
+
+                        <g class="cu-item" data-item="b" fill="#d49a7a">
+                            <path d="M138 150 q8 -11 17 0 q-8 11 -17 0z" />
+                            <path d="M158 138 q8 -11 17 0 q-8 11 -17 0z" />
+                            <path d="M120 160 q8 -11 17 0 q-8 11 -17 0z" />
+                            <path d="M150 168 q8 -11 17 0 q-8 11 -17 0z" />
+                            <path d="M104 150 q8 -11 17 0 q-8 11 -17 0z" />
+                        </g>
+
+                        <g class="cu-item" data-item="s">
+                            <circle cx="150" cy="88" r="21" fill="#6b4630" />
+                            <path d="M137 82 l26 12 M163 82 l-26 12" stroke="#e9d3b4" stroke-width="2" />
+                        </g>
+                    </svg>
+
+                    <!-- Medidor -->
+                    <div class="mt-6">
+
+                        <div class="flex items-center justify-between text-[11px] uppercase tracking-[.2em] text-white/55">
+                            <span>Umami <strong class="text-[#f0b33c]">旨味</strong></span>
+                            <output id="cu-pct">0%</output>
+                        </div>
+
+                        <div class="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+                            <div id="cu-barra" class="h-full w-0 rounded-full bg-gradient-to-r from-[#f0b33c] to-[#c72b30] transition-all duration-700"></div>
+                        </div>
+
+                    </div>
+
+                    <!-- Ingredientes -->
+                    <div class="mt-6 flex flex-wrap gap-3">
+                        <button type="button" class="cu-chip" data-ing="k" aria-pressed="false">昆布 Kombu · alga</button>
+                        <button type="button" class="cu-chip" data-ing="b" aria-pressed="false">鰹節 Katsuobushi · bonito seco</button>
+                        <button type="button" class="cu-chip" data-ing="s" aria-pressed="false">干し椎茸 Shiitake seco</button>
+                    </div>
+
+                    <p id="cu-msg" aria-live="polite" class="mt-6 border-t border-white/10 pt-5 text-sm leading-7 text-white/80"></p>
+
+                </div>
+
             </div>
+
         </div>
+
     </section>
 
-    <section class="bg-[#c72b30] px-6 py-16 text-white md:px-10">
-        <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-7">
-            <div><p class="tracking-[.22em] text-[10px] font-bold text-white/65">WASHOKU · å’Œé£Ÿ</p><p class="font-['Playfair_Display'] tracking-[-.05em] mt-3 text-4xl md:text-5xl">Uma paisagem que se come.</p></div>
-            <a href="#inicio" class="inline-flex items-center gap-3 border border-white/50 px-6 py-3 text-[10px] font-bold uppercase tracking-[.2em] transition hover:bg-white hover:text-[#c72b30]">Voltar ao topo <i class="bi bi-arrow-up"></i></a>
+
+    <!-- FECHAMENTO -->
+    <section class="bg-[#a3201f] px-6 py-20 text-white md:px-10">
+
+        <div class="mx-auto max-w-7xl">
+
+            <div class="grid gap-12 md:grid-cols-2">
+
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-[.25em] text-white/65">Antes de comer</p>
+                    <p class="cu-sans mt-3 text-5xl font-bold md:text-6xl">いただきます</p>
+                    <p class="mt-3 text-sm text-white/75">Itadakimasu · “recebo com gratidão”</p>
+                </div>
+
+                <div>
+                    <p class="text-[11px] font-bold uppercase tracking-[.25em] text-white/65">Ao terminar</p>
+                    <p class="cu-sans mt-3 text-5xl font-bold md:text-6xl">ごちそうさま</p>
+                    <p class="mt-3 text-sm text-white/75">Gochisōsama · “obrigado pelo banquete”</p>
+                </div>
+
+            </div>
+
+            <div class="mt-14 flex flex-wrap items-center justify-between gap-6 border-t border-white/25 pt-8">
+
+                <p class="max-w-lg text-xs leading-6 text-white/70">
+                    À mesa, nunca finque os hashi no arroz: o gesto lembra
+                    rituais fúnebres. Apoie-os sempre ao lado do prato.
+                </p>
+
+                <a href="#inicio" class="inline-flex items-center gap-3 border border-white/50 px-6 py-3 text-[11px] font-bold uppercase tracking-[.2em] transition hover:bg-white hover:text-[#a3201f]">
+                    Voltar ao topo <i class="bi bi-arrow-up"></i>
+                </a>
+
+            </div>
+
         </div>
+
     </section>
+
 </main>
 
-<?php include '../../assets/templates/footer.php'; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const caldo = document.getElementById('cu-caldo');
+    const barra = document.getElementById('cu-barra');
+    const pct = document.getElementById('cu-pct');
+    const msg = document.getElementById('cu-msg');
+    const chips = document.querySelectorAll('[data-ing]');
+    const itens = document.querySelectorAll('[data-item]');
+
+    const cores = {
+        '': '#d8e8e4', k: '#d6e0b4', b: '#e8c476', s: '#c9a070',
+        kb: '#e6c46a', ks: '#cdb070', bs: '#d9a85f', kbs: '#dcae55'
+    };
+
+    const textos = {
+        '': 'Água pura. Escolha um ingrediente para começar o caldo.',
+        k: 'Só kombu: caldo limpo e suave, rico em glutamato.',
+        b: 'Só katsuobushi: aroma defumado e profundo, rico em inosinato.',
+        s: 'Só shiitake seco: sabor terroso, rico em guanilato.',
+        kb: 'Ichiban dashi, o clássico: glutamato e inosinato se potencializam e o umami dispara.',
+        ks: 'Kombu com shiitake: um caldo vegetal e profundo, base da cozinha budista (shōjin).',
+        bs: 'Katsuobushi e shiitake: muito sabor, mas falta o glutamato do kombu para multiplicar o efeito.',
+        kbs: 'Os três juntos: umami no máximo e muita profundidade.'
+    };
+
+    function atualizar() {
+
+        const ativos = { k: false, b: false, s: false };
+
+        chips.forEach((chip) => {
+            ativos[chip.dataset.ing] = chip.getAttribute('aria-pressed') === 'true';
+        });
+
+        itens.forEach((item) => {
+            item.classList.toggle('on', ativos[item.dataset.item]);
+        });
+
+        const chave = (ativos.k ? 'k' : '') + (ativos.b ? 'b' : '') + (ativos.s ? 's' : '');
+
+        // Cada ingrediente soma; o kombu multiplica o efeito dos outros dois
+        let valor = (ativos.k ? 22 : 0) + (ativos.b ? 22 : 0) + (ativos.s ? 18 : 0);
+
+        if (ativos.k && ativos.b) valor += 40;
+        if (ativos.k && ativos.s) valor += 30;
+
+        valor = Math.min(valor, 100);
+
+        caldo.setAttribute('fill', cores[chave]);
+        barra.style.width = valor + '%';
+        pct.textContent = valor + '%';
+        msg.textContent = textos[chave];
+
+    }
+
+    chips.forEach((chip) => {
+
+        chip.addEventListener('click', () => {
+
+            const ligado = chip.getAttribute('aria-pressed') === 'true';
+
+            chip.setAttribute('aria-pressed', String(!ligado));
+
+            atualizar();
+
+        });
+
+    });
+
+    atualizar();
+
+});
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>

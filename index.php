@@ -200,12 +200,22 @@ function imagemSite(string $chave): string
 
                     <h1 class="mt-7 font-serif text-5xl font-bold leading-tight text-[#f8f5ef] sm:text-6xl md:text-7xl lg:text-8xl">
 
-                        <?= e($paginaInicio['hero_titulo'] ?? 'Japão') ?>
+                        Japão:
+
+                        <span class="block italic text-[#d94b50]">
+                            tradição e
+                        </span>
+
+                        modernidade.
 
                     </h1>
 
                     <p class="mt-7 max-w-xl text-sm leading-8 text-gray-300 md:text-lg">
-                        <?= e($paginaInicio['hero_subtitulo'] ?? '') ?>
+
+                        Descubra um país onde templos milenares encontram cidades
+                        futuristas, onde antigas tradições convivem com novas
+                        tecnologias e cada detalhe conta uma história.
+
                     </p>
 
                     <div class="mt-10 flex flex-wrap gap-4">
