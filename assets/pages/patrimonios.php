@@ -1,10 +1,7 @@
+
 <?php
 
 require_once __DIR__ . '/../../database/conexao.php';
-
-$dados = require __DIR__ . '/../templates/dados.php';
-$patrimoniosDetalhes = $dados['patrimonios'] ?? [];
-$patrimonios = $dados['patrimonios'];
 
 if (!function_exists('e')) {
     function e($texto): string
@@ -13,43 +10,64 @@ if (!function_exists('e')) {
     }
 }
 
-// Mantém os detalhes históricos já existentes no site.
-$detalhesPorNome = [];
-
-foreach ($patrimoniosDetalhes as $detalhe) {
-    $detalhesPorNome[$detalhe['nome']] = $detalhe;
-}
-
-// Busca os patrimônios cadastrados no administrador.
+// Busca todos os patrimônios e seus detalhes diretamente no banco.
 $patrimonios = [];
 
 $stmt = $conn->prepare("
-    SELECT id, nome, descricao, imagem, localizacao, ordem
+    SELECT
+        id,
+        nome,
+        descricao,
+        imagem,
+        localizacao,
+        periodo,
+        historia,
+        curiosidade,
+        ordem
     FROM patrimonios
     WHERE ativo = 1
     ORDER BY ordem ASC, id ASC
 ");
 
-if ($stmt && $stmt->execute()) {
-    $resultado = $stmt->get_result();
+if (!$stmt) {
+    die('Erro ao preparar consulta dos patrimônios: ' . e($conn->error));
+}
 
-    while ($linha = $resultado->fetch_assoc()) {
-        $detalhe = $detalhesPorNome[$linha['nome']] ?? [];
+if (!$stmt->execute()) {
+    die('Erro ao consultar patrimônios: ' . e($stmt->error));
+}
 
-        $patrimonios[] = [
-            'id' => $linha['id'],
-            'nome' => $linha['nome'],
-            'resumo' => $linha['descricao'] ?: ($detalhe['resumo'] ?? ''),
-            'imagem' => $linha['imagem'],
-            'localizacao' => $linha['localizacao'],
-            'periodo' => $detalhe['periodo'] ?? '',
-            'historia' => $detalhe['historia'] ?? [],
-            'curiosidade' => $detalhe['curiosidade'] ?? ''
-        ];
+$resultado = $stmt->get_result();
+
+while ($linha = $resultado->fetch_assoc()) {
+
+    // Converte o JSON do banco em um array PHP.
+    $historia = json_decode($linha['historia'] ?? '[]', true);
+
+    if (!is_array($historia)) {
+        $historia = [];
     }
 
-    $stmt->close();
+    // Corrige o caminho da imagem.
+    $caminhoImagem = trim((string) $linha['imagem']);
+
+    if ($caminhoImagem !== '') {
+        $caminhoImagem = '../img/patrimonios/' . basename($caminhoImagem);
+    }
+
+    $patrimonios[] = [
+        'id' => $linha['id'],
+        'nome' => $linha['nome'],
+        'resumo' => $linha['descricao'] ?? '',
+        'imagem' => $caminhoImagem,
+        'localizacao' => $linha['localizacao'] ?? '',
+        'periodo' => $linha['periodo'] ?? '',
+        'historia' => $historia,
+        'curiosidade' => $linha['curiosidade'] ?? ''
+    ];
 }
+
+$stmt->close();
 
 // Imagens complementares da página.
 $imagensPadrao = [
@@ -60,7 +78,7 @@ $imagensPadrao = [
     'patrimonios_castelo' => 'assets/img/patrimonios/castelo.png'
 ];
 
-// Uma única consulta ao banco (com checagem da conexão)
+// Busca as imagens cadastradas no banco.
 $imagensBanco = [];
 
 $resultadoImagens = $conn->query("
@@ -69,29 +87,25 @@ $resultadoImagens = $conn->query("
 ");
 
 if ($resultadoImagens) {
-    while ($imagem = $resultadoImagens->fetch_assoc()) {
-        $chave = $imagem['chave'];
-        $caminho = trim($imagem['caminho']);
 
-        if (isset($imagensPadrao[$chave]) && $caminho !== '') {
-            $imagensSite[$chave] = $caminho;
-    if ($resultado) {
-        while ($imagem = $resultado->fetch_assoc()) {
-            $imagensBanco[$imagem['chave']] = trim($imagem['caminho']);
-        }
+    while ($imagem = $resultadoImagens->fetch_assoc()) {
+        $imagensBanco[$imagem['chave']] = trim($imagem['caminho']);
     }
 
     $resultadoImagens->free();
 }
 
+// Define as imagens utilizadas na página.
 $imagensSite = $imagensPadrao;
 
 foreach ($imagensPadrao as $chave => $caminho) {
+
     if (!empty($imagensBanco[$chave])) {
         $imagensSite[$chave] = $imagensBanco[$chave];
     }
 }
 
+// Função para exibir imagens complementares.
 function imagemPatrimonio(string $chave): string
 {
     global $imagensSite;
@@ -99,33 +113,28 @@ function imagemPatrimonio(string $chave): string
     return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
 }
 
-// Corrige os caminhos das imagens dos patrimônios.
-// Corrige os caminhos das imagens dos patrimônios.
-foreach ($patrimonios as &$patrimonio) {
-    $caminho = trim((string) $patrimonio['imagem']);
-
-    if ($caminho !== '') {
-        $nomeArquivo = basename($caminho);
-// Imagem de cada patrimônio (chave "patrimonio_{id}")
-foreach ($patrimonios as &$patrimonio) {
-    $chave = 'patrimonio_' . $patrimonio['id'];
-
-        $patrimonio['imagem'] = '../img/patrimonios/' . $nomeArquivo;
-    }
-}
-
-unset($patrimonio);
-
-include_once __DIR__ . '/../templates/header.php';
-
-?>
-
+// Quantidade de patrimônios cadastrados.
 $total = count($patrimonios);
-$numeros = [1 => 'Uma', 2 => 'Duas', 3 => 'Três', 4 => 'Quatro', 5 => 'Cinco', 6 => 'Seis', 7 => 'Sete', 8 => 'Oito', 9 => 'Nove'];
+
+$numeros = [
+    1 => 'Uma',
+    2 => 'Duas',
+    3 => 'Três',
+    4 => 'Quatro',
+    5 => 'Cinco',
+    6 => 'Seis',
+    7 => 'Sete',
+    8 => 'Oito',
+    9 => 'Nove'
+];
+
 $porExtenso = $numeros[$total] ?? (string) $total;
 
 include_once __DIR__ . '/../templates/header.php';
+
 ?>
+
+
 
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Playfair+Display:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
 
@@ -601,6 +610,7 @@ include_once __DIR__ . '/../templates/header.php';
 
 </main>
 
+<?php include_once __DIR__ . '/../templates/footer.php'; ?> 
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -671,5 +681,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
-
-<?php include_once __DIR__ . '/../templates/footer.php'; ?>

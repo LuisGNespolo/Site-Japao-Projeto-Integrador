@@ -3,20 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 19/11/2026 às 16:07
+-- Tempo de geração: 24/11/2026 às 15:37
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
-CREATE DATABASE IF NOT EXISTS `japao_integrador`
-  DEFAULT CHARACTER SET utf8mb4
-  COLLATE utf8mb4_general_ci;
-
-USE `japao_integrador`;
-
-
-
-CREATE DATABASE IF NOT EXISTS `japao_integrador` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `japao_integrador`;
-
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -39,14 +28,12 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `administradores` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(11) NOT NULL,
   `nome` varchar(100) NOT NULL,
   `email` varchar(150) NOT NULL,
   `senha_hash` varchar(255) NOT NULL,
   `ativo` tinyint(1) NOT NULL DEFAULT 1,
-  `criado_em` timestamp NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `uk_administradores_email` (`email`)
+  `criado_em` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -232,8 +219,7 @@ INSERT INTO `lendas` (`id`, `nome`, `nome_japones`, `romanizacao`, `resumo`, `te
 (3, 'Teke Teke', 'テケテケ (Teke Teke)', NULL, 'O espírito que se arrasta', 'SIGNIFICADO\nOnomatopeia do som de arrastar\n\nHISTÓRIA\nTeke Teke é o espírito de uma jovem que, segundo a lenda, teria sido atingida por um trem e partida ao meio. Desde então, ela vaga em busca de vingança, arrastando-se pelo chão com os braços.\n\nO nome vem do som que ela faz ao se mover, uma imitação do barulho de algo sendo arrastado. Quem ouve esse ruído se aproximando precisa fugir o mais rápido possível.\n\nCURIOSIDADE\nA história se espalhou principalmente a partir dos anos 1990 e hoje aparece em filmes, quadrinhos e jogos de terror.', '../img/lendas/lenda3.png', 3, 1, 'teke-teke'),
 (4, 'Amaterasu', '天照大神 (Amaterasu Ōmikami)', NULL, 'A deusa do Sol', 'SIGNIFICADO\nA grande divindade que brilha no céu\n\nHISTÓRIA\nAmaterasu é a deusa do Sol na mitologia japonesa e uma das divindades mais importantes do xintoísmo. Tradicionalmente, a família imperial japonesa é considerada descendente dela.\n\nEm um dos mitos mais conhecidos, Amaterasu se escondeu em uma caverna após um conflito com o irmão, Susanoo, e o mundo mergulhou na escuridão. Os outros deuses a convenceram a sair com uma festa e um espelho, e a luz voltou ao mundo.\n\nCURIOSIDADE\nO principal santuário dedicado a ela é o Santuário de Ise, um dos locais mais sagrados do Japão.', '../img/lendas/lenda4.png', 4, 1, 'amaterasu'),
 (5, 'Tsukuyomi', '月読命 (Tsukuyomi-no-Mikoto)', NULL, 'O deus da Lua', 'SIGNIFICADO\nAquele que conta as luas\n\nHISTÓRIA\nTsukuyomi é o deus da Lua na mitologia japonesa e irmão de Amaterasu e Susanoo. Ele aparece de forma discreta nos relatos mais antigos.\n\nSegundo uma das tradições, ele foi enviado para visitar a deusa Uke Mochi e, ofendido com a forma como ela preparava a comida, a matou. Irritada, Amaterasu se recusou a vê-lo novamente, e é por isso que o Sol e a Lua nunca se encontram no céu, dando origem ao dia e à noite.\n\nCURIOSIDADE\nO nome Tsukuyomi está ligado à contagem do tempo pelo calendário lunar.', '../img/lendas/lenda5.png', 5, 1, 'tsukuyomi'),
-(6, 'Susanoo', '須佐之男 (Susanoo-no-Mikoto)', NULL, 'O deus das tempestades', 'SIGNIFICADO\nO deus impetuoso\n\nHISTÓRIA\nSusanoo é o deus das tempestades e do mar, conhecido por seu temperamento forte. Depois de causar problemas no céu, foi expulso e desceu à Terra.\n\nLá, ele enfrentou a serpente de oito cabeças Yamata no Orochi, que ameaçava uma família. Susanoo derrotou o monstro e, dentro de seu corpo, encontrou a espada Kusanagi, que se tornou um dos tesouros sagrados do Japão.\n\nCURIOSIDADE\nA espada Kusanagi é um dos três tesouros sagrados que simbolizam a autoridade imperial japonesa.', '../img/lendas/lenda6.png', 6, 1, 'susanoo'),
-
+(6, 'Susanoo', '須佐之男 (Susanoo-no-Mikoto)', NULL, 'O deus das tempestades', 'SIGNIFICADO\nO deus impetuoso\n\nHISTÓRIA\nSusanoo é o deus das tempestades e do mar, conhecido por seu temperamento forte. Depois de causar problemas no céu, foi expulso e desceu à Terra.\n\nLá, ele enfrentou a serpente de oito cabeças Yamata no Orochi, que ameaçava uma família. Susanoo derrotou o monstro e, dentro de seu corpo, encontrou a espada Kusanagi, que se tornou um dos tesouros sagrados do Japão.\n\nCURIOSIDADE\nA espada Kusanagi é um dos três tesouros sagrados que simbolizam a autoridade imperial japonesa.', '../img/lendas/lenda6.png', 6, 1, 'susanoo');
 
 -- --------------------------------------------------------
 
@@ -331,19 +317,22 @@ CREATE TABLE `patrimonios` (
   `imagem` varchar(255) DEFAULT NULL,
   `localizacao` varchar(150) DEFAULT NULL,
   `ordem` int(11) NOT NULL DEFAULT 0,
-  `ativo` tinyint(1) NOT NULL DEFAULT 1
+  `ativo` tinyint(1) NOT NULL DEFAULT 1,
+  `periodo` varchar(255) DEFAULT NULL,
+  `historia` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`historia`)),
+  `curiosidade` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Despejando dados para a tabela `patrimonios`
 --
 
-INSERT INTO `patrimonios` (`id`, `nome`, `descricao`, `imagem`, `localizacao`, `ordem`, `ativo`) VALUES
-(1, 'Castelo', 'Descrição do patrimônio.', 'img/patrimonio-1.jpg', 'Japão', 1, 1),
-(2, 'Monte Fuji', 'Descrição do patrimônio.', 'img/patrimonio-2.jpg', 'Japão', 2, 1),
-(3, 'Portal Torii', 'Descrição do patrimônio.', 'img/patrimonio-3.jpg', 'Japão', 3, 1),
-(4, 'Pagode', 'Descrição do patrimônio.', 'img/patrimonio-4.jpg', 'Japão', 4, 1),
-(5, 'Templo', 'Descrição do patrimônio.', 'img/patrimonio-5.jpg', 'Japão', 5, 1);
+INSERT INTO `patrimonios` (`id`, `nome`, `descricao`, `imagem`, `localizacao`, `ordem`, `ativo`, `periodo`, `historia`, `curiosidade`) VALUES
+(1, 'Castelo de Himeji', 'Um dos castelos mais famosos do Japão, mantendo a força e tradição.', 'img/patrimonios/castelo.png', 'Himeji, província de Hyogo', 1, 1, 'Torre principal concluída no início do século XVII', '[\"O Castelo de Himeji é considerado um dos mais belos e mais bem preservados castelos feudais do Japão. Por causa das paredes brancas e da silhueta elegante, é conhecido como o \\\"Castelo da Garça Branca\\\".\", \"Ao longo dos séculos, ele resistiu a guerras, incêndios e terremotos, e hoje é um dos grandes símbolos da arquitetura defensiva japonesa.\"]', 'Foi um dos primeiros locais japoneses a receber o título de Patrimônio Mundial da UNESCO, em 1993.'),
+(2, 'Monte Fuji', 'Montanha sagrada e um dos símbolos mais importantes do país.', 'img/patrimonios/monte.png', 'Entre as províncias de Shizuoka e Yamanashi', 2, 1, 'Patrimônio Mundial desde 2013', '[\"Com 3.776 metros, o Monte Fuji é a montanha mais alta do Japão. Seu formato de cone quase perfeito inspirou poetas, pintores e artistas durante séculos.\", \"Ele é considerado sagrado no xintoísmo e no budismo, e há séculos recebe peregrinos que fazem a subida até o cume.\"]', 'Ele foi reconhecido pela UNESCO como uma paisagem cultural, e não apenas como um patrimônio natural.'),
+(3, 'Santuário Itsukushima', 'Famoso pelo seu portal sobre o mar.', 'img/patrimonios/santuario.png', 'Ilha de Miyajima, província de Hiroshima', 3, 1, 'Origens no século VI, reconstruído no século XII', '[\"O Santuário Itsukushima fica em uma ilha considerada sagrada, e suas construções foram erguidas sobre palafitas, de modo que parecem flutuar na maré alta.\", \"Seu portal torii vermelho, plantado dentro da água, é uma das imagens mais conhecidas do país.\"]', 'Durante a maré baixa, é possível caminhar até a base do grande torii.'),
+(4, 'Templo Kinkaku-ji', 'Conhecido como templo do Pavilhão Dourado.', 'img/patrimonios/templo.png', 'Kyoto', 4, 1, 'Construído em 1397', '[\"O Kinkaku-ji, ou Pavilhão Dourado, foi construído no fim do século XIV como residência de um xogum e depois se tornou um templo zen budista.\", \"Seus andares superiores são cobertos de folhas de ouro e se refletem no lago em frente, criando uma das paisagens mais fotografadas de Kyoto.\"]', 'O pavilhão foi destruído em um incêndio em 1950 e reconstruído poucos anos depois.'),
+(5, 'Santuário Fushimi Inari', 'Famoso por suas milhares de portas de torás vermelhas.', 'img/patrimonios/santuario2.png', 'Kyoto', 5, 1, 'Fundado no ano 711', '[\"O Fushimi Inari é dedicado a Inari, divindade ligada ao arroz, à prosperidade e aos negócios. Um caminho de milhares de portais torii vermelhos sobe pela montanha atrás do santuário.\", \"Muitos desses portais foram doados por empresas e pessoas em agradecimento ou como pedido de sucesso.\"]', 'As estátuas de raposas que vigiam o santuário são vistas como mensageiras de Inari.');
 
 -- --------------------------------------------------------
 
