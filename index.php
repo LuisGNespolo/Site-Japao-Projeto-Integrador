@@ -1,7 +1,24 @@
-
 <?php
 
 require_once __DIR__ . '/database/conexao.php';
+
+// Busca os dados da página inicial
+$paginaInicio = [];
+
+$stmt = $conn->prepare("
+    SELECT *
+    FROM paginas
+    WHERE slug = 'inicio'
+    AND ativo = 1
+    LIMIT 1
+");
+
+if ($stmt) {
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $paginaInicio = $resultado->fetch_assoc() ?? [];
+    $stmt->close();
+}
 
 $dados = require __DIR__ . '/assets/templates/dados.php';
 $cardsExplorar = $dados['cards_explorar'];
@@ -73,10 +90,10 @@ function imagemSite(string $chave): string
     <link href="src/output.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 
@@ -183,22 +200,12 @@ function imagemSite(string $chave): string
 
                     <h1 class="mt-7 font-serif text-5xl font-bold leading-tight text-[#f8f5ef] sm:text-6xl md:text-7xl lg:text-8xl">
 
-                        Japão:
-
-                        <span class="block italic text-[#d94b50]">
-                            tradição e
-                        </span>
-
-                        modernidade.
+                        <?= e($paginaInicio['hero_titulo'] ?? 'Japão') ?>
 
                     </h1>
 
                     <p class="mt-7 max-w-xl text-sm leading-8 text-gray-300 md:text-lg">
-
-                        Descubra um país onde templos milenares encontram cidades
-                        futuristas, onde antigas tradições convivem com novas
-                        tecnologias e cada detalhe conta uma história.
-
+                        <?= e($paginaInicio['hero_subtitulo'] ?? '') ?>
                     </p>
 
                     <div class="mt-10 flex flex-wrap gap-4">

@@ -457,66 +457,7 @@ $totalEventos = contarRegistros($conn, "linha_tempo");
                     </a>
 
 
-                    <!-- OUTROS CONTEÚDOS -->
-
-                    <a href="outros-conteudos.php" class="item-admin group border border-[#e8dfd2] bg-white p-7">
-
-                        <div class="icone-admin flex h-12 w-12 items-center justify-center rounded-full bg-[#f8e9e9] text-xl text-[#c9272c]">
-                            <i class="bi bi-collection"></i>
-                        </div>
-
-                        <h3 class="mt-6 text-lg font-bold">
-                            Outros conteúdos
-                        </h3>
-
-                        <p class="mt-2 text-sm leading-7 text-[#82766e]">
-                            Gerencie hábitos culturais, linha do tempo e outros registros.
-                        </p>
-
-                        <div class="mt-6 flex items-center justify-between border-t border-[#eee7df] pt-4">
-
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c9272c]">
-                                Gerenciar
-                            </span>
-
-                            <i class="bi bi-arrow-right text-[#c9272c]"></i>
-
-                        </div>
-
-                    </a>
-
-
-                    <!-- CONFIGURAÇÕES -->
-
-                    <a href="configuracoes.php" class="item-admin group border border-[#e8dfd2] bg-white p-7">
-
-                        <div class="icone-admin flex h-12 w-12 items-center justify-center rounded-full bg-[#f8e9e9] text-xl text-[#c9272c]">
-                            <i class="bi bi-gear"></i>
-                        </div>
-
-                        <h3 class="mt-6 text-lg font-bold">
-                            Configurações
-                        </h3>
-
-                        <p class="mt-2 text-sm leading-7 text-[#82766e]">
-                            Altere as configurações gerais e informações do projeto.
-                        </p>
-
-                        <div class="mt-6 flex items-center justify-between border-t border-[#eee7df] pt-4">
-
-                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#c9272c]">
-                                Configurar
-                            </span>
-
-                            <i class="bi bi-arrow-right text-[#c9272c]"></i>
-
-                        </div>
-
-                    </a>
-
-                </div>
-
-            </section>
+                    
 
 
             <!-- RODAPÉ -->
