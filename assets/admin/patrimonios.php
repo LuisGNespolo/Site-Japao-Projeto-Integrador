@@ -303,41 +303,52 @@ foreach ($patrimonios as $patrimonio) {
         <main class="w-full p-6 md:p-10">
 
             <!-- CABEÇALHO -->
-            <header class="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-center">
+            <header class="-mx-6 -mt-6 bg-[#172334] text-white shadow-md md:-mx-10 md:-mt-10">
+    <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5">
 
-                <div>
+        <div>
+            <h1 class="mt-1 text-2xl font-bold tracking-[0.3em] text-[#e45a5e]">
+                Japão
+            </h1>
 
-                    <a href="index.php"
-                        class="mb-4 inline-flex items-center gap-2 text-sm text-gray-500 transition hover:text-[#c72b30]">
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#a52828]">
+                Conteúdos do site
+            </p>
+        </div>
 
-                        <i class="bi bi-arrow-left"></i>
-                        Voltar ao painel
+        <a href="index.php"
+            class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm transition hover:bg-white/10">
 
-                    </a>
+            <i class="bi bi-arrow-left"></i>
+            Voltar ao painel
 
-                    <span class="block text-xs font-bold uppercase tracking-[0.3em] text-[#c72b30]">
-                        Gerenciamento de conteúdo
-                    </span>
+        </a>
 
-                    <h1 class="mt-2 font-serif text-3xl font-bold md:text-4xl">
-                        Patrimônios
-                    </h1>
+    </div>
+</header>
 
-                    <p class="mt-2 text-sm text-gray-500">
-                        Gerencie os patrimônios históricos e culturais do Japão.
-                    </p>
+<div class="mx-auto mb-8 mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-4">
 
-                </div>
+    <div>
+        <h2 class="mt-2 text-3xl font-bold text-[#172334]">
+            Patrimônios japoneses
+        </h2>
 
-                <a href="?novo=1"
-                    class="inline-flex items-center justify-center gap-2 rounded-sm bg-[#c72b30] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#a51e24]">
+        <p class="mt-3 max-w-2xl text-sm leading-7 text-gray-600">
+            Gerencie as informações dos patrimônios históricos e culturais apresentados no site.
+            Selecione um patrimônio para editar seu conteúdo.
+        </p>
+    </div>
 
-                    <i class="bi bi-plus-lg"></i>
-                    Novo patrimônio
+    <a href="?novo=1"
+        class="inline-flex items-center gap-2 rounded-lg bg-[#172334] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#263c57]">
 
-                </a>
+        <i class="bi bi-plus-lg"></i>
+        Novo patrimônio
 
-            </header>
+    </a>
+
+</div>
 
             <!-- MENSAGEM -->
             <?php if ($mensagem !== ""): ?>

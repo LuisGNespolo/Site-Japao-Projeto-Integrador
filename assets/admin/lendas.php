@@ -172,17 +172,16 @@ foreach ($lendas as $item) {
         <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5">
 
             <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#e45a5e]">
+                <h1 class="mt-1 text-2xl font-bold tracking-[0.3em] text-[#e45a5e]">
                     Japão
-                </p>
-
-                <h1 class="mt-1 text-2xl font-semibold">
-                    Gerenciar lendas
                 </h1>
+
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#a52828]">
+                Conteúdos do site
+            </p>
             </div>
 
-            <a href="index.php"
-               class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm transition hover:bg-white/10">
+            <a href="index.php" class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm transition hover:bg-white/10">
 
                 <i class="bi bi-arrow-left"></i>
                 Voltar ao painel
@@ -200,9 +199,7 @@ foreach ($lendas as $item) {
 
         <div class="mb-8">
 
-            <p class="text-xs font-bold uppercase tracking-[0.25em] text-[#a52828]">
-                Conteúdos do site
-            </p>
+            
 
             <h2 class="mt-2 text-3xl font-bold text-[#172334]">
                 Lendas japonesas

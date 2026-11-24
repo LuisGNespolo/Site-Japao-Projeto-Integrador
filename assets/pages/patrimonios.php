@@ -3,17 +3,54 @@
 require_once __DIR__ . '/../../database/conexao.php';
 
 $dados = require __DIR__ . '/../templates/dados.php';
-$patrimonios = $dados['patrimonios'];
-
-include_once __DIR__ . '/../templates/header.php';
+$patrimoniosDetalhes = $dados['patrimonios'] ?? [];
 
 if (!function_exists('e')) {
-    function e(string $texto): string
+    function e($texto): string
     {
-        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+        return htmlspecialchars((string) $texto, ENT_QUOTES, 'UTF-8');
     }
 }
 
+// Mantém os detalhes históricos já existentes no site.
+$detalhesPorNome = [];
+
+foreach ($patrimoniosDetalhes as $detalhe) {
+    $detalhesPorNome[$detalhe['nome']] = $detalhe;
+}
+
+// Busca os patrimônios cadastrados no administrador.
+$patrimonios = [];
+
+$stmt = $conn->prepare("
+    SELECT id, nome, descricao, imagem, localizacao, ordem
+    FROM patrimonios
+    WHERE ativo = 1
+    ORDER BY ordem ASC, id ASC
+");
+
+if ($stmt && $stmt->execute()) {
+    $resultado = $stmt->get_result();
+
+    while ($linha = $resultado->fetch_assoc()) {
+        $detalhe = $detalhesPorNome[$linha['nome']] ?? [];
+
+        $patrimonios[] = [
+            'id' => $linha['id'],
+            'nome' => $linha['nome'],
+            'resumo' => $linha['descricao'] ?: ($detalhe['resumo'] ?? ''),
+            'imagem' => $linha['imagem'],
+            'localizacao' => $linha['localizacao'],
+            'periodo' => $detalhe['periodo'] ?? '',
+            'historia' => $detalhe['historia'] ?? [],
+            'curiosidade' => $detalhe['curiosidade'] ?? ''
+        ];
+    }
+
+    $stmt->close();
+}
+
+// Imagens complementares da página.
 $imagensPadrao = [
     'patrimonios_banner' => 'assets/img/patrimonios/banner.png',
     'patrimonios_memoria' => 'assets/img/patrimonios/memoria.png',
@@ -24,21 +61,22 @@ $imagensPadrao = [
 
 $imagensSite = $imagensPadrao;
 
-if (isset($conn) && $conn instanceof mysqli) {
-    $resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
+$resultadoImagens = $conn->query("
+    SELECT chave, caminho
+    FROM imagens_site
+");
 
-    if ($resultado) {
-        while ($imagem = $resultado->fetch_assoc()) {
-            $chave = $imagem['chave'];
-            $caminho = trim($imagem['caminho']);
+if ($resultadoImagens) {
+    while ($imagem = $resultadoImagens->fetch_assoc()) {
+        $chave = $imagem['chave'];
+        $caminho = trim($imagem['caminho']);
 
-            if (isset($imagensPadrao[$chave]) && $caminho !== '') {
-                $imagensSite[$chave] = $caminho;
-            }
+        if (isset($imagensPadrao[$chave]) && $caminho !== '') {
+            $imagensSite[$chave] = $caminho;
         }
-
-        $resultado->free();
     }
+
+    $resultadoImagens->free();
 }
 
 function imagemPatrimonio(string $chave): string
@@ -48,32 +86,23 @@ function imagemPatrimonio(string $chave): string
     return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
 }
 
-$imagensBanco = [];
-
-$resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
-
-if ($resultado) {
-    while ($imagem = $resultado->fetch_assoc()) {
-        $imagensBanco[$imagem['chave']] = $imagem['caminho'];
-    }
-
-    $resultado->free();
-}
-
-// Atualiza as imagens dos patrimônios
+// Corrige os caminhos das imagens dos patrimônios.
+// Corrige os caminhos das imagens dos patrimônios.
 foreach ($patrimonios as &$patrimonio) {
+    $caminho = trim((string) $patrimonio['imagem']);
 
-    $id = $patrimonio['id'];
-    $chave = "patrimonio_{$id}";
+    if ($caminho !== '') {
+        $nomeArquivo = basename($caminho);
 
-    if (!empty($imagensBanco[$chave])) {
-        $patrimonio['imagem'] = '../../' . ltrim($imagensBanco[$chave], '/');
+        $patrimonio['imagem'] = '../img/patrimonios/' . $nomeArquivo;
     }
 }
 
 unset($patrimonio);
-?>
 
+include_once __DIR__ . '/../templates/header.php';
+
+?>
 <style>
     .heritage-page {
         --heritage-ink: #172b2b;

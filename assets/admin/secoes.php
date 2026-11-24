@@ -257,13 +257,13 @@ $editando = $secaoEdicao !== null;
         <div class="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-4 px-5 py-5">
 
             <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-[#e45a5e]">
+                <h1 class="mt-1 text-2xl font-bold tracking-[0.3em] text-[#e45a5e]">
                     Japão
-                </p>
-
-                <h1 class="mt-1 text-2xl font-semibold">
-                    Gerenciar seções
                 </h1>
+
+                <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#c9272c]">
+                    Gerenciamento de conteúdo
+                </p>
             </div>
 
             <a href="index.php" class="inline-flex items-center gap-2 rounded-lg border border-white/20 px-4 py-2 text-sm transition hover:bg-white/10">
@@ -280,32 +280,10 @@ $editando = $secaoEdicao !== null;
 
     <main class="mx-auto max-w-7xl px-6 py-10 md:px-10">
 
-        <!-- NAVEGAÇÃO -->
-
-        <div class="mb-8 flex flex-wrap items-center gap-2 text-xs text-[#82766e]">
-
-            <a href="index.php" class="transition hover:text-[#c9272c]">
-                Painel administrativo
-            </a>
-
-            <i class="bi bi-chevron-right text-[9px]"></i>
-
-            <span class="font-semibold text-[#c9272c]">
-                Seções
-            </span>
-
-        </div>
-
-
-        <!-- TÍTULO -->
 
         <section class="mb-10 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
 
             <div>
-
-                <p class="mb-3 text-[10px] font-bold uppercase tracking-[0.3em] text-[#c9272c]">
-                    Gerenciamento de conteúdo
-                </p>
 
                 <h1 class="titulo text-4xl font-semibold">
                     Seções do site
@@ -316,11 +294,6 @@ $editando = $secaoEdicao !== null;
                 </p>
 
             </div>
-
-            <a href="index.php" class="botao inline-flex items-center gap-2 border border-[#e8dfd2] bg-white px-5 py-3 text-xs font-bold uppercase tracking-wider hover:border-[#c9272c] hover:text-[#c9272c]">
-                <i class="bi bi-arrow-left"></i>
-                Voltar ao painel
-            </a>
 
         </section>
 
