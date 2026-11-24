@@ -1,4 +1,3 @@
-
 <?php
 
 require_once __DIR__ . '/../../database/conexao.php';
@@ -143,7 +142,7 @@ function imagemFutebol(string $chave): string
             <div class="relative z-10 flex items-start justify-between gap-6">
                 <div>
                     <p class="tabular-nums tracking-[.12em] text-[10px] font-bold uppercase text-white/55">Japan Football Association</p>
-                    <p class="mt-2 text-sm text-white/80">æ—¥æœ¬ã‚µãƒƒã‚«ãƒ¼ · å¤¢ã‚’åŠ›ã«</p>
+                    <p class="mt-2 text-sm text-white/80">日本サッカー · 夢を力に</p>
                 </div>
                 <div class="jfa-stamp hidden text-[10px] font-bold uppercase tracking-[.2em] md:block">
                     <span class="block text-white/45">LIVE / 90:00</span>
@@ -183,10 +182,10 @@ function imagemFutebol(string $chave): string
                     <p class="tabular-nums tracking-[.12em] text-xs text-white/50">MATCH REPORT / 2022</p>
                     <p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-3xl">A noite das viradas</p>
                     <div class="mt-5">
-                        <div class="jfa-match-row"><span>JAPÃƒO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ALEMANHA</span></div>
-                        <div class="jfa-match-row"><span>JAPÃƒO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ESPANHA</span></div>
+                        <div class="jfa-match-row"><span>JAPÃO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ALEMANHA</span></div>
+                        <div class="jfa-match-row"><span>JAPÃO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ESPANHA</span></div>
                     </div>
-                    <p class="tabular-nums tracking-[.12em] mt-5 text-[9px] text-white/45">DISCIPLINA · VELOCIDADE · UNIÃƒO</p>
+                    <p class="tabular-nums tracking-[.12em] mt-5 text-[9px] text-white/45">DISCIPLINA · VELOCIDADE · UNIÃO</p>
                 </div>
             </div>
         </div>
@@ -210,7 +209,7 @@ function imagemFutebol(string $chave): string
             </div>
             <div class="flex items-center gap-4 py-6 md:px-7 md:last:pr-0">
                 <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-people"></i></span>
-                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">âˆž</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">NOVAS GERAÃ‡Ã•ES</p></div>
+                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">∞</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">NOVAS GERAÇÕES</p></div>
             </div>
         </div>
     </section>
@@ -220,7 +219,7 @@ function imagemFutebol(string $chave): string
         <div class="mx-auto max-w-7xl">
             <div class="mb-14 flex flex-wrap items-end justify-between gap-8">
                 <div class="max-w-2xl">
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">01 / SELEÃ‡ÃƒO MASCULINA</p>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">01 / SELEÇÃO MASCULINA</p>
                     <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Samurai<br><span class="text-[#c72b30]">Blue.</span></h2>
                 </div>
                 <p class="max-w-sm text-sm leading-7 text-[#52606c]">
@@ -244,7 +243,7 @@ function imagemFutebol(string $chave): string
 
                 <div class="flex flex-col justify-between bg-[#071a2b] p-8 text-white md:p-10">
                     <div>
-                        <p class="tabular-nums tracking-[.12em] text-[10px] text-[#ee6b6e]">A EVOLUÃ‡ÃƒO EM QUATRO TEMPOS</p>
+                        <p class="tabular-nums tracking-[.12em] text-[10px] text-[#ee6b6e]">A EVOLUÇÃO EM QUATRO TEMPOS</p>
                         <div class="mt-8 space-y-7">
                             <div class="flex gap-5">
                                 <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">98</span>
@@ -261,7 +260,7 @@ function imagemFutebol(string $chave): string
                         </div>
                     </div>
                     <div class="mt-10 border-t border-white/10 pt-5">
-                        <span class="tabular-nums tracking-[.12em] text-[9px] text-white/40">BLUE SAMURAI · ä¾ãƒ–ãƒ«ãƒ¼</span>
+                        <span class="tabular-nums tracking-[.12em] text-[9px] text-white/40">BLUE SAMURAI · サムライブルー</span>
                     </div>
                 </div>
             </div>
@@ -283,7 +282,7 @@ function imagemFutebol(string $chave): string
                     <div class="mt-9 flex gap-8 border-t border-white/15 pt-6">
                         <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">3</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PILARES</p></div>
                         <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">11</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">EM CAMPO</p></div>
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">1</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PROPÃ“SITO</p></div>
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">1</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PROPÓSITO</p></div>
                     </div>
                 </div>
 
@@ -291,7 +290,7 @@ function imagemFutebol(string $chave): string
                     <div class="jfa-field min-h-[300px] p-5 sm:col-span-2">
                         <div class="absolute left-[22%] top-1/2 -translate-y-1/2 text-4xl text-[#ee6b6e]"><i class="bi bi-circle-fill"></i></div>
                         <div class="absolute right-[20%] top-1/3 text-3xl text-white"><i class="bi bi-circle-fill"></i></div>
-                        <span class="absolute bottom-4 left-5 tabular-nums tracking-[.12em] text-[9px] text-white/60">CAMPO · 105 Ã— 68</span>
+                        <span class="absolute bottom-4 left-5 tabular-nums tracking-[.12em] text-[9px] text-white/60">CAMPO · 105 × 68</span>
                     </div>
                     <article class="border border-white/10 bg-white/5 p-6">
                         <i class="bi bi-diagram-3 text-2xl text-[#ee6b6e]"></i>
@@ -313,7 +312,7 @@ function imagemFutebol(string $chave): string
         <div class="mx-auto max-w-7xl">
             <div class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
                 <div class="order-2 lg:order-1">
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">03 / SELEÃ‡ÃƒO FEMININA</p>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">03 / SELEÇÃO FEMININA</p>
                     <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Nadeshiko<br><span class="text-[#c72b30]">Japan.</span></h2>
                     <p class="mt-7 max-w-lg text-sm leading-8 text-[#52606c]">
                         Flores de cravo, futebol de posse e uma conquista que
@@ -322,13 +321,13 @@ function imagemFutebol(string $chave): string
                     </p>
                     <div class="mt-9 flex items-center gap-5">
                         <span class="flex h-16 w-16 items-center justify-center rounded-full bg-[#c72b30] text-2xl text-white"><i class="bi bi-trophy-fill"></i></span>
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-[#c72b30]">CAMPEÃƒS DO MUNDO</p></div>
+                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-[#c72b30]">CAMPEÃS DO MUNDO</p></div>
                     </div>
                 </div>
                 <div class="overflow-hidden order-1 relative h-[430px] bg-[#d8cfc3] lg:order-2">
 <img src="<?= htmlspecialchars(imagemFutebol('futebol_mulheres')) ?>" alt="Jogadoras japonesas em uma partida de futebol" class="jfa-photo h-full w-full object-cover">                    <div class="absolute left-5 top-5 bg-[#f5f2eb] px-4 py-3 text-[#071a2b] shadow-lg">
                         <p class="tabular-nums tracking-[.12em] text-[9px] font-bold">NADESHIKO</p>
-                        <p class="text-xs text-[#52606c]">æ’«å­ · força delicada</p>
+                        <p class="text-xs text-[#52606c]">撫子 · força delicada</p>
                     </div>
                 </div>
             </div>
@@ -365,7 +364,7 @@ function imagemFutebol(string $chave): string
 
             <div class="mt-20 border-t border-white/10 pt-8 md:flex md:items-end md:justify-between">
                 <div>
-                    <p class="tabular-nums tracking-[.12em] text-[10px] text-white/40">A PRÃ“XIMA GERAÃ‡ÃƒO JÁ ESTÁ EM CAMPO</p>
+                    <p class="tabular-nums tracking-[.12em] text-[10px] text-white/40">A PRÓXIMA GERAÇÃO JÁ ESTÁ EM CAMPO</p>
                     <p class="font-['Playfair_Display'] tracking-[-.055em] mt-3 max-w-2xl text-4xl md:text-6xl">Do Japão para o mundo.</p>
                 </div>
                 <a href="#inicio" class="mt-7 inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.2em] text-[#ee6b6e] transition hover:text-white md:mt-0">
