@@ -23,6 +23,7 @@ $menuLinks = [
 
     <link href="../../src/custom.css" rel="stylesheet">
     <link href="../../src/output.css" rel="stylesheet">
+    <link href="../../src/transicao.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -36,20 +37,20 @@ $menuLinks = [
 <body class="bg-[#f8f5ef] text-[#171717] antialiased">
 
     <!-- HEADER INTERNO -->
-    <header class="relative z-50 bg-[#071018] font-['Poppins'] text-white">
+    <header class="vt-header relative z-50 bg-[#071018] font-['Poppins'] text-white">
 
         <nav class="mx-auto flex h-20 max-w-7xl items-stretch justify-between px-6 md:h-24 md:px-10">
 
             <!-- LOGO (mesma da home) -->
             <a href="../../index.php"
-                class="group flex shrink-0 items-center gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
+                class="vt-logo group flex shrink-0 items-center gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
 
-                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-[#c72b30] font-['Noto_Sans_JP'] text-2xl font-bold text-white shadow-lg ring-1 ring-white/30 transition duration-300 group-hover:bg-white group-hover:text-[#c72b30] md:h-12 md:w-12 md:text-3xl">
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-[#c72b30] font-['Noto_Sans_JP'] text-2xl font-bold text-white shadow-lg ring-1 ring-white/30 transition duration-300 group-hover:bg-white group-hover:text-[#c72b30] md:h-14 md:w-14 md:text-3xl">
                     日
                 </span>
 
-                <span class="font-serif text-xl tracking-[0.22em] text-white drop-shadow-md">
-                    JAPÃO
+                <span class="font-['Playfair_Display'] text-2xl font-semibold tracking-[0.06em] text-white drop-shadow-md md:text-3xl">
+                    Japão
                 </span>
 
             </a>
@@ -102,4 +103,4 @@ $menuLinks = [
         <!-- FAIXA INFERIOR (mesma da home) -->
         <div class="h-[3px] bg-gradient-to-r from-[#c72b30] via-[#8b2024] to-transparent"></div>
 
-    </header>   
+    </header>

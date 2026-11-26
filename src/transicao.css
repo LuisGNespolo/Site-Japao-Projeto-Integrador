@@ -1,0 +1,27 @@
+/* Transição curta entre páginas com a cor base do site como fundo. */
+
+@view-transition {
+    navigation: auto;
+}
+
+::view-transition {
+    background-color: #f8f5ef;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+    animation-duration: .2s;
+    animation-timing-function: cubic-bezier(.2, .7, .2, 1);
+}
+
+/* Navegadores sem suporte: fade de entrada */
+@supports not (view-transition-name: none) {
+    body { animation: vt-fade .2s ease-out; }
+    @keyframes vt-fade { from { opacity: 0; } }
+}
+
+/* Quem prefere menos movimento fica sem transição */
+@media (prefers-reduced-motion: reduce) {
+    @view-transition { navigation: none; }
+    body { animation: none; }
+}

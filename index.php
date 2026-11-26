@@ -1,27 +1,15 @@
 <?php
-
-require_once __DIR__ . '/database/conexao.php';
-
-// Busca os dados da página inicial
-$paginaInicio = [];
-
-$stmt = $conn->prepare("
-    SELECT *
-    FROM paginas
-    WHERE slug = 'inicio'
-    AND ativo = 1
-    LIMIT 1
-");
-
-if ($stmt) {
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $paginaInicio = $resultado->fetch_assoc() ?? [];
-    $stmt->close();
-}
-
-$dados = require __DIR__ . '/assets/templates/dados.php';
+$dados = require './assets/templates/dados.php';
 $cardsExplorar = $dados['cards_explorar'];
+
+$menuLinks = [
+    ['label' => 'Início',      'href' => '#inicio',                       'ativo' => true],
+    ['label' => 'Futebol',     'href' => './assets/pages/futebol.php',    'ativo' => false],
+    ['label' => 'Culinária',   'href' => './assets/pages/culinaria.php',  'ativo' => false],
+    ['label' => 'Surf',        'href' => './assets/pages/surf.php',       'ativo' => false],
+    ['label' => 'Patrimônios', 'href' => './assets/pages/patrimonios.php', 'ativo' => false],
+    ['label' => 'Lendas',      'href' => './assets/pages/lendas.php',     'ativo' => false],
+];
 
 if (!function_exists('e')) {
     function e(string $texto): string
@@ -29,54 +17,7 @@ if (!function_exists('e')) {
         return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
     }
 }
-
-// Caminhos originais usados como alternativa
-$imagensPadrao = [
-    'home_banner' => 'assets/img/home/banner.png',
-    'home_fundo' => 'assets/img/home/fundo.png',
-    'home_cultura' => 'assets/img/home/cultura.png',
-    'home_arquitetura' => 'assets/img/home/arquitetura.png',
-    'home_paisagem' => 'assets/img/home/paisagem.png'
-];
-
-// Começa com os caminhos originais
-$imagensSite = $imagensPadrao;
-
-// Busca os caminhos atualizados no banco
-if (isset($conn) && $conn instanceof mysqli) {
-    $resultadoImagens = $conn->query(
-        "SELECT chave, caminho FROM imagens_site"
-    );
-
-    if ($resultadoImagens) {
-        while ($imagem = $resultadoImagens->fetch_assoc()) {
-            $chave = $imagem['chave'];
-            $caminho = trim($imagem['caminho']);
-
-            if (
-                isset($imagensPadrao[$chave]) &&
-                $caminho !== ''
-            ) {
-                $imagensSite[$chave] = $caminho;
-            }
-        }
-
-        $resultadoImagens->free();
-    }
-}
-
-// Retorna o caminho pronto para ser usado no HTML
-function imagemSite(string $chave): string
-{
-    global $imagensSite;
-
-    $caminho = $imagensSite[$chave] ?? '';
-
-    return './' . ltrim($caminho, '/');
-}
-
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -88,11 +29,12 @@ function imagemSite(string $chave): string
     <title>Japão | Cultura e Tradição</title>
 
     <link href="src/output.css" rel="stylesheet">
+    <link href="src/transicao.css" rel="stylesheet">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&family=Noto+Sans+JP:wght@500;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
@@ -101,21 +43,20 @@ function imagemSite(string $chave): string
 
 
     <!-- HEADER EXCLUSIVO DA HOME -->
-    <header class="absolute left-0 top-0 z-50 w-full text-white">
+    <header class="vt-header absolute left-0 top-0 z-50 w-full font-['Poppins'] text-white">
 
-        <nav class="mx-auto flex max-w-7xl items-center justify-between px-6 py-5 md:px-10 md:py-7">
+        <nav class="mx-auto flex h-24 max-w-7xl items-center justify-between px-6 md:h-28 md:px-10">
 
-            <!-- LOGO -->
-            <a href="#inicio" class="group flex items-center gap-3">
+            <!-- LOGO: selo redondo + nome -->
+            <a href="#inicio"
+                class="vt-logo group flex shrink-0 items-center gap-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">
 
-                <span class="flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg transition duration-300 group-hover:rotate-12">
-
-                    <span class="h-5 w-5 rounded-full bg-[#c72b30]"></span>
-
+                <span class="flex h-12 w-12 items-center justify-center rounded-full bg-[#c72b30] font-['Noto_Sans_JP'] text-2xl font-bold text-white shadow-lg ring-1 ring-white/30 transition duration-300 group-hover:bg-white group-hover:text-[#c72b30] md:h-14 md:w-14 md:text-3xl">
+                    日
                 </span>
 
-                <span class="font-serif text-xl tracking-[0.22em] text-white drop-shadow-md">
-                    JAPÃO
+                <span class="font-['Playfair_Display'] text-2xl font-semibold tracking-[0.06em] text-white drop-shadow-md md:text-3xl">
+                    Japão
                 </span>
 
             </a>
@@ -127,45 +68,34 @@ function imagemSite(string $chave): string
                 type="button"
                 aria-label="Abrir menu"
                 aria-expanded="false"
-                class="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/20 text-xl text-white backdrop-blur-md transition hover:bg-[#c72b30] md:hidden">
+                aria-controls="menu"
+                class="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/20 text-xl text-white backdrop-blur-md transition hover:bg-[#c72b30] lg:hidden">
                 <i class="bi bi-list"></i>
             </button>
 
 
-            <!-- MENU DESKTOP E MOBILE -->
+            <!-- MENU: painel no mobile, pílula de vidro no desktop -->
             <div
                 id="menu"
-                class="absolute left-0 top-full hidden w-full flex-col gap-6 border-t border-white/10 bg-[#071018]/95 px-8 py-8 text-xs font-semibold tracking-[0.16em] shadow-2xl backdrop-blur-xl md:static md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none">
+                class="absolute left-0 top-full hidden w-full flex-col border-t border-white/10 bg-[#071018]/95 px-6 shadow-2xl backdrop-blur-xl lg:static lg:flex lg:w-auto lg:flex-row lg:items-center lg:gap-9 lg:rounded-full lg:border lg:border-white/15 lg:bg-[#071018]/40 lg:px-9 lg:py-3.5 lg:shadow-none lg:backdrop-blur-md">
 
-                <a href="#inicio" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    INÍCIO
-                    <span class="absolute bottom-0 left-0 h-[2px] w-full bg-[#c72b30]"></span>
-                </a>
+                <?php foreach ($menuLinks as $link): ?>
 
-                <a href="./assets/pages/futebol.php" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    FUTEBOL
-                    <span class="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c72b30] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                    <a href="<?= e($link['href']) ?>"
+                        <?= $link['ativo'] ? 'aria-current="page"' : '' ?>
+                        class="group relative flex items-center justify-between border-b border-white/10 py-5 text-base font-medium transition-colors duration-300 last:border-b-0 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white lg:border-0 lg:py-1 lg:text-sm <?= $link['ativo'] ? 'text-white' : 'text-white/70 hover:text-white' ?>">
 
-                <a href="./assets/pages/culinaria.php" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    CULINÁRIA
-                    <span class="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c72b30] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                        <?= e($link['label']) ?>
 
-                <a href="./assets/pages/surf.php" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    SURF
-                    <span class="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c72b30] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                        <!-- seta (somente mobile) -->
+                        <i class="bi bi-arrow-right text-sm lg:hidden"></i>
 
-                <a href="./assets/pages/patrimonios.php" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    PATRIMÔNIOS
-                    <span class="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c72b30] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                        <!-- linha vermelha: página atual / hover (somente desktop) -->
+                        <span class="absolute -bottom-1 left-0 hidden h-[2px] bg-[#c72b30] transition-all duration-300 lg:block <?= $link['ativo'] ? 'w-full' : 'w-0 group-hover:w-full' ?>"></span>
 
-                <a href="./assets/pages/lendas.php" class="group relative w-fit py-2 transition hover:text-[#f06b6f]">
-                    LENDAS
-                    <span class="absolute bottom-0 left-0 h-[2px] w-0 bg-[#c72b30] transition-all duration-300 group-hover:w-full"></span>
-                </a>
+                    </a>
+
+                <?php endforeach; ?>
 
             </div>
 
@@ -181,7 +111,7 @@ function imagemSite(string $chave): string
 
             <div
                 class="absolute inset-0 -z-20 bg-cover bg-center"
-                style="background-image: url('<?= e(imagemSite('home_banner')) ?>');"></div>
+                style="background-image: url('./assets/img/home/banner.png');"></div>
 
             <div class="absolute inset-0 -z-10 bg-gradient-to-r from-[#071018]/95 via-[#071018]/65 to-[#071018]/10"></div>
 
@@ -295,7 +225,7 @@ function imagemSite(string $chave): string
                     <div class="space-y-4">
 
                         <img
-                            src="<?= e(imagemSite('home_paisagem')) ?>"
+                            src="./assets/img/home/paisagem.png"
                             alt="Paisagem japonesa"
                             loading="lazy"
                             class="h-64 w-full rounded-sm object-cover shadow-lg md:h-80">
@@ -329,7 +259,7 @@ function imagemSite(string $chave): string
                         </div>
 
                         <img
-                            src="<?= e(imagemSite('home_arquitetura')) ?>"
+                            src="./assets/img/home/arquitetura.png"
                             alt="Arquitetura japonesa"
                             loading="lazy"
                             class="h-64 w-full rounded-sm object-cover shadow-lg md:h-80">
@@ -347,7 +277,7 @@ function imagemSite(string $chave): string
 
         <!-- FRASE DE DESTAQUE -->
         <section class="relative isolate overflow-hidden bg-cover bg-center bg-no-repeat px-6 py-24 text-center md:py-32"
-            style="background-image: url('<?= e(imagemSite('home_fundo')) ?>');">
+            style="background-image: url('./assets/img/home/fundo.png');">
 
             <!-- Camada escura para melhorar a leitura -->
             <div class="absolute inset-0 -z-10 bg-[#071018]/75"></div>
@@ -474,7 +404,7 @@ function imagemSite(string $chave): string
                 <div class="relative min-h-[350px] overflow-hidden lg:min-h-[550px]">
 
                     <img
-                        src="<?= e(imagemSite('home_cultura')) ?>"
+                        src="./assets//img/home/cultura.png"
                         alt="Paisagem japonesa"
                         loading="lazy"
                         class="absolute inset-0 h-full w-full object-cover transition duration-700 hover:scale-105">
@@ -676,7 +606,7 @@ function imagemSite(string $chave): string
 
             link.addEventListener('click', () => {
 
-                if (window.innerWidth < 768) {
+                if (window.innerWidth < 1024) {
 
                     menu.classList.add('hidden');
 

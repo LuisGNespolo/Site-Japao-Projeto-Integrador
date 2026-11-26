@@ -46,6 +46,8 @@
                 <a href="../pages/patrimonios.php" class="transition hover:text-[#e45a5e]">Patrimônios</a>
  
                 <a href="../pages/lendas.php" class="transition hover:text-[#e45a5e]">Lendas</a>
+
+                <a href="../login.php" class="transition hover:text-[#e45a5e]">Administração</a>
  
             </nav>
  
