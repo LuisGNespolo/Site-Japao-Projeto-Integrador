@@ -2,7 +2,12 @@
 
 require_once __DIR__ . '/../../database/conexao.php';
 
-include_once __DIR__ . '/../templates/header.php';
+if (!function_exists('e')) {
+    function e(string $texto): string
+    {
+        return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
+    }
+}
 
 $imagensPadrao = [
     'futebol_banner' => 'assets/img/futebol/banner.png',
@@ -12,9 +17,7 @@ $imagensPadrao = [
 $imagensSite = $imagensPadrao;
 
 if (isset($conn) && $conn instanceof mysqli) {
-    $resultado = $conn->query(
-        "SELECT chave, caminho FROM imagens_site"
-    );
+    $resultado = $conn->query("SELECT chave, caminho FROM imagens_site");
 
     if ($resultado) {
         while ($imagem = $resultado->fetch_assoc()) {
@@ -34,345 +37,596 @@ function imagemFutebol(string $chave): string
 {
     global $imagensSite;
 
-    return '../../' . ltrim(
-        $imagensSite[$chave] ?? '',
-        '/'
-    );
+    return '../../' . ltrim($imagensSite[$chave] ?? '', '/');
 }
 
+// Placares que marcaram a história
+$placares = [
+    ['comp' => 'Copa do Mundo 2022 · Grupo E', 'casa' => 'JPN', 'a' => '2', 'fora' => 'GER', 'b' => '1', 'extra' => '', 'gols' => 'Dōan 75′ · Asano 83′', 'nota' => 'Virada sobre a Alemanha, depois de sair atrás.'],
+    ['comp' => 'Copa do Mundo 2022 · Grupo E', 'casa' => 'JPN', 'a' => '2', 'fora' => 'ESP', 'b' => '1', 'extra' => '', 'gols' => 'Dōan 48′ · Tanaka 51′', 'nota' => 'Outra virada. O Japão terminou o grupo em primeiro.'],
+    ['comp' => 'Copa Feminina 2011 · Final', 'casa' => 'JPN', 'a' => '2', 'fora' => 'USA', 'b' => '2', 'extra' => 'PEN 3 : 1', 'gols' => 'Miyama 81′ · Sawa 117′', 'nota' => 'Título nos pênaltis: o primeiro mundial do Japão.'],
+];
+
+// Campanhas da Nadeshiko Japan em Copas do Mundo
+$campanhas = [
+    ['1991', 'China', 'Estreia em Copas', false],
+    ['2011', 'Alemanha', 'Campeãs do mundo', true],
+    ['2015', 'Canadá', 'Vice-campeãs', false],
+    ['2019', 'França', 'Oitavas de final', false],
+    ['2023', 'Austrália e N. Zelândia', 'Quartas de final', false],
+];
+
+include_once __DIR__ . '/../templates/header.php';
 ?>
 
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,800;1,800&family=Barlow:wght@400;500;600&family=DotGothic16&display=swap" rel="stylesheet">
 
 <style>
-    .jfa-page {
-        --jfa-blue: #071a2b;
-        --jfa-blue-2: #0d304b;
-        --jfa-red: #c72b30;
-        --jfa-red-light: #ee6b6e;
-        --jfa-cream: #f5f2eb;
-        background: var(--jfa-cream);
-        color: var(--jfa-blue);
-        overflow: hidden;
-    }
+    .fb-body { font-family: 'Barlow', system-ui, sans-serif; }
+    .fb-disp { font-family: 'Barlow Condensed', 'Arial Narrow', sans-serif; font-style: italic; font-weight: 800; text-transform: uppercase; line-height: .9; }
+    .fb-cut { clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%); }
+    .fb-gramado { background: repeating-linear-gradient(90deg, #0f5a35 0 64px, #127040 64px 128px); }
+    .fb-camisa text { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 800; fill: #fff; }
 
-    .jfa-page .jfa-hero {
-        background:
-            linear-gradient(110deg, rgba(3, 13, 23, .98) 0%, rgba(3, 13, 23, .84) 43%, rgba(3, 13, 23, .15) 100%),
-            url('<?= htmlspecialchars(imagemFutebol('futebol_banner')) ?>') center / cover;
-    }
-
-    .jfa-page .jfa-red-line {
-        background: linear-gradient(90deg, var(--jfa-red), var(--jfa-red-light), transparent);
-    }
-
-    .jfa-page .jfa-glass {
-        background: rgba(5, 20, 34, .72);
-        border: 1px solid rgba(255,255,255,.13);
-        box-shadow: 0 25px 70px -35px rgba(0,0,0,.8);
-        backdrop-filter: blur(14px);
-    }
-
-    .jfa-page .jfa-paper-grid {
-        background-color: var(--jfa-cream);
-        background-image: linear-gradient(90deg, rgba(7,26,43,.07) 1px, transparent 1px);
-        background-size: 72px 100%;
-    }
-
-    .jfa-page .jfa-field {
+    /* Painel LED dos estádios */
+    .fb-led {
         position: relative;
-        background:
-            linear-gradient(90deg, transparent 49.8%, rgba(255,255,255,.24) 50%, transparent 50.2%),
-            radial-gradient(circle at center, transparent 0 4.2rem, rgba(255,255,255,.24) 4.25rem 4.35rem, transparent 4.4rem),
-            repeating-linear-gradient(90deg, #123f42 0, #123f42 10%, #154748 10%, #154748 20%);
-        box-shadow: inset 0 0 0 1px rgba(255,255,255,.2), 0 25px 65px -35px rgba(0,0,0,.7);
+        font-family: 'DotGothic16', 'Noto Sans JP', monospace;
+        color: #ffb020;
+        text-shadow: 0 0 14px rgba(255, 176, 32, .55);
     }
-
-    .jfa-page .jfa-field::before,
-    .jfa-page .jfa-field::after {
-        position: absolute;
-        top: 12%;
-        bottom: 12%;
-        width: 20%;
-        border: 1px solid rgba(255,255,255,.22);
+    .fb-led::after {
         content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle, transparent 0 .9px, rgba(12, 16, 23, .9) 1.3px) 0 0 / 4px 4px;
+        pointer-events: none;
     }
 
-    .jfa-page .jfa-field::before { left: -1px; }
-    .jfa-page .jfa-field::after { right: -1px; }
-
-    .jfa-page .jfa-photo {
-        filter: saturate(.8);
-        transition: filter .5s ease;
+    /* Prancheta */
+    .fb-chip {
+        border: 2px solid #0b2f9f;
+        background: #fff;
+        padding: .5rem 1.15rem;
+        color: #0b2f9f;
+        font-family: 'Barlow Condensed', sans-serif;
+        font-size: 1.2rem;
+        font-style: italic;
+        font-weight: 800;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+        transition: background .25s, color .25s;
     }
+    .fb-chip[aria-pressed="true"] { background: #0b2f9f; color: #fff; }
+    .fb-chip:focus-visible { box-shadow: inset 0 0 0 3px #c72b30; outline: none; }
 
-    .jfa-page .overflow-hidden:hover .jfa-photo {
-        filter: saturate(1.1) contrast(1.08);
-    }
+    .fb-ima { transition: transform .8s cubic-bezier(.3, .9, .3, 1); filter: drop-shadow(0 3px 2px rgba(0, 0, 0, .3)); }
+    .fb-ima text { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 800; }
+    .sem-trans .fb-ima { transition: none; }
+    .fb-seta { stroke: #c72b30; stroke-width: 2.5; stroke-dasharray: 6 5; animation: fb-some 1.6s forwards; }
+    @keyframes fb-some { 0%, 55% { opacity: .95; } 100% { opacity: 0; } }
 
-    .jfa-page .jfa-stamp {
-        border-left: 3px solid var(--jfa-red-light);
-        padding-left: .8rem;
-        color: var(--jfa-red-light);
-        text-align: left;
-    }
-
-    .jfa-page .jfa-match-row {
-        display: grid;
-        grid-template-columns: 1fr auto 1fr;
-        align-items: center;
-        gap: 1rem;
-        border-bottom: 1px solid rgba(255,255,255,.12);
-        padding: 1rem 0;
-    }
-
-    .jfa-page .jfa-match-row:last-child {
-        border-bottom: 0;
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        .jfa-page .jfa-photo { transition: none; }
-    }
+    @media (prefers-reduced-motion: reduce) { .fb-ima, .fb-chip { transition: none; } }
 </style>
 
-<main class="jfa-page font-['Poppins']">
+<main class="fb-body bg-[#f2f4ef] text-[#071a52]">
 
-    <!-- ABERTURA / MATCHDAY -->
-    <section id="inicio" class="jfa-hero relative isolate min-h-[720px] overflow-hidden text-white md:min-h-[810px]">
-        <div class="relative mx-auto flex min-h-[720px] max-w-7xl flex-col justify-between px-6 pb-10 pt-28 md:min-h-[810px] md:px-10 md:pb-14">
-            <div class="relative z-10 flex items-start justify-between gap-6">
-                <div>
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold uppercase text-white/55">Japan Football Association</p>
-                    <p class="mt-2 text-sm text-white/80">日本サッカー · 夢を力に</p>
-                </div>
-                <div class="jfa-stamp hidden text-[10px] font-bold uppercase tracking-[.2em] md:block">
-                    <span class="block text-white/45">LIVE / 90:00</span>
-                    <span class="mt-1 block text-2xl leading-none">JFA 01</span>
-                </div>
-            </div>
+    <!-- ABERTURA -->
+    <section id="inicio" class="relative isolate overflow-hidden text-white">
 
-            <div class="relative z-10 grid items-end gap-12 lg:grid-cols-[1fr_auto]">
-                <div class="max-w-3xl">
-                    <div class="mb-6 flex items-center gap-3">
-                        <span class="h-px w-14 bg-[#c72b30]"></span>
-                        <p class="tabular-nums tracking-[.12em] text-[10px] font-bold uppercase text-[#ee6b6e]">Matchday · Tokyo to the world</p>
-                    </div>
-                    <h1 class="font-['Playfair_Display'] tracking-[-.055em] text-6xl font-semibold leading-[.9] sm:text-7xl md:text-9xl">
-                        O jogo<br>
-                        <span class="text-[#ee6b6e]">começa aqui.</span>
-                    </h1>
-                    <p class="mt-8 max-w-xl text-sm leading-8 text-white/65 md:text-base">
-                        Uma viagem pela força, pela técnica e pelo espírito que
-                        fazem o futebol japonês jogar de igual para igual com o mundo.
-                    </p>
-                    <div class="mt-9 flex flex-wrap gap-3">
-                        <a href="#samurai-blue" class="inline-flex items-center gap-3 bg-[#c72b30] px-6 py-4 text-[10px] font-bold uppercase tracking-[.2em] transition hover:-translate-y-1 hover:bg-[#a51f25]">
-                            Entrar em campo <i class="bi bi-arrow-down-right"></i>
-                        </a>
-                        <a href="#jfa-map" class="inline-flex items-center gap-3 border border-white/30 px-6 py-4 text-[10px] font-bold uppercase tracking-[.2em] transition hover:border-white hover:bg-white/10">
-                            Ver a jornada <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
+        <div class="absolute inset-0 -z-20 bg-cover bg-center" style="background-image: url('<?= e(imagemFutebol('futebol_banner')) ?>');"></div>
+        <div class="absolute inset-0 -z-10" style="background: linear-gradient(105deg, rgba(5,15,51,.96), rgba(5,15,51,.72) 52%, rgba(5,15,51,.25));"></div>
+
+        <div class="mx-auto grid min-h-[700px] max-w-7xl items-center gap-10 px-6 pb-28 pt-12 md:min-h-[780px] md:px-10 lg:grid-cols-[1.25fr_.75fr]">
+
+            <div>
+
+                <!-- Selo da transmissão -->
+                <div class="inline-flex items-stretch text-xs font-semibold uppercase tracking-[.2em]">
+                    <span class="bg-[#c72b30] px-3 py-2">Ao vivo</span>
+                    <span class="bg-black/70 px-4 py-2">JFA · <span id="fb-relogio" class="tabular-nums">0′</span></span>
                 </div>
 
-                <div class="jfa-glass relative z-10 hidden w-72 p-5 lg:block">
-                    <div class="mb-6 flex items-center justify-between border-b border-white/15 pb-4">
-                        <span class="tabular-nums tracking-[.12em] text-[9px] font-bold text-white/50">NEXT FIXTURE</span>
-                        <span class="h-2 w-2 rounded-full bg-[#ee6b6e] shadow-[0_0_14px_#ee6b6e]"></span>
-                    </div>
-                    <p class="tabular-nums tracking-[.12em] text-xs text-white/50">MATCH REPORT / 2022</p>
-                    <p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-3xl">A noite das viradas</p>
-                    <div class="mt-5">
-                        <div class="jfa-match-row"><span>JAPÃO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ALEMANHA</span></div>
-                        <div class="jfa-match-row"><span>JAPÃO</span><strong class="text-[#ee6b6e]">2</strong><span class="text-right text-white/45">ESPANHA</span></div>
-                    </div>
-                    <p class="tabular-nums tracking-[.12em] mt-5 text-[9px] text-white/45">DISCIPLINA · VELOCIDADE · UNIÃO</p>
-                </div>
-            </div>
-        </div>
-        <div class="jfa-red-line absolute bottom-0 left-0 h-1 w-full"></div>
-    </section>
+                <h1 class="fb-disp mt-8 text-7xl sm:text-8xl md:text-[9.5rem]">
+                    <span class="block">O jogo</span>
+                    <span class="mt-2 inline-block -skew-x-6 bg-[#c72b30] px-5 py-2">
+                        <span class="inline-block skew-x-6">começa aqui.</span>
+                    </span>
+                </h1>
 
-    <!-- PLACAR DA IDENTIDADE -->
-    <section class="bg-[#071a2b] text-white">
-        <div class="mx-auto grid max-w-7xl divide-y divide-white/10 px-6 md:grid-cols-4 md:divide-x md:divide-y-0 md:px-10">
-            <div class="flex items-center gap-4 py-6 md:px-7 md:first:pl-0">
-                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-calendar3"></i></span>
-                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">1993</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">J.LEAGUE</p></div>
-            </div>
-            <div class="flex items-center gap-4 py-6 md:px-7">
-                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-trophy"></i></span>
-                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">WORLD CHAMPIONS</p></div>
-            </div>
-            <div class="flex items-center gap-4 py-6 md:px-7">
-                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-globe2"></i></span>
-                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">Asia</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">A CASA DO JOGO</p></div>
-            </div>
-            <div class="flex items-center gap-4 py-6 md:px-7 md:last:pr-0">
-                <span class="text-3xl text-[#ee6b6e]"><i class="bi bi-people"></i></span>
-                <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">∞</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">NOVAS GERAÇÕES</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SAMURAI BLUE -->
-    <section id="samurai-blue" class="jfa-paper-grid px-6 py-24 md:px-10 md:py-32">
-        <div class="mx-auto max-w-7xl">
-            <div class="mb-14 flex flex-wrap items-end justify-between gap-8">
-                <div class="max-w-2xl">
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">01 / SELEÇÃO MASCULINA</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Samurai<br><span class="text-[#c72b30]">Blue.</span></h2>
-                </div>
-                <p class="max-w-sm text-sm leading-7 text-[#52606c]">
-                    O azul da camisa, a precisão da técnica e a coragem de
-                    enfrentar qualquer adversário. Uma seleção em constante evolução.
+                <p class="mt-9 max-w-xl text-base leading-8 text-white/75">
+                    Uma viagem pela força, pela técnica e pelo espírito que
+                    fazem o futebol japonês jogar de igual para igual com o mundo.
                 </p>
-            </div>
 
-            <div class="grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
-                <div class="overflow-hidden relative min-h-[430px] bg-[#0d304b]">
-                    <img src="https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1400&q=85" alt="Jogadores disputando uma partida de futebol" class="jfa-photo absolute inset-0 h-full w-full object-cover">
-                    <div class="absolute inset-0 bg-gradient-to-t from-[#071a2b] via-transparent to-transparent"></div>
-                    <div class="absolute bottom-7 left-7 right-7 flex items-end justify-between text-white">
-                        <div>
-                            <p class="tabular-nums tracking-[.12em] text-[9px] text-white/55">THE BLUE LOCKER ROOM</p>
-                            <p class="font-['Playfair_Display'] tracking-[-.055em] mt-2 text-3xl">Jogar juntos.</p>
-                        </div>
-                        <i class="bi bi-arrow-up-right text-2xl text-[#ee6b6e]"></i>
-                    </div>
+                <div class="mt-9 flex flex-wrap gap-3">
+                    <a href="#prancheta" class="fb-cut inline-flex items-center gap-3 bg-[#c72b30] py-4 pl-7 pr-10 text-sm font-semibold uppercase tracking-[.18em] transition hover:bg-white hover:text-[#c72b30]">
+                        Entrar em campo <i class="bi bi-arrow-down-right"></i>
+                    </a>
+                    <a href="#placares" class="fb-cut inline-flex items-center gap-3 border border-white/30 py-4 pl-7 pr-10 text-sm font-semibold uppercase tracking-[.18em] transition hover:bg-white/10">
+                        Ver os placares
+                    </a>
                 </div>
 
-                <div class="flex flex-col justify-between bg-[#071a2b] p-8 text-white md:p-10">
-                    <div>
-                        <p class="tabular-nums tracking-[.12em] text-[10px] text-[#ee6b6e]">A EVOLUÇÃO EM QUATRO TEMPOS</p>
-                        <div class="mt-8 space-y-7">
-                            <div class="flex gap-5">
-                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">98</span>
-                                <div><h3 class="font-semibold">A primeira presença</h3><p class="mt-1 text-sm leading-6 text-white/50">O Japão estreia na Copa e começa a escrever sua história.</p></div>
-                            </div>
-                            <div class="flex gap-5">
-                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">02</span>
-                                <div><h3 class="font-semibold">O jogo em casa</h3><p class="mt-1 text-sm leading-6 text-white/50">Oitavas de final e uma torcida que descobre sua voz.</p></div>
-                            </div>
-                            <div class="flex gap-5">
-                                <span class="font-['Playfair_Display'] tracking-[-.055em] text-3xl text-[#ee6b6e]">22</span>
-                                <div><h3 class="font-semibold">Vitórias gigantes</h3><p class="mt-1 text-sm leading-6 text-white/50">Alemanha e Espanha ficam pelo caminho no Catar.</p></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-10 border-t border-white/10 pt-5">
-                        <span class="tabular-nums tracking-[.12em] text-[9px] text-white/40">BLUE SAMURAI · サムライブルー</span>
-                    </div>
-                </div>
             </div>
+
+            <!-- Camisa -->
+            <div class="hidden justify-center lg:flex">
+                <svg viewBox="0 0 240 270" class="fb-camisa w-80 -rotate-6 drop-shadow-2xl" aria-hidden="true">
+                    <path d="M82 12 L52 26 L8 66 L38 100 L58 84 L58 262 L182 262 L182 84 L202 100 L232 66 L188 26 L158 12 Q120 44 82 12Z" fill="#0b2f9f" />
+                    <path d="M82 12 Q120 44 158 12" fill="none" stroke="#c72b30" stroke-width="7" />
+                    <path d="M8 66 L38 100 M232 66 L202 100" stroke="#c72b30" stroke-width="7" />
+                    <text x="120" y="82" text-anchor="middle" font-size="22" letter-spacing="4">NIPPON</text>
+                    <text x="120" y="192" text-anchor="middle" font-size="120">11</text>
+                    <circle cx="120" cy="230" r="7" fill="#c72b30" />
+                </svg>
+            </div>
+
         </div>
+
+        <!-- Gramado -->
+        <div class="fb-gramado absolute inset-x-0 bottom-0 h-14 border-t-4 border-white/80"></div>
+
     </section>
 
-    <!-- JOGO EM CAMPO -->
-    <section id="jfa-map" class="bg-[#0d304b] px-6 py-24 text-white md:px-10 md:py-32">
+
+    <!-- PRANCHETA -->
+    <section id="prancheta" class="bg-[#e9efe7] px-6 py-24 md:px-10 md:py-28">
+
+        <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-[1fr_.9fr] lg:items-center">
+
+            <div>
+
+                <p class="text-xs font-semibold uppercase tracking-[.3em] text-[#c72b30]">01 / Prancheta</p>
+
+                <h2 class="fb-disp mt-4 text-6xl md:text-8xl">
+                    Monte o time.<br><span class="text-[#c72b30]">Mude o jogo.</span>
+                </h2>
+
+                <p class="mt-7 max-w-lg text-base leading-8 text-[#071a52]/70">
+                    O técnico pensa o jogo em linhas. Troque o desenho tático e a
+                    fase da partida e veja os onze jogadores se reorganizarem em
+                    campo. As setas vermelhas mostram quem se mexeu.
+                </p>
+
+                <p class="mt-8 text-xs font-semibold uppercase tracking-[.25em] text-[#071a52]/55">Desenho tático</p>
+                <div id="fb-formacoes" role="group" aria-label="Desenho tático" class="mt-3 flex flex-wrap gap-3">
+                    <button type="button" class="fb-chip" data-formacao="4-2-3-1" aria-pressed="true">4-2-3-1</button>
+                    <button type="button" class="fb-chip" data-formacao="4-3-3" aria-pressed="false">4-3-3</button>
+                    <button type="button" class="fb-chip" data-formacao="3-4-2-1" aria-pressed="false">3-4-2-1</button>
+                    <button type="button" class="fb-chip" data-formacao="4-4-2" aria-pressed="false">4-4-2</button>
+                </div>
+
+                <p class="mt-6 text-xs font-semibold uppercase tracking-[.25em] text-[#071a52]/55">Fase do jogo</p>
+                <div id="fb-fases" role="group" aria-label="Fase do jogo" class="mt-3 flex flex-wrap gap-3">
+                    <button type="button" class="fb-chip" data-fase="defender" aria-pressed="false">Defender</button>
+                    <button type="button" class="fb-chip" data-fase="construir" aria-pressed="true">Construir</button>
+                    <button type="button" class="fb-chip" data-fase="atacar" aria-pressed="false">Atacar</button>
+                </div>
+
+                <div class="mt-9 border-l-4 border-[#c72b30] bg-white p-6" aria-live="polite">
+                    <div class="flex items-end justify-between gap-4">
+                        <p id="fb-nome" class="fb-disp text-6xl text-[#0b2f9f]">4-2-3-1</p>
+                        <p class="text-right text-xs font-semibold uppercase tracking-[.2em] text-[#071a52]/55">
+                            Bloco<br><span id="fb-bloco" class="fb-disp text-3xl text-[#c72b30]">0 m</span>
+                        </p>
+                    </div>
+                    <p id="fb-desc" class="mt-4 text-sm leading-7 text-[#071a52]/75"></p>
+                    <p id="fb-fase-txt" class="mt-2 text-sm font-semibold leading-7"></p>
+                </div>
+
+                <p class="mt-4 text-xs leading-6 text-[#071a52]/50">
+                    Posições ilustrativas, não são uma escalação real. O bloco é a
+                    distância entre a linha mais recuada e a mais avançada: quanto
+                    menor, mais compacto o time.
+                </p>
+
+            </div>
+
+            <!-- Quadro branco -->
+            <div class="mx-auto w-full max-w-[26rem]">
+
+                <div class="rounded-md bg-gradient-to-b from-[#dfe3e6] to-[#9aa1a6] p-3 shadow-[0_40px_70px_-35px_rgba(5,15,51,.8)]">
+
+                    <div class="relative overflow-hidden rounded-sm bg-[#fbfcfa]">
+
+                        <svg id="fb-campo" viewBox="0 0 360 545" class="block w-full" role="img" aria-label="Campo de futebol com os onze jogadores posicionados">
+                            <defs>
+                                <marker id="fb-ponta" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                                    <path d="M0 0 L10 5 L0 10z" fill="#c72b30" />
+                                </marker>
+                            </defs>
+
+                            <g fill="none" stroke="#2b3a55" stroke-width="2.5" stroke-linecap="round">
+                                <rect x="10" y="10" width="340" height="525" />
+                                <line x1="10" y1="272.5" x2="350" y2="272.5" />
+                                <circle cx="180" cy="272.5" r="45.75" />
+                                <rect x="79" y="10" width="202" height="82.5" />
+                                <rect x="134" y="10" width="92" height="27.5" />
+                                <rect x="79" y="452.5" width="202" height="82.5" />
+                                <rect x="134" y="507.5" width="92" height="27.5" />
+                                <path d="M143.4 92.5 A45.75 45.75 0 0 0 216.6 92.5" />
+                                <path d="M143.4 452.5 A45.75 45.75 0 0 1 216.6 452.5" />
+                                <rect x="155" y="2" width="50" height="8" />
+                                <rect x="155" y="535" width="50" height="8" />
+                            </g>
+
+                            <g fill="#2b3a55">
+                                <circle cx="180" cy="272.5" r="3" />
+                                <circle cx="180" cy="65" r="3" />
+                                <circle cx="180" cy="480" r="3" />
+                            </g>
+
+                            <g id="fb-setas" fill="none"></g>
+                            <g id="fb-time"></g>
+                        </svg>
+
+                        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(120deg,transparent_38%,rgba(255,255,255,.65)_50%,transparent_62%)]"></div>
+
+                    </div>
+
+                </div>
+
+                <!-- Bandeja com marcadores -->
+                <div class="mx-auto flex h-3 w-[78%] items-start justify-center gap-3 rounded-b bg-gradient-to-b from-[#aab0b5] to-[#7f868b]" aria-hidden="true">
+                    <span class="-mt-2 block h-2 w-10 rounded-sm bg-[#0b2f9f]"></span>
+                    <span class="-mt-2 block h-2 w-10 rounded-sm bg-[#c72b30]"></span>
+                    <span class="-mt-2 block h-2 w-10 rounded-sm bg-[#1b2a4a]"></span>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- PLACARES -->
+    <section id="placares" class="bg-[#06080c] px-6 py-24 text-white md:px-10 md:py-28">
+
         <div class="mx-auto max-w-7xl">
-            <div class="grid gap-14 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
-                <div>
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#ee6b6e]">02 / O DNA DO JOGO</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Tática com<br><span class="text-[#ee6b6e]">propósito.</span></h2>
-                    <p class="mt-7 max-w-md text-sm leading-8 text-white/55">
-                        O futebol japonês une preparação minuciosa e liberdade
-                        criativa. Cada passe tem uma intenção; cada movimento,
-                        uma responsabilidade com o coletivo.
-                    </p>
-                    <div class="mt-9 flex gap-8 border-t border-white/15 pt-6">
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">3</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PILARES</p></div>
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">11</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">EM CAMPO</p></div>
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-4xl text-[#ee6b6e]">1</p><p class="tabular-nums tracking-[.12em] text-[9px] text-white/45">PROPÓSITO</p></div>
-                    </div>
-                </div>
 
-                <div class="grid gap-5 sm:grid-cols-2">
-                    <div class="jfa-field min-h-[300px] p-5 sm:col-span-2">
-                        <div class="absolute left-[22%] top-1/2 -translate-y-1/2 text-4xl text-[#ee6b6e]"><i class="bi bi-circle-fill"></i></div>
-                        <div class="absolute right-[20%] top-1/3 text-3xl text-white"><i class="bi bi-circle-fill"></i></div>
-                        <span class="absolute bottom-4 left-5 tabular-nums tracking-[.12em] text-[9px] text-white/60">CAMPO · 105 × 68</span>
-                    </div>
-                    <article class="border border-white/10 bg-white/5 p-6">
-                        <i class="bi bi-diagram-3 text-2xl text-[#ee6b6e]"></i>
-                        <h3 class="mt-5 font-semibold">Leitura coletiva</h3>
-                        <p class="mt-2 text-sm leading-6 text-white/50">O espaço é ocupado com inteligência e confiança.</p>
-                    </article>
-                    <article class="border border-white/10 bg-white/5 p-6">
-                        <i class="bi bi-lightning-charge text-2xl text-[#ee6b6e]"></i>
-                        <h3 class="mt-5 font-semibold">Transição veloz</h3>
-                        <p class="mt-2 text-sm leading-6 text-white/50">Recuperar, acelerar, surpreender.</p>
-                    </article>
-                </div>
+            <div class="mb-14 max-w-2xl">
+                <p class="text-xs font-semibold uppercase tracking-[.3em] text-[#ffb020]">02 / Placares que ficaram</p>
+                <h2 class="fb-disp mt-4 text-6xl md:text-8xl">Três jogos,<br><span class="text-[#ffb020]">mil histórias.</span></h2>
             </div>
+
+            <div class="grid gap-6 lg:grid-cols-3">
+
+                <?php foreach ($placares as $p): ?>
+
+                    <article class="border border-white/10 bg-[#0c1017] p-6">
+
+                        <p class="text-[11px] font-semibold uppercase tracking-[.2em] text-white/45"><?= e($p['comp']) ?></p>
+
+                        <div class="fb-led mt-6 flex items-end justify-between gap-2 text-4xl sm:text-5xl">
+                            <span><?= e($p['casa']) ?></span>
+                            <span><?= e($p['a']) ?> : <?= e($p['b']) ?></span>
+                            <span><?= e($p['fora']) ?></span>
+                        </div>
+
+                        <?php if ($p['extra'] !== ''): ?>
+                            <p class="fb-led mt-3 text-2xl"><?= e($p['extra']) ?></p>
+                        <?php endif; ?>
+
+                        <p class="mt-6 border-t border-white/10 pt-4 text-sm font-semibold text-white/80">Gols do Japão: <?= e($p['gols']) ?></p>
+                        <p class="mt-2 text-sm leading-6 text-white/50"><?= e($p['nota']) ?></p>
+
+                    </article>
+
+                <?php endforeach; ?>
+
+            </div>
+
         </div>
+
     </section>
+
 
     <!-- NADESHIKO -->
-    <section class="jfa-paper-grid px-6 py-24 md:px-10 md:py-32">
-        <div class="mx-auto max-w-7xl">
-            <div class="grid gap-12 lg:grid-cols-[.9fr_1.1fr] lg:items-center">
-                <div class="order-2 lg:order-1">
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#c72b30]">03 / SELEÇÃO FEMININA</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">Nadeshiko<br><span class="text-[#c72b30]">Japan.</span></h2>
-                    <p class="mt-7 max-w-lg text-sm leading-8 text-[#52606c]">
-                        Flores de cravo, futebol de posse e uma conquista que
-                        mudou a história: em 2011, o Japão se tornou campeão
-                        mundial feminino pela primeira vez.
-                    </p>
-                    <div class="mt-9 flex items-center gap-5">
-                        <span class="flex h-16 w-16 items-center justify-center rounded-full bg-[#c72b30] text-2xl text-white"><i class="bi bi-trophy-fill"></i></span>
-                        <div><p class="font-['Playfair_Display'] tracking-[-.055em] text-3xl">2011</p><p class="tabular-nums tracking-[.12em] text-[9px] text-[#c72b30]">CAMPEÃS DO MUNDO</p></div>
-                    </div>
+    <section class="px-6 py-24 md:px-10 md:py-28">
+
+        <div class="mx-auto grid max-w-7xl gap-14 lg:grid-cols-2 lg:items-center">
+
+            <div class="relative">
+
+                <div class="relative h-[480px] overflow-hidden bg-[#0b2f9f]" style="clip-path: polygon(0 0, 100% 0, calc(100% - 34px) 100%, 0 100%);">
+                    <img
+                        src="<?= e(imagemFutebol('futebol_mulheres')) ?>"
+                        alt="Jogadoras japonesas em uma partida de futebol"
+                        loading="lazy"
+                        class="h-full w-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#071a52]/70 via-transparent to-transparent"></div>
                 </div>
-                <div class="overflow-hidden order-1 relative h-[430px] bg-[#d8cfc3] lg:order-2">
-<img src="<?= htmlspecialchars(imagemFutebol('futebol_mulheres')) ?>" alt="Jogadoras japonesas em uma partida de futebol" class="jfa-photo h-full w-full object-cover">                    <div class="absolute left-5 top-5 bg-[#f5f2eb] px-4 py-3 text-[#071a2b] shadow-lg">
-                        <p class="tabular-nums tracking-[.12em] text-[9px] font-bold">NADESHIKO</p>
-                        <p class="text-xs text-[#52606c]">撫子 · força delicada</p>
-                    </div>
+
+                <div class="absolute bottom-6 left-0 bg-[#c72b30] px-5 py-3 text-white">
+                    <p class="fb-disp text-3xl">撫子</p>
+                    <p class="mt-1 text-[11px] font-semibold uppercase tracking-[.2em]">Nadeshiko · força delicada</p>
                 </div>
+
             </div>
+
+            <div>
+
+                <p class="text-xs font-semibold uppercase tracking-[.3em] text-[#c72b30]">03 / Nadeshiko Japan</p>
+
+                <h2 class="fb-disp mt-4 text-6xl md:text-8xl">
+                    Força<br><span class="text-[#c72b30]">delicada.</span>
+                </h2>
+
+                <p class="mt-7 max-w-lg text-base leading-8 text-[#071a52]/70">
+                    O nome vem do nadeshiko, o cravo-silvestre que simboliza a
+                    mulher japonesa ideal. Em campo, virou futebol de posse,
+                    toque rápido e uma coragem que mudou a história.
+                </p>
+
+                <table class="mt-8 w-full text-left text-sm">
+                    <thead>
+                        <tr class="bg-[#0b2f9f] text-xs uppercase tracking-[.2em] text-white">
+                            <th class="px-4 py-3 font-semibold">Copa</th>
+                            <th class="px-4 py-3 font-semibold">Sede</th>
+                            <th class="px-4 py-3 font-semibold">Campanha</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#071a52]/10 bg-white">
+                        <?php foreach ($campanhas as $c): ?>
+                            <tr class="<?= $c[3] ? 'bg-[#c72b30]/10 font-bold text-[#c72b30]' : '' ?>">
+                                <td class="fb-disp px-4 py-3 text-2xl"><?= e($c[0]) ?></td>
+                                <td class="px-4 py-3"><?= e($c[1]) ?></td>
+                                <td class="px-4 py-3"><?= e($c[2]) ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+                <p class="mt-5 text-sm leading-7 text-[#071a52]/60">
+                    Em 2011, Homare Sawa foi artilheira, com cinco gols, e eleita
+                    a melhor jogadora do torneio.
+                </p>
+
+            </div>
+
         </div>
+
     </section>
 
-    <!-- CULTURA DE ARQUIBANCADA -->
-    <section class="bg-[#071a2b] px-6 py-24 text-white md:px-10 md:py-32">
-        <div class="mx-auto max-w-7xl">
-            <div class="grid gap-12 lg:grid-cols-[.75fr_1.25fr]">
-                <div>
-                    <p class="tabular-nums tracking-[.12em] text-[10px] font-bold text-[#ee6b6e]">04 / FORA DAS QUATRO LINHAS</p>
-                    <h2 class="font-['Playfair_Display'] tracking-[-.055em] mt-4 text-5xl font-semibold leading-none md:text-7xl">O jogo<br><span class="text-[#ee6b6e]">é de todos.</span></h2>
-                    <p class="mt-7 max-w-sm text-sm leading-8 text-white/55">No Japão, a partida continua depois do apito final. Respeito, comunidade e paixão fazem parte do espetáculo.</p>
-                </div>
-                <div class="grid gap-4 sm:grid-cols-3">
-                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
-                        <i class="bi bi-stars text-2xl text-[#ee6b6e]"></i>
-                        <h3 class="mt-10 font-semibold">Respeito</h3>
-                        <p class="mt-3 text-sm leading-6 text-white/45">Torcida e jogadores cuidam do espaço que compartilham.</p>
-                    </article>
-                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
-                        <i class="bi bi-people text-2xl text-[#ee6b6e]"></i>
-                        <h3 class="mt-10 font-semibold">Comunidade</h3>
-                        <p class="mt-3 text-sm leading-6 text-white/45">Clubes conectam bairros, cidades e gerações.</p>
-                    </article>
-                    <article class="border border-white/10 p-6 transition hover:border-[#ee6b6e] hover:bg-white/5">
-                        <i class="bi bi-heart text-2xl text-[#ee6b6e]"></i>
-                        <h3 class="mt-10 font-semibold">Paixão</h3>
-                        <p class="mt-3 text-sm leading-6 text-white/45">Cada camisa carrega uma história para cantar.</p>
-                    </article>
-                </div>
-            </div>
 
-            <div class="mt-20 border-t border-white/10 pt-8 md:flex md:items-end md:justify-between">
-                <div>
-                    <p class="tabular-nums tracking-[.12em] text-[10px] text-white/40">A PRÓXIMA GERAÇÃO JÁ ESTÁ EM CAMPO</p>
-                    <p class="font-['Playfair_Display'] tracking-[-.055em] mt-3 max-w-2xl text-4xl md:text-6xl">Do Japão para o mundo.</p>
+    <!-- FORA DAS QUATRO LINHAS -->
+    <section class="fb-gramado relative isolate text-white">
+
+        <div class="absolute inset-0 -z-10 bg-[#04200f]/45"></div>
+
+        <div class="mx-auto max-w-7xl px-6 py-24 md:px-10 md:py-28">
+
+            <p class="text-xs font-semibold uppercase tracking-[.3em] text-white/70">04 / Fora das quatro linhas</p>
+
+            <h2 class="fb-disp mt-4 text-6xl md:text-8xl">
+                Depois do apito,<br>a arquibancada<br><span class="text-[#ffb020]">fica limpa.</span>
+            </h2>
+
+            <p class="mt-8 max-w-xl text-base leading-8 text-white/85">
+                Nas Copas de 2018 e 2022, torcedores japoneses ficaram para
+                recolher o lixo das arquibancadas. Em 2018, a seleção ainda deixou
+                o vestiário impecável, com um bilhete de agradecimento. No Japão,
+                o respeito também faz parte do espetáculo.
+            </p>
+
+            <dl class="mt-14 grid gap-px border border-white/25 bg-white/25 sm:grid-cols-2 lg:grid-cols-4">
+
+                <div class="bg-[#0f5a35]/80 p-6">
+                    <dt class="fb-disp text-5xl">1993</dt>
+                    <dd class="mt-3 text-sm leading-6 text-white/80">Dez clubes fundadores dão o pontapé inicial da J.League.</dd>
                 </div>
-                <a href="#inicio" class="mt-7 inline-flex items-center gap-3 text-[10px] font-bold uppercase tracking-[.2em] text-[#ee6b6e] transition hover:text-white md:mt-0">
-                    Voltar ao topo <i class="bi bi-arrow-up-right"></i>
+
+                <div class="bg-[#0f5a35]/80 p-6">
+                    <dt class="fb-disp text-5xl">1998</dt>
+                    <dd class="mt-3 text-sm leading-6 text-white/80">Estreia em Copas do Mundo, e o Japão está em todas desde então.</dd>
+                </div>
+
+                <div class="bg-[#0f5a35]/80 p-6">
+                    <dt class="fb-disp text-5xl">4</dt>
+                    <dd class="mt-3 text-sm leading-6 text-white/80">Títulos da Copa da Ásia: 1992, 2000, 2004 e 2011.</dd>
+                </div>
+
+                <div class="bg-[#0f5a35]/80 p-6">
+                    <dt class="fb-disp text-5xl">2011</dt>
+                    <dd class="mt-3 text-sm leading-6 text-white/80">As Nadeshiko se tornam campeãs do mundo.</dd>
+                </div>
+
+            </dl>
+
+            <div class="mt-12 flex flex-wrap items-end justify-between gap-6">
+                <p class="fb-disp text-5xl md:text-7xl">Do Japão para o mundo.</p>
+                <a href="#inicio" class="fb-cut inline-flex items-center gap-3 bg-white py-3 pl-6 pr-9 text-sm font-semibold uppercase tracking-[.18em] text-[#0f5a35] transition hover:bg-[#ffb020]">
+                    Voltar ao topo <i class="bi bi-arrow-up"></i>
                 </a>
             </div>
+
         </div>
+
     </section>
+
 </main>
 
-<?php include '../../assets/templates/footer.php'; ?>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const NS = 'http://www.w3.org/2000/svg';
+    const reduzir = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Relógio da transmissão: um segundo por minuto de jogo
+    const relogio = document.getElementById('fb-relogio');
+
+    if (relogio) {
+        if (reduzir) {
+            relogio.textContent = '90′';
+        } else {
+            let minuto = 0;
+
+            setInterval(() => {
+                minuto = (minuto + 1) % 94;
+                relogio.textContent = (minuto <= 90 ? minuto : '90+' + (minuto - 90)) + '′';
+            }, 700);
+        }
+    }
+
+    // [papel, x%, y%, linha] — o ataque é para cima; y = 0 é o gol rival
+    const FORMACOES = {
+        '4-2-3-1': {
+            desc: 'Dois volantes protegem a defesa e o meia central liga a bola ao atacante. Um desenho clássico e equilibrado.',
+            jog: [['GOL', 50, 93, 'g'], ['LE', 14, 74, 'd'], ['ZAG', 36, 78, 'd'], ['ZAG', 64, 78, 'd'], ['LD', 86, 74, 'd'], ['VOL', 38, 60, 'm'], ['VOL', 62, 60, 'm'], ['PE', 16, 40, 'm'], ['MEI', 50, 42, 'm'], ['PD', 84, 40, 'm'], ['ATA', 50, 20, 'f']]
+        },
+        '4-3-3': {
+            desc: 'Os pontas abertos esticam a defesa rival e três meio-campistas controlam o ritmo da partida.',
+            jog: [['GOL', 50, 93, 'g'], ['LE', 14, 74, 'd'], ['ZAG', 36, 78, 'd'], ['ZAG', 64, 78, 'd'], ['LD', 86, 74, 'd'], ['MC', 30, 56, 'm'], ['VOL', 50, 63, 'm'], ['MC', 70, 56, 'm'], ['PE', 18, 28, 'f'], ['ATA', 50, 20, 'f'], ['PD', 82, 28, 'f']]
+        },
+        '3-4-2-1': {
+            desc: 'Três zagueiros e alas que apoiam o ataque. Um sistema que o Japão usou em jogos decisivos em 2022.',
+            jog: [['GOL', 50, 93, 'g'], ['ZAG', 28, 78, 'd'], ['ZAG', 50, 81, 'd'], ['ZAG', 72, 78, 'd'], ['ALA', 10, 54, 'm'], ['VOL', 38, 58, 'm'], ['VOL', 62, 58, 'm'], ['ALA', 90, 54, 'm'], ['MEI', 34, 36, 'm'], ['MEI', 66, 36, 'm'], ['ATA', 50, 18, 'f']]
+        },
+        '4-4-2': {
+            desc: 'Duas linhas de quatro, compactas e fáceis de entender, com dois atacantes dividindo a referência.',
+            jog: [['GOL', 50, 93, 'g'], ['LE', 14, 74, 'd'], ['ZAG', 36, 78, 'd'], ['ZAG', 64, 78, 'd'], ['LD', 86, 74, 'd'], ['ME', 14, 52, 'm'], ['MC', 38, 56, 'm'], ['MC', 62, 56, 'm'], ['MD', 86, 52, 'm'], ['ATA', 38, 24, 'f'], ['ATA', 62, 24, 'f']]
+        }
+    };
+
+    // Deslocamento vertical de cada linha em cada fase (positivo = recua)
+    const FASES = {
+        defender: { g: 0, d: 6, m: 14, f: 20 },
+        construir: { g: 0, d: 0, m: 0, f: 0 },
+        atacar: { g: -4, d: -14, m: -16, f: -8 }
+    };
+
+    const TEXTO_FASE = {
+        defender: 'Bloco baixo: as linhas recuam e fecham os espaços.',
+        construir: 'Posse organizada: linhas equilibradas para circular a bola.',
+        atacar: 'Bloco alto: o time inteiro sobe e pressiona a saída do rival.'
+    };
+
+    const time = document.getElementById('fb-time');
+    const setas = document.getElementById('fb-setas');
+
+    let formacao = '4-2-3-1';
+    let fase = 'construir';
+    let atual = [];
+    let temporizador;
+
+    // Os onze ímãs
+    const imas = Array.from({ length: 11 }, (_, i) => {
+
+        const g = document.createElementNS(NS, 'g');
+
+        g.setAttribute('class', 'fb-ima');
+        g.innerHTML =
+            '<circle r="16" fill="' + (i === 0 ? '#c72b30' : '#0b2f9f') + '" stroke="#fff" stroke-width="2.5"></circle>' +
+            '<text y="6" text-anchor="middle" font-size="17" fill="#fff">' + (i + 1) + '</text>' +
+            '<text class="papel" y="32" text-anchor="middle" font-size="11" fill="#1b2a4a"></text>';
+
+        time.appendChild(g);
+
+        return g;
+
+    });
+
+    function posicoes() {
+
+        const deslocamento = FASES[fase];
+
+        return FORMACOES[formacao].jog.map(([papel, x, y, linha]) => {
+
+            const yy = Math.min(95, Math.max(5, y + deslocamento[linha]));
+
+            return { papel, linha, yy, x: 10 + x * 3.4, y: 10 + yy * 5.25 };
+
+        });
+
+    }
+
+    function media(lista, linha) {
+
+        const grupo = lista.filter((j) => j.linha === linha);
+
+        return grupo.reduce((soma, j) => soma + j.yy, 0) / grupo.length;
+
+    }
+
+    function aplicar(comSetas) {
+
+        const novas = posicoes();
+
+        if (comSetas && atual.length) {
+
+            setas.replaceChildren();
+
+            novas.forEach((n, i) => {
+
+                const a = atual[i];
+
+                if (Math.hypot(n.x - a.x, n.y - a.y) > 22) {
+
+                    const linha = document.createElementNS(NS, 'line');
+
+                    linha.setAttribute('x1', a.x);
+                    linha.setAttribute('y1', a.y);
+                    linha.setAttribute('x2', n.x);
+                    linha.setAttribute('y2', n.y);
+                    linha.setAttribute('class', 'fb-seta');
+                    linha.setAttribute('marker-end', 'url(#fb-ponta)');
+                    setas.appendChild(linha);
+
+                }
+
+            });
+
+            clearTimeout(temporizador);
+            temporizador = setTimeout(() => setas.replaceChildren(), 1700);
+
+        }
+
+        novas.forEach((n, i) => {
+            imas[i].style.transform = 'translate(' + n.x + 'px,' + n.y + 'px)';
+            imas[i].querySelector('.papel').textContent = n.papel;
+        });
+
+        atual = novas;
+
+        document.getElementById('fb-nome').textContent = formacao;
+        document.getElementById('fb-desc').textContent = FORMACOES[formacao].desc;
+        document.getElementById('fb-fase-txt').textContent = TEXTO_FASE[fase];
+        document.getElementById('fb-bloco').textContent = Math.round((media(novas, 'd') - media(novas, 'f')) * 1.05) + ' m';
+
+        document.querySelectorAll('[data-formacao]').forEach((b) => {
+            b.setAttribute('aria-pressed', String(b.dataset.formacao === formacao));
+        });
+
+        document.querySelectorAll('[data-fase]').forEach((b) => {
+            b.setAttribute('aria-pressed', String(b.dataset.fase === fase));
+        });
+
+    }
+
+    document.querySelectorAll('[data-formacao]').forEach((botao) => {
+        botao.addEventListener('click', () => {
+            formacao = botao.dataset.formacao;
+            aplicar(true);
+        });
+    });
+
+    document.querySelectorAll('[data-fase]').forEach((botao) => {
+        botao.addEventListener('click', () => {
+            fase = botao.dataset.fase;
+            aplicar(true);
+        });
+    });
+
+    // Primeira montagem sem animação
+    time.classList.add('sem-trans');
+    aplicar(false);
+    requestAnimationFrame(() => requestAnimationFrame(() => time.classList.remove('sem-trans')));
+
+});
+</script>
+
+<?php include_once __DIR__ . '/../templates/footer.php'; ?>
